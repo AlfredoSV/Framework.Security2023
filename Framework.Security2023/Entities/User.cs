@@ -8,5 +8,13 @@ namespace Framework.Security2023.Entities
 {
     public class User
     {
-    }
+		public Guid Id;
+		public string UserName;
+		public string Password;
+		public DateTime DateCreated;
+		public Guid UserCreated;
+		public int LoginSessions;
+		public bool UserBlocked;
+
+	}
 }

@@ -11,7 +11,9 @@ namespace Framework.Security2023.Entities
         public enum StatusLogin
         {
             Ok = 1,
-            NoValid = -1
+            UserOrPasswordIncorrect = -1,
+            UserBlocked = -2,
+            ExistSession = -3
 
         }
         private string _User;

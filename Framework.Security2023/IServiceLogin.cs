@@ -9,7 +9,7 @@ namespace Framework.Security2023
 {
     public interface IServiceLogin
     {
-        Login Login(Login login);
+        Login Login(Login user);
 
         bool CreateUser(User newUser);
 
