@@ -13,5 +13,25 @@ namespace Framework.Security2023
         {
             throw new NotImplementedException();
         }
+
+        public bool CreateUser(User newUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdatePassword(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateUser(User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Login.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="IServiceLogin.cs" />
     <Compile Include="Repositories\RespositorieLogin.cs" />
     <Compile Include="ServiceLogin.cs" />

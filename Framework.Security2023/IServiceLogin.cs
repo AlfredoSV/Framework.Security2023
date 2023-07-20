@@ -10,5 +10,13 @@ namespace Framework.Security2023
     public interface IServiceLogin
     {
         Login Login(Login login);
+
+        bool CreateUser(User newUser);
+
+        bool DeleteUser(User user);
+
+        bool UpdatePassword(User user);
+
+        bool UpdateUser(User user);
     }
 }
