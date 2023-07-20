@@ -22,13 +22,14 @@ namespace Framework.Security2023.Repositories
 
         public User GetUser(string userName)
         {
-            User userResult;
+            User userResult = new User();
             string sqlGetUser = "Select Id, UserName, Password, DateCreated, UserCreated, LoginSessions, UserBlocked from Users where UserName = @userName;";
             this._sqlCommand = new SqlCommand();
             using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
             {
                 this._sqlCommand = new SqlCommand();
                 this._sqlCommand.Connection = this._sqlConnection;
+                this._sqlConnection.Open();
                 this._sqlCommand.CommandText = sqlGetUser;
                 this._sqlCommand.Parameters.AddWithValue("userName", userName);
                 this._sqlDataReader = this._sqlCommand.ExecuteReader();
@@ -54,7 +55,7 @@ namespace Framework.Security2023.Repositories
 
             }
 
-            return null;
+            return userResult;
         }
     }
 }
