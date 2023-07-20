@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Framework.Security2023")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Framework.Security created by Alfredo Sanchez")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP Inc.")]
+[assembly: AssemblyCompany("Alfredo Sv")]
 [assembly: AssemblyProduct("Framework.Security2023")]
-[assembly: AssemblyCopyright("Copyright © HP Inc. 2023")]
+[assembly: AssemblyCopyright("Alfredo SV 2023.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
