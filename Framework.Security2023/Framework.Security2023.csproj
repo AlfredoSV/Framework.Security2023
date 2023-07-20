@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Entities\Login.cs" />
     <Compile Include="IServiceLogin.cs" />
+    <Compile Include="Repositories\RespositorieLogin.cs" />
     <Compile Include="ServiceLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
