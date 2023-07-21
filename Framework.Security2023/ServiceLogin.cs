@@ -43,12 +43,14 @@ namespace Framework.Security2023
             return rowsRegister > 0;
         }
 
-        public bool DeleteUser(User user)
+        public bool DeleteUser(Guid userId)
         {
-            throw new NotImplementedException();
+            int rowsRegister = (new RespositorieUser().Delete(userId));
+
+            return rowsRegister > 0;
         }
 
-        public bool UpdatePassword(User user)
+        public bool UpdatePassword(Guid userId, string newPassword)
         {
             throw new NotImplementedException();
         }

@@ -13,9 +13,9 @@ namespace Framework.Security2023
 
         bool CreateUser(User newUser, bool isCreatedByAdmin);
 
-        bool DeleteUser(User user);
+        bool DeleteUser(Guid userId);
 
-        bool UpdatePassword(User user);
+        bool UpdatePassword(Guid userId, string newPassword);
 
         bool UpdateUser(User user);
     }

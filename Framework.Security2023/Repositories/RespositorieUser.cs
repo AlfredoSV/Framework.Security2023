@@ -88,5 +88,26 @@ namespace Framework.Security2023.Repositories
             return result;
 
         }
+
+        public int Delete(Guid userId)
+        {
+
+            int result;
+            string sqlGetUser = "DELETE FROM Users WHERE Id = @Id";
+            this._sqlCommand = new SqlCommand();
+            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            {
+                this._sqlCommand = new SqlCommand();
+                this._sqlCommand.Connection = this._sqlConnection;
+                this._sqlConnection.Open();
+                this._sqlCommand.CommandText = sqlGetUser;
+                this._sqlCommand.Parameters.AddWithValue("Id", userId);
+                result = this._sqlCommand.ExecuteNonQuery();
+
+            }
+
+            return result;
+
+        }
     }
 }
