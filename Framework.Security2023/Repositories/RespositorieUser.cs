@@ -22,7 +22,7 @@ namespace Framework.Security2023.Repositories
 
         public User GetUser(string userName)
         {
-            User userResult = new User();
+            User userResult = null;
             string sqlGetUser = @"Select Id, UserName, Password, DateCreated, UserCreated, LoginSessions, UserBlocked 
                                 from Users where UserName = @userName;";
             this._sqlCommand = new SqlCommand();
@@ -53,10 +53,7 @@ namespace Framework.Security2023.Repositories
                     };
 
                 }
-                else
-                    userResult = null;
-              
-
+  
             }
 
             return userResult;
@@ -102,6 +99,28 @@ namespace Framework.Security2023.Repositories
                 this._sqlConnection.Open();
                 this._sqlCommand.CommandText = sqlGetUser;
                 this._sqlCommand.Parameters.AddWithValue("Id", userId);
+                result = this._sqlCommand.ExecuteNonQuery();
+
+            }
+
+            return result;
+
+        }
+
+        public int UpdatePassword(Guid userId, string newPassword)
+        {
+
+            int result;
+            string sqlGetUser = "UPDATE Users SET Password = @password WHERE Id = @id";
+            this._sqlCommand = new SqlCommand();
+            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            {
+                this._sqlCommand = new SqlCommand();
+                this._sqlCommand.Connection = this._sqlConnection;
+                this._sqlConnection.Open();
+                this._sqlCommand.CommandText = sqlGetUser;
+                this._sqlCommand.Parameters.AddWithValue("id", userId);
+                this._sqlCommand.Parameters.AddWithValue("password", newPassword);
                 result = this._sqlCommand.ExecuteNonQuery();
 
             }
