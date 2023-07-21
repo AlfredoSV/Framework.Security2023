@@ -48,5 +48,8 @@
     <Compile Include="ServiceLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="TablesSql\Scripts Table Fkw.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

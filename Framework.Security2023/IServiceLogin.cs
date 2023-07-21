@@ -11,7 +11,7 @@ namespace Framework.Security2023
     {
         Login Login(Login user);
 
-        bool CreateUser(User newUser);
+        bool CreateUser(User newUser, bool isCreatedByAdmin);
 
         bool DeleteUser(User user);
 
