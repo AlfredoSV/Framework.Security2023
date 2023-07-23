@@ -43,16 +43,13 @@ namespace Framework.Security2023
         {
             if (isCreatedByAdmin)
                 newUser.Password = newUser.UserName;
-
-            //int rowsRegister = (new RespositorieUser().Save(newUser));        
+            
             this._sqlDB.Insert(newUser);
             return true;
         }
 
         public bool DeleteUser(Guid userId)
         {
-            //int rowsRegister = (new RespositorieUser().Delete(userId));
-
             StatusQuery rowDelete = this._sqlDB.Delete<Guid>(userId);
 
             return rowDelete == StatusQuery.Ok;
@@ -60,12 +57,14 @@ namespace Framework.Security2023
 
         public bool UpdatePassword(Guid userId, string newPassword)
         {
-            throw new NotImplementedException();
+            int rowDelete = (new RespositorieUser()).UpdatePassword(userId, newPassword);
+
+            return (rowDelete >= 1 );
         }
 
         public bool UpdateUser(UserFkw user)
         {
-            StatusQuery rowDelete = StatusQuery.Ok;
+            StatusQuery rowDelete = this._sqlDB.Update(user);
 
             return rowDelete == StatusQuery.Ok;
         }
