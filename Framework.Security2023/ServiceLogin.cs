@@ -1,19 +1,25 @@
 ﻿using Framework.Security2023.Entities;
 using Framework.Security2023.Repositories;
+using Framework.Sql2023;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Framework.Security2023.Entities.Login;
 
 namespace Framework.Security2023
 {
     public class ServiceLogin : IServiceLogin
     {
+        public readonly SqlDB<UserFkw> _sqlDB;
+
+        public ServiceLogin()
+        {
+            _sqlDB = new SqlDB<UserFkw>("server=ALFREDO ; database=Framework_Users ; integrated security = true");
+
+        }
+
         public Login Login(Login userLogin)
         {
-            User user = (new RespositorieUser().GetUser(userLogin.User));
+           
+            UserFkw user = (new RespositorieUser().GetUser(userLogin.User));
 
             if(user == null)
             {
@@ -33,21 +39,23 @@ namespace Framework.Security2023
             return userLogin;
         }
 
-        public bool CreateUser(User newUser,bool isCreatedByAdmin)
+        public bool CreateUser(UserFkw newUser,bool isCreatedByAdmin)
         {
             if (isCreatedByAdmin)
                 newUser.Password = newUser.UserName;
 
-            int rowsRegister = (new RespositorieUser().Save(newUser));
-
-            return rowsRegister > 0;
+            //int rowsRegister = (new RespositorieUser().Save(newUser));        
+            this._sqlDB.Insert(newUser);
+            return true;
         }
 
         public bool DeleteUser(Guid userId)
         {
-            int rowsRegister = (new RespositorieUser().Delete(userId));
+            //int rowsRegister = (new RespositorieUser().Delete(userId));
 
-            return rowsRegister > 0;
+            StatusQuery rowDelete = this._sqlDB.Delete<Guid>(userId);
+
+            return rowDelete == StatusQuery.Ok;
         }
 
         public bool UpdatePassword(Guid userId, string newPassword)
@@ -55,9 +63,11 @@ namespace Framework.Security2023
             throw new NotImplementedException();
         }
 
-        public bool UpdateUser(User user)
+        public bool UpdateUser(UserFkw user)
         {
-            throw new NotImplementedException();
+            StatusQuery rowDelete = StatusQuery.Ok;
+
+            return rowDelete == StatusQuery.Ok;
         }
     }
 }

@@ -20,9 +20,9 @@ namespace Framework.Security2023.Repositories
             this._sqlTextConnection = sqlTextConnection;
         }
 
-        public User GetUser(string userName)
+        public UserFkw GetUser(string userName)
         {
-            User userResult = null;
+            UserFkw userResult = null;
             string sqlGetUser = @"Select Id, UserName, Password, DateCreated, UserCreated, LoginSessions, UserBlocked 
                                 from Users where UserName = @userName;";
             this._sqlCommand = new SqlCommand();
@@ -39,7 +39,7 @@ namespace Framework.Security2023.Repositories
                 {
                     this._sqlDataReader.Read();
 
-                    userResult = new User()
+                    userResult = new UserFkw()
                     {
 
                         Id = this._sqlDataReader.GetGuid(0),
@@ -59,7 +59,7 @@ namespace Framework.Security2023.Repositories
             return userResult;
         }
 
-        public int Save(User newUser)
+        public int Save(UserFkw newUser)
         {
 
             int result;
@@ -77,7 +77,7 @@ namespace Framework.Security2023.Repositories
                 this._sqlCommand.Parameters.AddWithValue("dateCreated", newUser.DateCreated);
                 this._sqlCommand.Parameters.AddWithValue("userCreated", newUser.UserCreated);
                 this._sqlCommand.Parameters.AddWithValue("loginSessions", newUser.LoginSessions);
-                this._sqlCommand.Parameters.AddWithValue("userBlocked", newUser.UserCreated);
+                this._sqlCommand.Parameters.AddWithValue("userBlocked", newUser.UserBlocked);
                 result =  this._sqlCommand.ExecuteNonQuery();
 
             }

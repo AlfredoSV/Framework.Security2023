@@ -11,12 +11,12 @@ namespace Framework.Security2023
     {
         Login Login(Login user);
 
-        bool CreateUser(User newUser, bool isCreatedByAdmin);
+        bool CreateUser(UserFkw newUser, bool isCreatedByAdmin);
 
         bool DeleteUser(Guid userId);
 
         bool UpdatePassword(Guid userId, string newPassword);
 
-        bool UpdateUser(User user);
+        bool UpdateUser(UserFkw user);
     }
 }
