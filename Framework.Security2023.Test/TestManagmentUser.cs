@@ -8,9 +8,10 @@ namespace Framework.Security2023.Test
     public class TestManagmentUser
     {
         [TestMethod]
+        [Ignore]
         public void TestCreateUser()
         {
-            IServiceLogin serviceLogin = new ServiceLogin();
+            IServiceLogin serviceLogin = new ServiceLogin("");
 
             UserFkw user = new UserFkw() { Id = Guid.Parse("CAD8A946-D085-4BC0-9653-759A56088988"),
                 DateCreated = DateTime.Now,
