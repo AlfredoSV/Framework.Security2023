@@ -10,8 +10,9 @@ namespace Framework.Security2023
     {
         public readonly SqlDB<UserFkw> _sqlDB;
 
-        public ServiceLogin()
+        public ServiceLogin(string sqlConnection)
         {
+            //_sqlDB = new SqlDB<UserFkw>(sqlConnection);
             _sqlDB = new SqlDB<UserFkw>("server=ALFREDO ; database=Framework_Users ; integrated security = true");
 
         }

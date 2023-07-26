@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cryptography\ServiceCryptography.cs" />
     <Compile Include="Entities\Login.cs" />
     <Compile Include="Entities\UserFkw.cs" />
     <Compile Include="IServiceLogin.cs" />
