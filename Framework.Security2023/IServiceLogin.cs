@@ -17,6 +17,8 @@ namespace Framework.Security2023
 
         bool UpdatePassword(Guid userId, string newPassword);
 
+        bool UserExist(string userName);
+
         bool UpdateUser(UserFkw user);
     }
 }

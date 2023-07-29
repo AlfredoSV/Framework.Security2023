@@ -69,5 +69,11 @@ namespace Framework.Security2023
 
             return rowDelete == StatusQuery.Ok;
         }
+
+        public bool UserExist(string userName)
+        {
+            UserFkw user = (new RespositorieUser().GetUser(userName));
+            return user != null;
+        }
     }
 }
