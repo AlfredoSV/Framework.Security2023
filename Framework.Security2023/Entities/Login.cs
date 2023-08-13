@@ -37,6 +37,15 @@ namespace Framework.Security2023.Entities
             set { _StatusLogin = value; }
         }
 
+        private Role _role;
+
+        public Role Role
+        {
+            get { return _role; }
+            set { _role = value; }
+        }
+
+
         private Login(string user, string password, StatusLogin status)
         {
             this.User = user;

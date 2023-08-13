@@ -1,23 +1,19 @@
 ﻿using Framework.Security2023.Cryptography;
 using Framework.Security2023.Entities;
 using Framework.Security2023.Repositories;
-using Framework.Sql2023;
 using System;
 using static Framework.Security2023.Entities.Login;
 
 namespace Framework.Security2023
 {
     public class ServiceLogin : IServiceLogin
-    {
-        public readonly SqlDB<UserFkw> _sqlDB;
+    {   
         public readonly ServiceCryptography _serviceCryptography; 
 
         public ServiceLogin(string sqlConnection)
         {
             _serviceCryptography = new ServiceCryptography();
-            //_sqlDB = new SqlDB<UserFkw>(sqlConnection);
-            _sqlDB = new SqlDB<UserFkw>("server=ALFREDO ; database=Framework_Users ; integrated security = true");
-
+    
         }
 
         public Login Login(Login userLogin)
@@ -51,15 +47,15 @@ namespace Framework.Security2023
             if (isCreatedByAdmin)
                 newUser.Password = _serviceCryptography.Encrypt(newUser.UserName,newUser.Id.ToString());
 
-            this._sqlDB.Insert(newUser);
+            (new RespositorieUser()).Save(newUser);
             return true;
         }
 
         public bool DeleteUser(Guid userId)
         {
-            StatusQuery rowDelete = this._sqlDB.Delete<Guid>(userId);
+            int rowDelete = (new RespositorieUser()).Delete(userId);
 
-            return rowDelete == StatusQuery.Ok;
+            return rowDelete > 0;
         }
 
         public bool UpdatePassword(Guid userId, string newPassword)
@@ -75,15 +71,17 @@ namespace Framework.Security2023
         {
             user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
 
-            StatusQuery rowDelete = this._sqlDB.Update(user);
+            //int rowUpdate = (new RespositorieUser()Update(user);
 
-            return rowDelete == StatusQuery.Ok;
+            //return rowUpdate == StatusQuery.Ok;
+            return true;
         }
 
         public bool UserExist(string userName)
         {
-            UserFkw user = (new RespositorieUser().GetUser(userName));
-            return user != null;
+            //UserFkw user = (new RespositorieUser().GetUser(userName));
+            //return user != null;
+            return true; 
         }
     }
 }
