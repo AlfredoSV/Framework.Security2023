@@ -39,19 +39,11 @@ namespace Framework.Security2023.Repositories
                 {
                     this._sqlDataReader.Read();
 
-                    userResult = new UserFkw()
-                    {
-
-                        Id = this._sqlDataReader.GetGuid(0),
-                        UserName = this._sqlDataReader.GetString(1),
-                        Password = this._sqlDataReader.GetString(2),
-                        DateCreated = this._sqlDataReader.GetDateTime(3),
-                        UserCreated = this._sqlDataReader.GetGuid(4),
-                        LoginSessions = this._sqlDataReader.GetInt32(5),
-                        UserBlocked = this._sqlDataReader.GetBoolean(6)
-
-                    };
-
+                    userResult = UserFkw.Create(this._sqlDataReader.GetGuid(0),
+                        this._sqlDataReader.GetString(1), this._sqlDataReader.GetString(2),
+                        this._sqlDataReader.GetDateTime(3), this._sqlDataReader.GetGuid(4),
+                        this._sqlDataReader.GetInt32(5), this._sqlDataReader.GetBoolean(6));
+ 
                 }
   
             }

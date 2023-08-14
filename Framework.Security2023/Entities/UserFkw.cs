@@ -9,31 +9,40 @@ namespace Framework.Security2023.Entities
 {
     public class UserFkw
     {
-        //[Id]
-        public Guid Id { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public DateTime DateCreated { get; set; }
-        public Guid UserCreated { get; set; }
-        public int LoginSessions { get; set; }
-        public bool UserBlocked { get; set; }
+       
+        public Guid Id { get; private set; }
+        public string UserName { get; private set; }
+        public string Password { get; private set; }
+        public DateTime DateCreated { get; private set; }
+        public Guid UserCreated { get; private set; }
+        public int LoginSessions { get; private set; }
+        public bool UserBlocked { get; private set; }
+        public UserToken UserToken { get; private set; }
 
-        public UserFkw() { }
-
-        public UserFkw(string userName, string password, Guid userCreated)
+        private UserFkw(Guid id, string userName, string password, DateTime dateCreated, Guid userCreated, int loginSessions, bool userBlocked)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             UserName = userName;
-            Password = (new ServiceCryptography()).Encrypt(password, Id.ToString());
-            DateCreated = DateTime.Now;
+            Password = password;
+            DateCreated = dateCreated;
             UserCreated = userCreated;
-            LoginSessions = 0;
-            UserBlocked = false;
+            LoginSessions = loginSessions;
+            UserBlocked = userBlocked;
         }
 
-        public static UserFkw Create(string userName, string password, Guid userCreated)
+        public static UserFkw Create(Guid id, string userName, string password, DateTime dateCreated, Guid userCreated, int loginSessions, bool userBlocked)
         {
-            return new UserFkw(userName, password, userCreated);
+            return new UserFkw( id,  userName,  password,  dateCreated,  userCreated,  loginSessions,  userBlocked);
+        }
+
+        public void SetToken(UserToken userToken)
+        {
+            UserToken = userToken;
+        }
+
+        public void SetPassword(string password)
+        {
+            Password = password;
         }
     }
 }

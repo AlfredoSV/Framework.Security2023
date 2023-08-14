@@ -45,7 +45,7 @@ namespace Framework.Security2023
         public bool CreateUser(UserFkw newUser,bool isCreatedByAdmin)
         {
             if (isCreatedByAdmin)
-                newUser.Password = _serviceCryptography.Encrypt(newUser.UserName,newUser.Id.ToString());
+                newUser.SetPassword(_serviceCryptography.Encrypt(newUser.UserName,newUser.Id.ToString()));
 
             (new RespositoryUser()).Save(newUser);
             return true;
@@ -69,7 +69,7 @@ namespace Framework.Security2023
 
         public bool UpdateUser(UserFkw user)
         {
-            user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
+            user.SetPassword(_serviceCryptography.Encrypt(user.Password, user.Id.ToString()));
 
             int res = (new RespositoryUser()).Update(user);
 
