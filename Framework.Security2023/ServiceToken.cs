@@ -1,4 +1,5 @@
 ﻿using Framework.Security2023.Entities;
+using Framework.Security2023.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,32 @@ namespace Framework.Security2023
 {
     public class ServiceToken : IServiceToken
     {
-        public UserToken CreateToken(UserFkw userFkw)
+        private readonly RepositoryToken _repositoryToken;
+
+        public ServiceToken()
         {
-            throw new NotImplementedException();
+            _repositoryToken = new RepositoryToken();
         }
 
-        public bool IsValidToken(UserFkw userFkw, UserToken userToken)
+        public UserToken CreateToken(UserFkw userFkw)
         {
-            throw new NotImplementedException();
+            UserToken userToken = UserToken.Create(userFkw.Id);
+
+            int result = _repositoryToken.Save(userToken);
+
+            return userToken;
+        }
+
+        public bool IsValidToken(Guid userId, string token)
+        {
+            UserToken userToken = _repositoryToken.GetLastToken(userId);
+
+            if (!token.Equals(userToken))           
+                return false;
+            if (DateTime.Now > userToken.DateExpiration)
+                return false;
+
+            return true;
         }
     }
 }

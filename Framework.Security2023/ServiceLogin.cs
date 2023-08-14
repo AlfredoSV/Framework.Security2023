@@ -8,11 +8,13 @@ namespace Framework.Security2023
 {
     public class ServiceLogin : IServiceLogin
     {   
-        public readonly ServiceCryptography _serviceCryptography; 
+        public readonly ServiceCryptography _serviceCryptography;
+        public readonly IServiceToken _serviceToken;
 
         public ServiceLogin(string sqlConnection)
         {
             _serviceCryptography = new ServiceCryptography();
+            _serviceToken = new ServiceToken();
     
         }
 
@@ -47,17 +49,10 @@ namespace Framework.Security2023
             if (user.LoginSessions >=1)
                 userLogin.StatusLog = StatusLogin.ExistSession;
 
-            if (user.ApplyToken)
-            {
-                if(user.UserToken != null)
-                {
-                    //Logic for validation of token
-                }
-                else
-                    userLogin.StatusLog = StatusLogin.TokenNotValid;
+            if (user.ApplyToken)           
+                _serviceToken.CreateToken(user);
                 
-            }
-
+          
             return userLogin;
         }
 

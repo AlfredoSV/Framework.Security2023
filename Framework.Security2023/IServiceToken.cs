@@ -10,7 +10,7 @@ namespace Framework.Security2023
     public interface IServiceToken
     {
         UserToken CreateToken(UserFkw userFkw);
-        bool IsValidToken(UserFkw userFkw, UserToken userToken);
+        bool IsValidToken(Guid idUser, string token);
 
     }
 }
