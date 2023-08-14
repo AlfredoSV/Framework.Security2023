@@ -71,17 +71,15 @@ namespace Framework.Security2023
         {
             user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
 
-            //int rowUpdate = (new RespositorieUser()Update(user);
+            int res = (new RespositorieUser()).Update(user);
 
-            //return rowUpdate == StatusQuery.Ok;
-            return true;
+            return res > 0;
         }
 
         public bool UserExist(string userName)
         {
-            //UserFkw user = (new RespositorieUser().GetUser(userName));
-            //return user != null;
-            return true; 
+            UserFkw user = (new RespositorieUser().GetUser(userName));
+            return user != null; 
         }
     }
 }

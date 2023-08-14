@@ -128,5 +128,44 @@ namespace Framework.Security2023.Repositories
             return result;
 
         }
+
+        public int Update(UserFkw newUser)
+        {
+
+            int result;
+            string sqlGetUser = @"
+             UPDATE dbo.Users
+             SET 
+	           UserName = @userName
+              ,Password = @password
+              ,DateCreated = @dateCreated
+              ,UserCreated = @userCreated
+              ,LoginSessions = @loginSessions
+              ,UserBlocked = @userBlocked
+             WHERE Id = @Id;
+            ";
+            this._sqlCommand = new SqlCommand();
+            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            {
+                this._sqlCommand = new SqlCommand();
+                this._sqlCommand.Connection = this._sqlConnection;
+                this._sqlConnection.Open();
+                this._sqlCommand.CommandText = sqlGetUser;
+                this._sqlCommand.Parameters.AddWithValue("Id", newUser.Id);
+                this._sqlCommand.Parameters.AddWithValue("userName", newUser.UserName);
+                this._sqlCommand.Parameters.AddWithValue("password", newUser.UserName);
+                this._sqlCommand.Parameters.AddWithValue("dateCreated", newUser.DateCreated);
+                this._sqlCommand.Parameters.AddWithValue("userCreated", newUser.UserCreated);
+                this._sqlCommand.Parameters.AddWithValue("loginSessions", newUser.LoginSessions);
+                this._sqlCommand.Parameters.AddWithValue("userBlocked", newUser.UserBlocked);
+                result = this._sqlCommand.ExecuteNonQuery();
+
+            }
+
+            return result;
+
+        }
+
+
     }
 }
