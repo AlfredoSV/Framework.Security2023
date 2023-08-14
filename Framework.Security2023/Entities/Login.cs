@@ -13,7 +13,8 @@ namespace Framework.Security2023.Entities
             Ok = 1,
             UserOrPasswordIncorrect = -1,
             UserBlocked = -2,
-            ExistSession = -3
+            ExistSession = -3,
+            TokenNotValid = -4
 
         }
         private string _User;

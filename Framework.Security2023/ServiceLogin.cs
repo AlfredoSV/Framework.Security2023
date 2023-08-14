@@ -16,6 +16,14 @@ namespace Framework.Security2023
     
         }
 
+        public Login LoginDummy(Login userLogin)
+        {
+            userLogin.StatusLog = StatusLogin.Ok;
+
+            return userLogin;
+        }
+
+
         public Login Login(Login userLogin)
         {
            
@@ -38,6 +46,17 @@ namespace Framework.Security2023
 
             if (user.LoginSessions >=1)
                 userLogin.StatusLog = StatusLogin.ExistSession;
+
+            if (user.ApplyToken)
+            {
+                if(user.UserToken != null)
+                {
+                    //Logic for validation of token
+                }
+                else
+                    userLogin.StatusLog = StatusLogin.TokenNotValid;
+                
+            }
 
             return userLogin;
         }

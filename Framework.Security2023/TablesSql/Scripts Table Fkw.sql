@@ -18,6 +18,7 @@ GO
 	DateCreated Datetime not null,
 	UserCreated UNIQUEIDENTIFIER not null,
 	LoginSessions INTEGER not null,
+	ApplyToken bit NOT NULL,
 	UserBlocked bit not null); 
  end
 

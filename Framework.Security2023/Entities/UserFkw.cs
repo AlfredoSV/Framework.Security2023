@@ -9,7 +9,7 @@ namespace Framework.Security2023.Entities
 {
     public class UserFkw
     {
-       
+
         public Guid Id { get; private set; }
         public string UserName { get; private set; }
         public string Password { get; private set; }
@@ -18,6 +18,8 @@ namespace Framework.Security2023.Entities
         public int LoginSessions { get; private set; }
         public bool UserBlocked { get; private set; }
         public UserToken UserToken { get; private set; }
+        public Role Role { get; private set; }
+        public bool ApplyToken { get; set; }
 
         private UserFkw(Guid id, string userName, string password, DateTime dateCreated, Guid userCreated, int loginSessions, bool userBlocked)
         {
@@ -43,6 +45,11 @@ namespace Framework.Security2023.Entities
         public void SetPassword(string password)
         {
             Password = password;
+        }
+
+        public void SetRole(Role role)
+        {
+            Role = role;
         }
     }
 }
