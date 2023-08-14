@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Framework.Security2023.Repositories
 {
-    public class RespositorieUser
+    public class RespositoryUser
     {
         private SqlConnection _sqlConnection;
         private SqlDataReader _sqlDataReader;
         private SqlCommand _sqlCommand;
         private readonly string _sqlTextConnection;
 
-        public RespositorieUser(string sqlTextConnection= "server=ALFREDO ; database=Framework_Users ; integrated security = true")
+        public RespositoryUser(string sqlTextConnection= "server=ALFREDO ; database=Framework_Users ; integrated security = true")
         {
             this._sqlTextConnection = sqlTextConnection;
         }

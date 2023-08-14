@@ -47,7 +47,7 @@
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\UserFkw.cs" />
     <Compile Include="IServiceLogin.cs" />
-    <Compile Include="Repositories\RespositorieUser.cs" />
+    <Compile Include="Repositories\RespositoryUser.cs" />
     <Compile Include="ServiceLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

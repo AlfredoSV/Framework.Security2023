@@ -19,7 +19,7 @@ namespace Framework.Security2023
         public Login Login(Login userLogin)
         {
            
-            UserFkw user = (new RespositorieUser().GetUser(userLogin.User));
+            UserFkw user = (new RespositoryUser().GetUser(userLogin.User));
             string passDb = string.Empty;
 
             if(user == null)
@@ -47,13 +47,13 @@ namespace Framework.Security2023
             if (isCreatedByAdmin)
                 newUser.Password = _serviceCryptography.Encrypt(newUser.UserName,newUser.Id.ToString());
 
-            (new RespositorieUser()).Save(newUser);
+            (new RespositoryUser()).Save(newUser);
             return true;
         }
 
         public bool DeleteUser(Guid userId)
         {
-            int rowDelete = (new RespositorieUser()).Delete(userId);
+            int rowDelete = (new RespositoryUser()).Delete(userId);
 
             return rowDelete > 0;
         }
@@ -62,7 +62,7 @@ namespace Framework.Security2023
         {
             newPassword = _serviceCryptography.Encrypt(newPassword, userId.ToString());
 
-            int rowUpdated = (new RespositorieUser()).UpdatePassword(userId, newPassword);
+            int rowUpdated = (new RespositoryUser()).UpdatePassword(userId, newPassword);
 
             return (rowUpdated >= 1 );
         }
@@ -71,14 +71,14 @@ namespace Framework.Security2023
         {
             user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
 
-            int res = (new RespositorieUser()).Update(user);
+            int res = (new RespositoryUser()).Update(user);
 
             return res > 0;
         }
 
         public bool UserExist(string userName)
         {
-            UserFkw user = (new RespositorieUser().GetUser(userName));
+            UserFkw user = (new RespositoryUser().GetUser(userName));
             return user != null; 
         }
     }
