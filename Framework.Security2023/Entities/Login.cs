@@ -17,39 +17,37 @@ namespace Framework.Security2023.Entities
             TokenNotValid = -4
 
         }
-        private string _User;
-        public string User
+        private string _userName;
+        public string UserName
         {
-            get { return _User; }
-            set { _User = value; }
+            get { return _userName; }
+            set { _userName = value; }
         }
 
-        private string _Password;
+        private string _password;
         public string Password
         {
-            get { return _Password; }
-            set { _Password = value; }
+            get { return _password; }
+            set { _password = value; }
         }
 
-        private StatusLogin _StatusLogin;
+        private StatusLogin _statusLogin;
         public StatusLogin StatusLog
         {
-            get { return _StatusLogin; }
-            set { _StatusLogin = value; }
+            get { return _statusLogin; }
+            set { _statusLogin = value; }
         }
 
-        private Role _role;
-
-        public Role Role
+        private UserFkw _user;
+        public UserFkw User
         {
-            get { return _role; }
-            set { _role = value; }
+            get { return _user; }
+            set { _user = value; }
         }
-
 
         private Login(string user, string password, StatusLogin status)
         {
-            this.User = user;
+            this.UserName = user;
             this.StatusLog = status;
             this.Password = password;
         }

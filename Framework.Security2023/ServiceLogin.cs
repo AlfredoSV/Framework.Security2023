@@ -8,13 +8,15 @@ namespace Framework.Security2023
 {
     public class ServiceLogin : IServiceLogin
     {   
-        public readonly ServiceCryptography _serviceCryptography;
-        public readonly IServiceToken _serviceToken;
-
+        private readonly ServiceCryptography _serviceCryptography;
+        private readonly IServiceToken _serviceToken;
+        private readonly ServiceUser _serviceUser;
+        
         public ServiceLogin(string sqlConnection)
         {
             _serviceCryptography = new ServiceCryptography();
             _serviceToken = new ServiceToken();
+            _serviceUser = new ServiceUser();
     
         }
 
@@ -29,7 +31,7 @@ namespace Framework.Security2023
         public Login Login(Login userLogin)
         {
            
-            UserFkw user = (new RespositoryUser().GetUser(userLogin.User));
+            UserFkw user = (new RespositoryUser().GetUser(userLogin.UserName));
             string passDb = string.Empty;
 
             if(user == null)
@@ -51,49 +53,12 @@ namespace Framework.Security2023
 
             if (user.ApplyToken)           
                 _serviceToken.CreateToken(user);
-                
-          
+
+            user.SetRole(_serviceUser.GetRole(user.Id));
+            userLogin.User = user;
+
             return userLogin;
         }
 
-        public bool CreateUser(UserFkw newUser,bool isCreatedByAdmin)
-        {
-            if (isCreatedByAdmin)
-                newUser.SetPassword(_serviceCryptography.Encrypt(newUser.UserName,newUser.Id.ToString()));
-
-            (new RespositoryUser()).Save(newUser);
-            return true;
-        }
-
-        public bool DeleteUser(Guid userId)
-        {
-            int rowDelete = (new RespositoryUser()).Delete(userId);
-
-            return rowDelete > 0;
-        }
-
-        public bool UpdatePassword(Guid userId, string newPassword)
-        {
-            newPassword = _serviceCryptography.Encrypt(newPassword, userId.ToString());
-
-            int rowUpdated = (new RespositoryUser()).UpdatePassword(userId, newPassword);
-
-            return (rowUpdated >= 1 );
-        }
-
-        public bool UpdateUser(UserFkw user)
-        {
-            user.SetPassword(_serviceCryptography.Encrypt(user.Password, user.Id.ToString()));
-
-            int res = (new RespositoryUser()).Update(user);
-
-            return res > 0;
-        }
-
-        public bool UserExist(string userName)
-        {
-            UserFkw user = (new RespositoryUser().GetUser(userName));
-            return user != null; 
-        }
     }
 }
