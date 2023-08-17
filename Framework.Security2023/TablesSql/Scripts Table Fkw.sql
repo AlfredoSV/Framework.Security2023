@@ -18,6 +18,7 @@ GO
 	DateCreated Datetime not null,
 	UserCreated UNIQUEIDENTIFIER not null,
 	LoginSessions INTEGER not null,
+	RolId UNIQUEIDENTIFIER not null,
 	ApplyToken bit NOT NULL,
 	UserBlocked bit not null); 
  end
@@ -32,16 +33,6 @@ GO
 	DateExpiration Datetime not null);
  end
 
- if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'UsersRol')
- begin 
-	CREATE TABLE UsersRol(
-	Id UNIQUEIDENTIFIER not null, 
-	RolId UNIQUEIDENTIFIER not null,
-	UserId UNIQUEIDENTIFIER not null,
-	DateCreated Datetime not null,
-	UserCreated UNIQUEIDENTIFIER not null
-	); 
- end
 
  if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Rol')
  begin 

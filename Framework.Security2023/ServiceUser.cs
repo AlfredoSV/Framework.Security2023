@@ -12,10 +12,14 @@ namespace Framework.Security2023
     public class ServiceUser
     {
         private readonly ServiceCryptography _serviceCryptography;
+        private readonly RepositoryRole _repositoryRole;
+        private readonly RespositoryUser _respositoryUser;
  
         public ServiceUser()
         {
             _serviceCryptography = new ServiceCryptography();
+            _repositoryRole = new RepositoryRole();
+            _respositoryUser = new RespositoryUser();
         }
         public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
         {
@@ -23,13 +27,13 @@ namespace Framework.Security2023
                 newUser.SetPassword(_serviceCryptography.Encrypt(newUser.UserName,
                     newUser.Id.ToString()));
 
-            (new RespositoryUser()).Save(newUser);
+            _respositoryUser.Save(newUser);
             return true;
         }
 
         public bool DeleteUser(Guid userId)
         {
-            int rowDelete = (new RespositoryUser()).Delete(userId);
+            int rowDelete = _respositoryUser.Delete(userId);
 
             return rowDelete > 0;
         }
@@ -39,7 +43,7 @@ namespace Framework.Security2023
             newPassword = _serviceCryptography.Encrypt(newPassword,
                 userId.ToString());
 
-            int rowUpdated = (new RespositoryUser()).UpdatePassword(userId,
+            int rowUpdated = _respositoryUser.UpdatePassword(userId,
                 newPassword);
 
             return (rowUpdated >= 1);
@@ -49,20 +53,22 @@ namespace Framework.Security2023
         {
             user.SetPassword(_serviceCryptography.Encrypt(user.Password, user.Id.ToString()));
 
-            int res = (new RespositoryUser()).Update(user);
+            int res = _respositoryUser.Update(user);
 
             return res > 0;
         }
 
         public bool UserExist(string userName)
         {
-            UserFkw user = (new RespositoryUser().GetUser(userName));
+            UserFkw user = (_respositoryUser.GetUser(userName));
             return user != null;
         }
 
         public Role GetRole(Guid userId)
         {
-            return null;
+            Role role = _repositoryRole.GetRol(userId);
+
+            return role;
         }
     }
 }

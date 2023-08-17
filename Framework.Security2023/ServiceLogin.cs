@@ -11,12 +11,14 @@ namespace Framework.Security2023
         private readonly ServiceCryptography _serviceCryptography;
         private readonly IServiceToken _serviceToken;
         private readonly ServiceUser _serviceUser;
+        private readonly RespositoryUser _respositoryUser;
         
         public ServiceLogin(string sqlConnection)
         {
             _serviceCryptography = new ServiceCryptography();
             _serviceToken = new ServiceToken();
             _serviceUser = new ServiceUser();
+            _respositoryUser = new RespositoryUser();
     
         }
 
@@ -31,7 +33,7 @@ namespace Framework.Security2023
         public Login Login(Login userLogin)
         {
            
-            UserFkw user = (new RespositoryUser().GetUser(userLogin.UserName));
+            UserFkw user = (_respositoryUser.GetUser(userLogin.UserName));
             string passDb = string.Empty;
 
             if(user == null)
