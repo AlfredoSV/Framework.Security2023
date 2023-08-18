@@ -1,5 +1,4 @@
 ﻿--Scripts Tables Framework
-
 CREATE DATABASE Framework_Users;
 
 Go
@@ -11,7 +10,7 @@ GO
  
  if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Users')
  begin 
-	CREATE TABLE Users(
+	CREATE TABLE UserFkw(
 	Id UNIQUEIDENTIFIER not null, 
 	UserName VARCHAR(30) not null,
 	Password VARCHAR(20) not null,
@@ -20,6 +19,20 @@ GO
 	LoginSessions INTEGER not null,
 	RolId UNIQUEIDENTIFIER not null,
 	ApplyToken bit NOT NULL,
+	UserBlocked bit not null); 
+ end
+
+ if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'UserInformation')
+ begin 
+	CREATE TABLE UserInformation(
+	IdUser UNIQUEIDENTIFIER not null, 
+	Name VARCHAR(30) not null,
+	LastName VARCHAR(20) not null,
+	Age integer not null,
+	DateCreated Datetime not null,
+	Address VARCHAR(60) not null,
+	Email VARCHAR(30) NOT NUll,
+	UserCreated UNIQUEIDENTIFIER not null,
 	UserBlocked bit not null); 
  end
 
