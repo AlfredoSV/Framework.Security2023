@@ -49,6 +49,7 @@
     <Compile Include="Entities\UserToken.cs" />
     <Compile Include="IServiceLogin.cs" />
     <Compile Include="IServiceToken.cs" />
+    <Compile Include="Repositories\RepositoryPermission.cs" />
     <Compile Include="Repositories\RepositoryRole.cs" />
     <Compile Include="Repositories\RepositoryToken.cs" />
     <Compile Include="Repositories\RespositoryUser.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceToken.cs" />
     <Compile Include="ServiceUser.cs" />
+    <Compile Include="SlqConnectionStr.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TablesSql\Scripts Table Fkw.sql" />

@@ -12,10 +12,8 @@ namespace Framework.Security2023.Repositories
         private SqlCommand _sqlCommand;
         private readonly string _sqlTextConnection;
 
-        public RepositoryRole(string sqlTextConnection =
-            "server=ALFREDO ; database=Framework_Users ; integrated security = true")
-        {
-            this._sqlTextConnection = sqlTextConnection;
+        public RepositoryRole(){
+            this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
         public Role GetRol(Guid userId)

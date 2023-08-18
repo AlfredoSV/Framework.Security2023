@@ -12,10 +12,9 @@ namespace Framework.Security2023.Repositories
         private SqlCommand _sqlCommand;
         private readonly string _sqlTextConnection;
 
-        public RepositoryToken(string sqlTextConnection =
-            "server=ALFREDO ; database=Framework_Users ; integrated security = true")
+        public RepositoryToken()
         {
-            this._sqlTextConnection = sqlTextConnection;
+            this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
         public int Save(UserToken userToken)

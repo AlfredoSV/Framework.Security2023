@@ -14,12 +14,14 @@ namespace Framework.Security2023
         private readonly ServiceCryptography _serviceCryptography;
         private readonly RepositoryRole _repositoryRole;
         private readonly RespositoryUser _respositoryUser;
+        private readonly RepositoryPermission _repositoryPermission;
  
         public ServiceUser()
         {
             _serviceCryptography = new ServiceCryptography();
             _repositoryRole = new RepositoryRole();
             _respositoryUser = new RespositoryUser();
+            _repositoryPermission = new RepositoryPermission();
         }
         public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
         {
@@ -67,6 +69,10 @@ namespace Framework.Security2023
         public Role GetRole(Guid userId)
         {
             Role role = _repositoryRole.GetRol(userId);
+
+            IEnumerable<Permission> permissions = _repositoryPermission.GetPermission(role.Id);
+
+            role.Permissions = permissions;
 
             return role;
         }
