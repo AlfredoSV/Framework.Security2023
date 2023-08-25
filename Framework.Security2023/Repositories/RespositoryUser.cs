@@ -66,7 +66,7 @@ namespace Framework.Security2023.Repositories
 				this._sqlCommand.CommandText = sqlGetUser;
 				this._sqlCommand.Parameters.AddWithValue("Id", newUser.Id);
 				this._sqlCommand.Parameters.AddWithValue("userName", newUser.UserName);
-				this._sqlCommand.Parameters.AddWithValue("password", newUser.UserName);
+				this._sqlCommand.Parameters.AddWithValue("password", newUser.Password);
 				this._sqlCommand.Parameters.AddWithValue("dateCreated", newUser.DateCreated);
 				this._sqlCommand.Parameters.AddWithValue("userCreated", newUser.UserCreated);
 				this._sqlCommand.Parameters.AddWithValue("loginSessions", newUser.LoginSessions);

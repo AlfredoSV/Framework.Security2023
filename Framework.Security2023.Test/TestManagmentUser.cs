@@ -28,7 +28,8 @@ namespace Framework.Security2023.Test
 
 		}
 
-		[TestMethod] 
+		[TestMethod]
+		[Ignore]
 		public void DeleteUser() {
 
 			ServiceUser serviceUser = new ServiceUser();

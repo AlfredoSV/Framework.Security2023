@@ -28,9 +28,11 @@ namespace Framework.Security2023
             if (isCreatedByAdmin)
                 newUser.SetPassword(_serviceCryptography.Encrypt(newUser.UserName,
                     newUser.Id.ToString()));
-
-            _respositoryUser.Save(newUser);
-            return true;
+            else
+				newUser.SetPassword(_serviceCryptography.Encrypt(newUser.Password,
+					newUser.Id.ToString()));
+			
+            return _respositoryUser.Save(newUser) >= 1;
         }
 
         public bool DeleteUser(Guid userId)
