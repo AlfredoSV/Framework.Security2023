@@ -85,7 +85,7 @@ namespace Framework.Security2023.Repositories
         {
 
             int result;
-            string sqlGetUser = "DELETE FROM Users WHERE Id = @Id";
+            string sqlGetUser = "DELETE FROM UserFkw WHERE Id = @Id";
             this._sqlCommand = new SqlCommand();
             using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
             {
