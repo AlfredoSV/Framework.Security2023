@@ -35,10 +35,8 @@ namespace Framework.Security2023
 
         public bool DeleteUser(Guid userId)
         {
-            int rowDelete = _respositoryUser.Delete(userId);
-
-            return rowDelete > 0;
-        }
+            return _respositoryUser.Delete(userId);
+		}
 
         public bool UpdatePassword(Guid userId, string newPassword)
         {

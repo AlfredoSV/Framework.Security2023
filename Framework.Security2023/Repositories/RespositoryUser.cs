@@ -81,24 +81,47 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        public int Delete(Guid userId)
+        public bool Delete(Guid userId)
         {
 
-            int result;
-            string sqlGetUser = "DELETE FROM UserFkw WHERE Id = @Id";
+            bool deleteUserFkw, deleteUserInfo, deleteUserTokens;            
             this._sqlCommand = new SqlCommand();
-            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+			SqlTransaction sqlTransaction = null;
+
+			try
             {
-                this._sqlCommand = new SqlCommand();
-                this._sqlCommand.Connection = this._sqlConnection;
-                this._sqlConnection.Open();
-                this._sqlCommand.CommandText = sqlGetUser;
-                this._sqlCommand.Parameters.AddWithValue("Id", userId);
-                result = this._sqlCommand.ExecuteNonQuery();
+				using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+				{
+					sqlTransaction = this._sqlConnection.BeginTransaction();			
+					this._sqlCommand = new SqlCommand();
+					this._sqlCommand.Connection = this._sqlConnection;
+					this._sqlCommand.Transaction = sqlTransaction;
+					this._sqlConnection.Open();
 
-            }
 
-            return result;
+					this._sqlCommand.CommandText = "DELETE FROM UserFkw WHERE Id = @Id";
+					this._sqlCommand.Parameters.AddWithValue("Id", userId);
+					deleteUserFkw = this._sqlCommand.ExecuteNonQuery() > 0;
+
+					this._sqlCommand.CommandText = "DELETE FROM UserInformation WHERE idUser = @Id";
+					this._sqlCommand.Parameters.AddWithValue("Id", userId);
+					deleteUserInfo = this._sqlCommand.ExecuteNonQuery() > 0;
+
+					this._sqlCommand.CommandText = "DELETE FROM UserToken WHERE id = @Id";
+					this._sqlCommand.Parameters.AddWithValue("Id", userId);
+					deleteUserTokens = this._sqlCommand.ExecuteNonQuery() > 0;
+
+					sqlTransaction.Commit();
+
+				}
+			}
+            catch (Exception e)
+            {
+                sqlTransaction.Rollback();
+                throw e;
+            }         
+
+            return deleteUserFkw || deleteUserInfo || deleteUserTokens;
 
         }
 
