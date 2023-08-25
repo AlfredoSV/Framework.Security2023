@@ -18,11 +18,16 @@ namespace Framework.Security2023.Entities
         public int LoginSessions { get; private set; }
         public bool UserBlocked { get; private set; }
         public UserToken UserToken { get; private set; }
+        public Guid RolId { get; set; }
         public Role Role { get; private set; }
         public bool ApplyToken { get; set; }
 
-        private UserFkw(Guid id, string userName, string password, DateTime dateCreated, Guid userCreated, int loginSessions, bool userBlocked)
+        private UserFkw(Guid id, string userName, string password, 
+            DateTime dateCreated, Guid userCreated, int loginSessions,
+            bool userBlocked, bool applyToken, Guid rolId)
         {
+            ApplyToken = applyToken;
+            RolId = rolId;
             Id = id;
             UserName = userName;
             Password = password;
@@ -32,9 +37,12 @@ namespace Framework.Security2023.Entities
             UserBlocked = userBlocked;
         }
 
-        public static UserFkw Create(Guid id, string userName, string password, DateTime dateCreated, Guid userCreated, int loginSessions, bool userBlocked)
+        public static UserFkw Create(Guid id, string userName,
+            string password, DateTime dateCreated, Guid userCreated,
+            int loginSessions, bool userBlocked, bool applyToken,
+            Guid rolId)
         {
-            return new UserFkw( id,  userName,  password,  dateCreated,  userCreated,  loginSessions,  userBlocked);
+            return new UserFkw( id,  userName,  password,  dateCreated,  userCreated,  loginSessions,  userBlocked,applyToken,rolId);
         }
 
         public void SetToken(UserToken userToken)

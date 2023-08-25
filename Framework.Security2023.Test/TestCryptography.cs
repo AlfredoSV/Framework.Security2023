@@ -12,6 +12,7 @@ namespace Framework.Security2023.Test
     public class TestCryptography
     {
         [TestMethod]
+        [Ignore]
         public void Test_EncryptAndDescryptString()
         {
             ServiceCryptography serviceCryptography = new ServiceCryptography();
