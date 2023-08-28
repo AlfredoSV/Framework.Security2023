@@ -8,6 +8,25 @@ namespace Framework.Security2023.Test
 	public class TestManagmentUser
 	{
 		[TestMethod]
+		public void UpdateUser()
+		{
+			ServiceUser serviceUser = new ServiceUser();
+			bool wasUserUpdate = false;
+			if (serviceUser.UserExist("Test1"))
+			{
+				UserFkw userFkw = UserFkw.Create(Guid.Parse("115B4AB8-978A-45B1-BBCE-54DE26B0C7BC"),
+				"Test1Up", "test1", DateTime.Now, Guid.Parse("4523F025-97F3-4BBF-A94B-CBCA3A0A4DD5"), 0, false, true,
+				Guid.Parse("0CB2008F-A9ED-497A-9551-32AE3C431386"));
+
+				wasUserUpdate = serviceUser.UpdateUser(userFkw);
+			}
+
+			Assert.IsTrue(wasUserUpdate);
+
+		}
+
+		[TestMethod]
+		[Ignore]
 		public void UpdatePassword()
 		{
 

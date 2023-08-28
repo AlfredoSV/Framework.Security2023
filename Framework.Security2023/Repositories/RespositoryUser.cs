@@ -158,7 +158,7 @@ namespace Framework.Security2023.Repositories
 
 			int result;
 			string sqlGetUser = @"
-             UPDATE dbo.Users
+             UPDATE dbo.UserFkw
              SET 
 	           UserName = @userName
               ,Password = @password
@@ -177,11 +177,13 @@ namespace Framework.Security2023.Repositories
 				this._sqlCommand.CommandText = sqlGetUser;
 				this._sqlCommand.Parameters.AddWithValue("Id", newUser.Id);
 				this._sqlCommand.Parameters.AddWithValue("userName", newUser.UserName);
-				this._sqlCommand.Parameters.AddWithValue("password", newUser.UserName);
+				this._sqlCommand.Parameters.AddWithValue("password", newUser.Password);
 				this._sqlCommand.Parameters.AddWithValue("dateCreated", newUser.DateCreated);
 				this._sqlCommand.Parameters.AddWithValue("userCreated", newUser.UserCreated);
 				this._sqlCommand.Parameters.AddWithValue("loginSessions", newUser.LoginSessions);
 				this._sqlCommand.Parameters.AddWithValue("userBlocked", newUser.UserBlocked);
+				this._sqlCommand.Parameters.AddWithValue("rolId", newUser.RolId);
+				this._sqlCommand.Parameters.AddWithValue("applyToken", newUser.ApplyToken);
 				result = this._sqlCommand.ExecuteNonQuery();
 
 			}
