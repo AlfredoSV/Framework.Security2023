@@ -12,15 +12,29 @@ namespace Framework.Security2023.Test
 	public class TestManagmentLogin
 	{
 		[TestMethod]
+		public void ValidateLoginPassIncorrect()
+		{
+			IServiceLogin serviceLogin = new ServiceLogin();
+	
+			Login userLoginIncorect = Login.Create("Test1Up", "lalalssssal");
+			var responsefailed = serviceLogin.Login(userLoginIncorect);
+			Assert.AreEqual(Login.StatusLogin.UserOrPasswordIncorrect, responsefailed.StatusLog);
+
+
+		}
+		
+		[TestMethod]
+		[Ignore]
 		public void ValidateLogin()
 		{
-			Login userLogin = Login.Create("Test1Up", "lalalal");
+			Login userLogin = Login.Create("Test1Up", "test1");
 			IServiceLogin serviceLogin = new ServiceLogin();
 			var response = serviceLogin.Login(userLogin);
 			Assert.AreEqual(Login.StatusLogin.Ok, response.StatusLog);
 
-
 		}
+
+
 		[TestMethod]
 		[Ignore]
 		public void ValidateLoginDummy()

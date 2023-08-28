@@ -44,7 +44,7 @@ namespace Framework.Security2023
 
             passDb = _serviceCryptography.Descrypt(user.Password.Trim(), user.Id.ToString());
 
-            if (passDb.Equals(userLogin.Password))
+            if (!passDb.Equals(userLogin.Password))
                 userLogin.StatusLog = StatusLogin.UserOrPasswordIncorrect;
 
             if (user.UserBlocked)
