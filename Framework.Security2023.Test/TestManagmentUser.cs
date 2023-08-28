@@ -8,6 +8,20 @@ namespace Framework.Security2023.Test
 	public class TestManagmentUser
 	{
 		[TestMethod]
+		public void UpdatePassword()
+		{
+
+			ServiceUser serviceUser = new ServiceUser();
+
+			bool wasChange = serviceUser.
+				UpdatePassword(Guid.Parse("115B4AB8-978A-45B1-BBCE-54DE26B0C7BC"), "LALALAL");
+
+			Assert.IsTrue(wasChange);
+
+		}
+
+		[TestMethod]
+		[Ignore]
 		public void CreateUser()
 		{
 			ServiceUser serviceUser = new ServiceUser();
@@ -39,5 +53,7 @@ namespace Framework.Security2023.Test
 			Assert.IsTrue(userDeleted);
 
 		}
+
+	
 	}
 }

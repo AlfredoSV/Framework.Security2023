@@ -135,7 +135,7 @@ namespace Framework.Security2023.Repositories
 		{
 
 			int result;
-			string sqlGetUser = "UPDATE Users SET Password = @password WHERE Id = @id";
+			string sqlGetUser = "UPDATE UserFkw SET Password = @password WHERE Id = @id";
 			this._sqlCommand = new SqlCommand();
 			using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
 			{
