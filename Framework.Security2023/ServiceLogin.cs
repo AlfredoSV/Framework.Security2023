@@ -13,7 +13,7 @@ namespace Framework.Security2023
         private readonly ServiceUser _serviceUser;
         private readonly RespositoryUser _respositoryUser;
         
-        public ServiceLogin(string sqlConnection)
+        public ServiceLogin()
         {
             _serviceCryptography = new ServiceCryptography();
             _serviceToken = new ServiceToken();
