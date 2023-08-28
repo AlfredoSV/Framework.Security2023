@@ -18,7 +18,8 @@ namespace Framework.Security2023.Repositories
 
         public Role GetRol(Guid userId)
         {
-            string sql = "SELECT ro.Id, ro.RolName, ro.Active from Rol ro inner join Users us on ro.Id = us.RolId where us.Id = @userId";
+            string sql = @"SELECT ro.Id, ro.RolName, ro.Active from Rol ro inner join UserFkw
+                        us on ro.Id = us.RolId where us.Id = @userId";
 
             Role role = null;
             this._sqlCommand = new SqlCommand();

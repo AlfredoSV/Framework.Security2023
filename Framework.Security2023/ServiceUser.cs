@@ -69,6 +69,9 @@ namespace Framework.Security2023
         public Role GetRole(Guid userId)
         {
             Role role = _repositoryRole.GetRol(userId);
+            
+            if(role is null)
+                return null;
 
             IEnumerable<Permission> permissions = _repositoryPermission.GetPermission(role.Id);
 
