@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TestCryptography.cs" />
+    <Compile Include="TestManagmentTokenUser.cs" />
     <Compile Include="TestManagmentUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

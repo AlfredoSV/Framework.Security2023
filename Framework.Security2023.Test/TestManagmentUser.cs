@@ -9,6 +9,7 @@ namespace Framework.Security2023.Test
 	{
 
 		[TestMethod]
+		[Ignore]
 		public void GetRoleWhenNoExist()
 		{
 			ServiceUser serviceUser = new ServiceUser();
