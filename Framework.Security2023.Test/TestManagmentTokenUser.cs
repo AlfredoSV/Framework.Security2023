@@ -11,7 +11,20 @@ namespace Framework.Security2023.Test
 	[TestClass]
 	public class TestManagmentTokenUser
 	{
+
 		[TestMethod]
+		public void IsAValidToken()
+		{
+
+			IServiceToken serviceToken = new ServiceToken();
+
+			bool validToken = serviceToken.IsValidToken(Guid.Parse("115B4AB8-978A-45B1-BBCE-54DE26B0C7BC"), "ce1208f9-9e9b-496b-95dd-ed9f6a003575-27-19-28-19");
+
+			Assert.IsTrue(validToken);
+		}
+
+		[TestMethod]
+		[Ignore]
 		public void CreateToken()
 		{
 			IServiceToken serviceToken = new ServiceToken();

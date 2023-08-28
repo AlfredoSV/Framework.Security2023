@@ -21,7 +21,7 @@ namespace Framework.Security2023
         {
             UserToken userToken = UserToken.Create(userFkw.Id);
 
-            int result = _repositoryToken.Save(userToken);
+            _repositoryToken.Save(userToken);
 
             return userToken;
         }
@@ -30,7 +30,7 @@ namespace Framework.Security2023
         {
             UserToken userToken = _repositoryToken.GetLastToken(userId);
 
-            if (!token.Equals(userToken))           
+            if (!token.Equals(userToken.Token))           
                 return false;
             if (DateTime.Now > userToken.DateExpiration)
                 return false;

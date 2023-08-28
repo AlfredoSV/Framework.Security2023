@@ -70,9 +70,9 @@ namespace Framework.Security2023.Repositories
                     result = UserToken.Create(
                         this._sqlDataReader.GetGuid(0),
                         this._sqlDataReader.GetGuid(1),
-                        this._sqlDataReader.GetString(3),
-                        this._sqlDataReader.GetDateTime(4),
-                        this._sqlDataReader.GetDateTime(5));
+                        this._sqlDataReader.GetString(2),
+                        this._sqlDataReader.GetDateTime(3),
+                        this._sqlDataReader.GetDateTime(4));
                 }
 
             }
