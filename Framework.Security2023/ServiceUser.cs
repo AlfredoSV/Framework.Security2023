@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Security2023
 {
-    public class ServiceUser
+    public class ServiceUser : IServiceUser
     {
         private readonly ServiceCryptography _serviceCryptography;
         private readonly RepositoryRole _repositoryRole;
