@@ -20,9 +20,9 @@ namespace Framework.Security2023
 
         public string SqlConnectionString
         {
-            get { return "server=ALFREDO ; database=Framework_Users ; integrated security = true"; }
+            get;
 
-            private set { }
+            set;
         
         }     
         private SlqConnectionStr() { }  
