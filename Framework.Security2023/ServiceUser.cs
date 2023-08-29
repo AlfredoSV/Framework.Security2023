@@ -40,6 +40,11 @@ namespace Framework.Security2023
             return _respositoryUser.Delete(userId);
 		}
 
+        public UserFkw GetUserById(Guid userId)
+        {
+            return _respositoryUser.GetUser(userId);
+        }
+
         public bool UpdatePassword(Guid userId, string newPassword)
         {
             newPassword = _serviceCryptography.Encrypt(newPassword,

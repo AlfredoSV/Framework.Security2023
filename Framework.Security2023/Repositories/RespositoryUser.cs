@@ -52,6 +52,38 @@ namespace Framework.Security2023.Repositories
 			return userResult;
 		}
 
+		public UserFkw GetUser(Guid id)
+		{
+			UserFkw userResult = null;
+			string sqlGetUser = @"Select Id, UserName, Password, DateCreated, UserCreated, LoginSessions, UserBlocked,
+                                ApplyToken, RolId from UserFkw where Id = @id;";
+			this._sqlCommand = new SqlCommand();
+			using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+			{
+				this._sqlCommand = new SqlCommand();
+				this._sqlCommand.Connection = this._sqlConnection;
+				this._sqlConnection.Open();
+				this._sqlCommand.CommandText = sqlGetUser;
+				this._sqlCommand.Parameters.AddWithValue("id", id);
+				this._sqlDataReader = this._sqlCommand.ExecuteReader();
+
+				if (this._sqlDataReader.HasRows)
+				{
+					this._sqlDataReader.Read();
+
+					userResult = UserFkw.Create(this._sqlDataReader.GetGuid(0),
+						this._sqlDataReader.GetString(1), this._sqlDataReader.GetString(2),
+						this._sqlDataReader.GetDateTime(3), this._sqlDataReader.GetGuid(4),
+						this._sqlDataReader.GetInt32(5), this._sqlDataReader.GetBoolean(6),
+						this._sqlDataReader.GetBoolean(7), this._sqlDataReader.GetGuid(8));
+
+				}
+
+			}
+
+			return userResult;
+		}
+
 		public int Save(UserFkw newUser)
 		{
 

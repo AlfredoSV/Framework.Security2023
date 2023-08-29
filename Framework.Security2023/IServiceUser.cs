@@ -15,5 +15,6 @@ namespace Framework.Security2023
 		bool UpdateUser(UserFkw user);
 		bool UserExist(string userName);
 		Role GetRole(Guid userId);
+		UserFkw GetUserById(Guid userId);
 	}
 }
