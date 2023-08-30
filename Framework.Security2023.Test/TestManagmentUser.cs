@@ -9,6 +9,17 @@ namespace Framework.Security2023.Test
 	{
 
 		[TestMethod]
+		public void GetUserById()
+		{
+			ServiceUser serviceUser = new ServiceUser();
+
+			UserFkw user = serviceUser.GetUserById(Guid.Parse("115B4AB8-978A-45B1-BBCE-54DE26B0C7BC"));
+
+			Assert.IsNotNull(user);
+			Assert.IsNotNull(user.UserInformation);
+		}
+
+		[TestMethod]
 		[Ignore]
 		public void GetRoleWhenNoExist()
 		{

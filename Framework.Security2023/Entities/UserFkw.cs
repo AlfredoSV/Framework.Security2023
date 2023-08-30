@@ -60,5 +60,10 @@ namespace Framework.Security2023.Entities
         {
             Role = role;
         }
+
+        public void SetUserInformation(UserInformation userInformation)
+        {
+            UserInformation = userInformation;
+        }
     }
 }

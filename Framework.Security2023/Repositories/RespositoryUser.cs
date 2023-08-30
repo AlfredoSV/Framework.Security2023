@@ -55,8 +55,16 @@ namespace Framework.Security2023.Repositories
 		public UserFkw GetUser(Guid id)
 		{
 			UserFkw userResult = null;
-			string sqlGetUser = @"Select Id, UserName, Password, DateCreated, UserCreated, LoginSessions, UserBlocked,
-                                ApplyToken, RolId from UserFkw where Id = @id;";
+
+			UserInformation userInformation = null;
+			string sqlGetUser = @"Select useFkw.Id, useFkw.UserName, useFkw.Password, 
+								useFkw.DateCreated, useFkw.UserCreated, useFkw.LoginSessions, 
+								useFkw.UserBlocked, useFkw.ApplyToken, useFkw.RolId,
+								useFi.Name, useFi.LastName, useFi.Age, useFi.Address,
+								useFi.Email from 
+								UserFkw useFkw inner join UserInformation useFi
+								on useFkw.Id = useFi.IdUser where 
+								useFkw.Id  = @id;";
 			this._sqlCommand = new SqlCommand();
 			using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
 			{
@@ -76,6 +84,14 @@ namespace Framework.Security2023.Repositories
 						this._sqlDataReader.GetDateTime(3), this._sqlDataReader.GetGuid(4),
 						this._sqlDataReader.GetInt32(5), this._sqlDataReader.GetBoolean(6),
 						this._sqlDataReader.GetBoolean(7), this._sqlDataReader.GetGuid(8));
+
+					userInformation = UserInformation.Create(this._sqlDataReader.GetGuid(0),
+						this._sqlDataReader.GetString(9), this._sqlDataReader.GetString(10),
+						this._sqlDataReader.GetInt32(11), this._sqlDataReader.GetDateTime(3),
+						this._sqlDataReader.GetString(12), this._sqlDataReader.GetString(13),
+						this._sqlDataReader.GetGuid(4));
+
+					userResult.SetUserInformation(userInformation);
 
 				}
 
