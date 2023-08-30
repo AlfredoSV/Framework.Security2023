@@ -32,8 +32,7 @@ GO
 	DateCreated Datetime not null,
 	Address VARCHAR(60) not null,
 	Email VARCHAR(30) NOT NUll,
-	UserCreated UNIQUEIDENTIFIER not null,
-	UserBlocked bit not null); 
+	UserCreated UNIQUEIDENTIFIER not null)
  end
 
  if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'UserToken')

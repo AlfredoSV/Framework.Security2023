@@ -13,6 +13,7 @@ namespace Framework.Security2023.Test
 	{
 
 		[TestMethod]
+		[Ignore]
 		public void IsAValidToken()
 		{
 

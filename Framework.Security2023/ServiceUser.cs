@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Security2023
 {
-    public class ServiceUser
+    public class ServiceUser : IServiceUser
     {
         private readonly ServiceCryptography _serviceCryptography;
         private readonly RepositoryRole _repositoryRole;
@@ -39,6 +39,11 @@ namespace Framework.Security2023
         {
             return _respositoryUser.Delete(userId);
 		}
+
+        public UserFkw GetUserById(Guid userId)
+        {
+            return _respositoryUser.GetUser(userId);
+        }
 
         public bool UpdatePassword(Guid userId, string newPassword)
         {

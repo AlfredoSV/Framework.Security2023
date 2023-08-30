@@ -47,9 +47,11 @@
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\UserFkw.cs" />
+    <Compile Include="Entities\UserInformation.cs" />
     <Compile Include="Entities\UserToken.cs" />
     <Compile Include="IServiceLogin.cs" />
     <Compile Include="IServiceToken.cs" />
+    <Compile Include="IServiceUser.cs" />
     <Compile Include="Repositories\RepositoryPermission.cs" />
     <Compile Include="Repositories\RepositoryRole.cs" />
     <Compile Include="Repositories\RepositoryToken.cs" />

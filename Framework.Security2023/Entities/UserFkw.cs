@@ -18,6 +18,7 @@ namespace Framework.Security2023.Entities
         public int LoginSessions { get; private set; }
         public bool UserBlocked { get; private set; }
         public UserToken UserToken { get; private set; }
+        public UserInformation UserInformation { get; private set; }
         public Guid RolId { get; set; }
         public Role Role { get; private set; }
         public bool ApplyToken { get; set; }
@@ -58,6 +59,11 @@ namespace Framework.Security2023.Entities
         public void SetRole(Role role)
         {
             Role = role;
+        }
+
+        public void SetUserInformation(UserInformation userInformation)
+        {
+            UserInformation = userInformation;
         }
     }
 }
