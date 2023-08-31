@@ -42,15 +42,9 @@ namespace Framework.Security2023
             return _respositoryUser.Save(newUser);
         }
 
-        public bool DeleteUser(Guid userId)
-        {
-            return _respositoryUser.Delete(userId);
-		}
-
-        public UserFkw GetUserById(Guid userId)
-        {
-            return _respositoryUser.GetUser(userId);
-        }
+        public bool DeleteUser(Guid userId) =>  _respositoryUser.Delete(userId);
+	
+        public UserFkw GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
 
         public bool UpdatePassword(Guid userId, string newPassword)
         {
@@ -72,12 +66,8 @@ namespace Framework.Security2023
             return res > 0;
         }
 
-        public bool UserExist(string userName)
-        {
-            UserFkw user = (_respositoryUser.GetUser(userName));
-            return user != null;
-        }
-
+        public bool UserExist(string userName) =>  (_respositoryUser.GetUser(userName)) != null;
+      
         public Role GetRole(Guid userId)
         {
             Role role = _repositoryRole.GetRol(userId);
