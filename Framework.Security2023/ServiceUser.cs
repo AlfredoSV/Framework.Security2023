@@ -23,16 +23,23 @@ namespace Framework.Security2023
             _respositoryUser = new RespositoryUser();
             _repositoryPermission = new RepositoryPermission();
         }
+
         public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
         {
+            if (newUser is null)
+                throw new ArgumentNullException("The object newUser is null.");
+
+            if (newUser.UserInformation is null)
+                throw new ArgumentNullException("The object UserInformation is null.");
+
             if (isCreatedByAdmin)
                 newUser.SetPassword(_serviceCryptography.Encrypt(newUser.UserName,
                     newUser.Id.ToString()));
             else
 				newUser.SetPassword(_serviceCryptography.Encrypt(newUser.Password,
 					newUser.Id.ToString()));
-			
-            return _respositoryUser.Save(newUser) >= 1;
+
+            return _respositoryUser.Save(newUser);
         }
 
         public bool DeleteUser(Guid userId)

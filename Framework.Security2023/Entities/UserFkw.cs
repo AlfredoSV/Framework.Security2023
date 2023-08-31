@@ -38,12 +38,39 @@ namespace Framework.Security2023.Entities
             UserBlocked = userBlocked;
         }
 
-        public static UserFkw Create(Guid id, string userName,
+        private UserFkw(string userName, string password,
+            Guid userCreated, 
+             bool applyToken, Guid rolId)
+        {
+        
+            ApplyToken = applyToken;
+            RolId = rolId;
+            Id = Guid.NewGuid();
+            UserName = userName;
+            Password = password;
+            DateCreated = DateTime.Now;
+            UserCreated = userCreated;
+            LoginSessions = 0;
+            UserBlocked = true;
+        }
+
+        internal static UserFkw Create(Guid id, string userName,
             string password, DateTime dateCreated, Guid userCreated,
             int loginSessions, bool userBlocked, bool applyToken,
             Guid rolId)
         {
             return new UserFkw( id,  userName,  password,  dateCreated,  userCreated,  loginSessions,  userBlocked,applyToken,rolId);
+        }
+
+        public static UserFkw Create( string userName,
+            string password, Guid userCreated, bool applyToken,
+            Guid rolId)
+        {
+            if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password) && userCreated == Guid.Empty &&
+            rolId == Guid.Empty)
+                throw new ArgumentNullException("You cannot initialize the object with \"null\" or \"empty\" values.");
+
+            return new UserFkw( userName, password,  userCreated, applyToken, rolId);
         }
 
         public void SetToken(UserToken userToken)
@@ -63,6 +90,10 @@ namespace Framework.Security2023.Entities
 
         public void SetUserInformation(UserInformation userInformation)
         {
+            if(this.Id == Guid.Empty)
+                    throw new ArgumentNullException("The user id is null, not valid.");
+
+            userInformation.SetIdUser(this.Id);
             UserInformation = userInformation;
         }
     }
