@@ -12,16 +12,15 @@ namespace Framework.Security2023
     public class ServiceUser : IServiceUser
     {
         private readonly ServiceCryptography _serviceCryptography;
-        private readonly RepositoryRole _repositoryRole;
+        
         private readonly RespositoryUser _respositoryUser;
-        private readonly RepositoryPermission _repositoryPermission;
+        
+        private readonly IServiceRole _serviceRole; 
  
         public ServiceUser()
         {
             _serviceCryptography = new ServiceCryptography();
-            _repositoryRole = new RepositoryRole();
             _respositoryUser = new RespositoryUser();
-            _repositoryPermission = new RepositoryPermission();
         }
 
         public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
@@ -31,6 +30,9 @@ namespace Framework.Security2023
 
             if (newUser.UserInformation is null)
                 throw new ArgumentNullException("The object UserInformation is null.");
+
+            if (!_serviceRole.RoleExist(newUser.RolId))
+                throw new ApplicationException("The role was not exist");
 
             if (isCreatedByAdmin)
                 newUser.SetPassword(_serviceCryptography.Encrypt(newUser.UserName,
@@ -45,6 +47,11 @@ namespace Framework.Security2023
         public bool DeleteUser(Guid userId) =>  _respositoryUser.Delete(userId);
 	
         public UserFkw GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
+
+        public UserFkw GetUserByUserName(string userName)
+        {
+            return _respositoryUser.GetUser(userName);
+        }
 
         public bool UpdatePassword(Guid userId, string newPassword)
         {
@@ -68,18 +75,6 @@ namespace Framework.Security2023
 
         public bool UserExist(string userName) =>  (_respositoryUser.GetUser(userName)) != null;
       
-        public Role GetRole(Guid userId)
-        {
-            Role role = _repositoryRole.GetRol(userId);
-            
-            if(role is null)
-                return null;
-
-            IEnumerable<Permission> permissions = _repositoryPermission.GetPermission(role.Id);
-
-            role.Permissions = permissions;
-
-            return role;
-        }
+        
     }
 }
