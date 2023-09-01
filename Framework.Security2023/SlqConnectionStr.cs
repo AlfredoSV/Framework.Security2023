@@ -1,6 +1,4 @@
-﻿
-
-namespace Framework.Security2023
+﻿namespace Framework.Security2023
 {
     public class SlqConnectionStr
     {

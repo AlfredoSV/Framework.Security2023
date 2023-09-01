@@ -1,5 +1,4 @@
-﻿
-using Framework.Security2023.Entities;
+﻿using Framework.Security2023.Entities;
 using System;
 using System.Data.SqlClient;
 
