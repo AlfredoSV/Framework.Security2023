@@ -23,9 +23,9 @@ namespace Framework.Security2023.Test
 		[Ignore]
 		public void GetRoleWhenNoExist()
 		{
-			ServiceUser serviceUser = new ServiceUser();
+			ServiceRole serviceRole = new ServiceRole();
 
-			Assert.IsNull(serviceUser.GetRole(Guid.Parse("115B4AB8-978A-45B1-BBCE-54DE26B0C7BC")));
+			Assert.IsNull(serviceRole.GetRole(Guid.Parse("115B4AB8-978A-45B1-BBCE-54DE26B0C7BC")));
 		}
 
 		[TestMethod]
