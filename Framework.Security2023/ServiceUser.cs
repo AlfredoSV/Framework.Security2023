@@ -31,11 +31,11 @@ namespace Framework.Security2023
                 throw new ApplicationException("The role was not exist");
 
             if (isCreatedByAdmin)
-                newUser.SetPassword(_serviceCryptography.Encrypt(newUser.UserName,
-                    newUser.Id.ToString()));
+                newUser.Password = _serviceCryptography.Encrypt(newUser.UserName,
+                    newUser.Id.ToString());
             else
-				newUser.SetPassword(_serviceCryptography.Encrypt(newUser.Password,
-					newUser.Id.ToString()));
+				newUser.Password = _serviceCryptography.Encrypt(newUser.Password,
+					newUser.Id.ToString());
 
             return _respositoryUser.Save(newUser);
         }
@@ -62,7 +62,7 @@ namespace Framework.Security2023
 
         public bool UpdateUser(UserFkw user)
         {
-            user.SetPassword(_serviceCryptography.Encrypt(user.Password, user.Id.ToString()));
+            user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
 
             int res = _respositoryUser.Update(user);
 

@@ -4,19 +4,41 @@ namespace Framework.Security2023.Entities
 {
     public class UserFkw
     {
+        private Guid id;
+        private string userName;
+        private string password;
+        private DateTime dateCreated;
+        private Guid userCreated;
+        private int loginSessions;
+        private bool userBlocked;
+        private UserToken userToken;
+        private UserInformation userInformation;
+        private Guid rolId;
+        private Role role;
+        private bool applyToken;
 
-        public Guid Id { get; private set; }
-        public string UserName { get; private set; }
-        public string Password { get; private set; }
-        public DateTime DateCreated { get; private set; }
-        public Guid UserCreated { get; private set; }
-        public int LoginSessions { get; private set; }
-        public bool UserBlocked { get; private set; }
-        public UserToken UserToken { get; private set; }
-        public UserInformation UserInformation { get; private set; }
-        public Guid RolId { get; set; }
-        public Role Role { get; private set; }
-        public bool ApplyToken { get; set; }
+        public Guid Id { get => id; set => id = value; }
+        public string UserName { get => userName; set => userName = value; }
+        public string Password { get => password; set => password = value; }
+        public DateTime DateCreated { get => dateCreated; set => dateCreated = value; }
+        public Guid UserCreated { get => userCreated; set => userCreated = value; }
+        public int LoginSessions { get => loginSessions; set => loginSessions = value; }
+        public bool UserBlocked { get => userBlocked; set => userBlocked = value; }
+        public UserToken UserToken { get => userToken; set => userToken = value; }
+        public UserInformation UserInformation { get => userInformation; 
+            set {
+
+                if (this.id == Guid.Empty)
+                    throw new ArgumentNullException("The user id is null, not valid.");
+
+                value.SetIdUser(this.Id);
+                userInformation = value;
+
+            }
+        }
+        public Guid RolId { get => rolId; set => rolId = value; }
+        public Role Role { get => role; set => role = value; }
+        public bool ApplyToken { get => applyToken; set => applyToken = value; }
 
         private UserFkw(Guid id, string userName, string password, 
             DateTime dateCreated, Guid userCreated, int loginSessions,
@@ -58,38 +80,39 @@ namespace Framework.Security2023.Entities
         }
 
         public static UserFkw Create( string userName,
-            string password, Guid userCreated, bool applyToken,
-            Guid rolId)
+                                      string password, Guid userCreated, bool applyToken,Guid rolId)
         {
-            if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password) && userCreated == Guid.Empty &&
-            rolId == Guid.Empty)
+            if (string.IsNullOrEmpty(userName) || 
+                string.IsNullOrEmpty(password) || 
+                userCreated == Guid.Empty ||
+                rolId == Guid.Empty)
                 throw new ArgumentNullException("You cannot initialize the object with \"null\" or \"empty\" values.");
 
             return new UserFkw( userName, password,  userCreated, applyToken, rolId);
         }
 
-        public void SetToken(UserToken userToken)
-        {
-            UserToken = userToken;
-        }
+        //public void SetToken(UserToken userToken)
+        //{
+        //    UserToken = userToken;
+        //}
 
-        public void SetPassword(string password)
-        {
-            Password = password;
-        }
+        //public void SetPassword(string password)
+        //{
+        //    Password = password;
+        //}
 
-        public void SetRole(Role role)
-        {
-            Role = role;
-        }
+        //public void SetRole(Role role)
+        //{
+        //    Role = role;
+        //}
 
-        public void SetUserInformation(UserInformation userInformation)
-        {
-            if(this.Id == Guid.Empty)
-                    throw new ArgumentNullException("The user id is null, not valid.");
+        //public void SetUserInformation(UserInformation userInformation)
+        //{
+        //    if(this.Id == Guid.Empty)
+        //            throw new ArgumentNullException("The user id is null, not valid.");
 
-            userInformation.SetIdUser(this.Id);
-            UserInformation = userInformation;
-        }
+        //    userInformation.SetIdUser(this.Id);
+        //    UserInformation = userInformation;
+        //}
     }
 }

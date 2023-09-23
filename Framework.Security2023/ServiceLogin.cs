@@ -54,7 +54,7 @@ namespace Framework.Security2023
             if (user.ApplyToken)           
                 _serviceToken.CreateToken(user);
 
-            user.SetRole(_serviceRole.GetRole(user.Id));
+            user.Role = _serviceRole.GetRole(user.Id);
             userLogin.User = user;
 
             return userLogin;

@@ -87,7 +87,7 @@ namespace Framework.Security2023.Repositories
                         this._sqlDataReader.GetString(12), this._sqlDataReader.GetString(13),
                         this._sqlDataReader.GetGuid(4));
 
-                    userResult.SetUserInformation(userInformation);
+                    userResult.UserInformation = userInformation;
 
                 }
 
