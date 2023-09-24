@@ -31,7 +31,7 @@ namespace Framework.Security2023.Entities
                 if (this.id == Guid.Empty)
                     throw new ArgumentNullException("The user id is null, not valid.");
 
-                value.SetIdUser(this.Id);
+                value.IdUser = this.Id;
                 userInformation = value;
 
             }
