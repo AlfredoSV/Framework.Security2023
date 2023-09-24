@@ -1,16 +1,18 @@
 ﻿namespace Framework.Security2023.Entities
 {
+    public enum StatusLogin
+    {
+        Ok = 1,
+        UserOrPasswordIncorrect = -1,
+        UserBlocked = -2,
+        ExistSession = -3,
+        TokenNotValid = -4
+
+    }
+
     public class Login
     {
-        public enum StatusLogin
-        {
-            Ok = 1,
-            UserOrPasswordIncorrect = -1,
-            UserBlocked = -2,
-            ExistSession = -3,
-            TokenNotValid = -4
-
-        }
+  
         private string _userName;
         public string UserName
         {
@@ -41,9 +43,9 @@
 
         private Login(string user, string password, StatusLogin status)
         {
-            this.UserName = user;
-            this.StatusLog = status;
-            this.Password = password;
+            UserName = user;
+            StatusLog = status;
+            Password = password;
         }
 
         public static Login Create(string user, string password, StatusLogin status = StatusLogin.Ok)

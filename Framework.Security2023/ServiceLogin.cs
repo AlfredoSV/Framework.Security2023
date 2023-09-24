@@ -1,6 +1,5 @@
 ﻿using Framework.Security2023.Cryptography;
 using Framework.Security2023.Entities;
-using static Framework.Security2023.Entities.Login;
 
 namespace Framework.Security2023
 {
