@@ -91,28 +91,6 @@ namespace Framework.Security2023.Entities
             return new UserFkw( userName, password,  userCreated, applyToken, rolId);
         }
 
-        //public void SetToken(UserToken userToken)
-        //{
-        //    UserToken = userToken;
-        //}
-
-        //public void SetPassword(string password)
-        //{
-        //    Password = password;
-        //}
-
-        //public void SetRole(Role role)
-        //{
-        //    Role = role;
-        //}
-
-        //public void SetUserInformation(UserInformation userInformation)
-        //{
-        //    if(this.Id == Guid.Empty)
-        //            throw new ArgumentNullException("The user id is null, not valid.");
-
-        //    userInformation.SetIdUser(this.Id);
-        //    UserInformation = userInformation;
-        //}
+       
     }
 }

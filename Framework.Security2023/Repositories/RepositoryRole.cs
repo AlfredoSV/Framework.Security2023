@@ -17,7 +17,7 @@ namespace Framework.Security2023.Repositories
 
         public Role GetRoleByUserId(Guid userId)
         {
-            string sql = @"SELECT ro.Id, ro.RolName, ro.Active from Rol ro inner join UserFkw
+            string sql = @"SELECT ro.Id, ro.RolName, ro.DateCreated, ro.UserCreated ,ro.Active from Rol ro inner join UserFkw
                         us on ro.Id = us.RolId where us.Id = @userId";
 
             Role role = null;
@@ -34,7 +34,11 @@ namespace Framework.Security2023.Repositories
                     this._sqlDataReader.Read();
                     role = Role.Create(
                         this._sqlDataReader.GetGuid(0),
-                        this._sqlDataReader.GetString(1));
+                        this._sqlDataReader.GetString(1),
+                        this._sqlDataReader.GetDateTime(2),
+                        this._sqlDataReader.GetGuid(3),
+                        this._sqlDataReader.GetBoolean(4)
+                        );
                 }
 
             }
@@ -44,7 +48,7 @@ namespace Framework.Security2023.Repositories
 
         public Role GetRoleById(Guid roleId)
         {
-            string sql = @"SELECT ro.Id, ro.RolName, ro.Active from Rol ro where ro.Id = @roleId";
+            string sql = @"SELECT ro.Id, ro.RolName, ro.DateCreated, ro.UserCreated ,ro.Active from Rol ro where ro.Id = @roleId";
 
             Role role = null;
             this._sqlCommand = new SqlCommand();
@@ -60,7 +64,11 @@ namespace Framework.Security2023.Repositories
                     this._sqlDataReader.Read();
                     role = Role.Create(
                         this._sqlDataReader.GetGuid(0),
-                        this._sqlDataReader.GetString(1));
+                        this._sqlDataReader.GetString(1),
+                        this._sqlDataReader.GetDateTime(2),
+                        this._sqlDataReader.GetGuid(3),
+                        this._sqlDataReader.GetBoolean(4)
+                        );
                 }
 
             }
