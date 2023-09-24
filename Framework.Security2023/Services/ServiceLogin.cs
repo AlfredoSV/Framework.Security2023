@@ -1,7 +1,8 @@
 ﻿using Framework.Security2023.Cryptography;
 using Framework.Security2023.Entities;
+using Framework.Security2023.IServices;
 
-namespace Framework.Security2023
+namespace Framework.Security2023.Services
 {
     public class ServiceLogin : IServiceLogin
     {   

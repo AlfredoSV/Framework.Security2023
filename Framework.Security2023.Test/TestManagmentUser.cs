@@ -1,4 +1,6 @@
 ﻿using Framework.Security2023.Entities;
+using Framework.Security2023.IServices;
+using Framework.Security2023.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -23,7 +25,7 @@ namespace Framework.Security2023.Test
 		[Ignore]
 		public void GetRoleWhenNoExist()
 		{
-			ServiceRole serviceRole = new ServiceRole();
+			IServiceRole serviceRole = new ServiceRole();
 
 			Assert.IsNull(serviceRole.GetRole(Guid.Parse("115B4AB8-978A-45B1-BBCE-54DE26B0C7BC")));
 		}

@@ -4,41 +4,45 @@ namespace Framework.Security2023.Entities
 {
     public class UserFkw
     {
-        private Guid id;
-        private string userName;
-        private string password;
-        private DateTime dateCreated;
-        private Guid userCreated;
-        private int loginSessions;
-        private bool userBlocked;
-        private UserToken userToken;
-        private UserInformation userInformation;
-        private Guid rolId;
-        private Role role;
-        private bool applyToken;
+        private Guid _id;
+        private string _userName;
+        private string _password;
+        private DateTime _dateCreated;
+        private Guid _userCreated;
+        private int _loginSessions;
+        private bool _userBlocked;
+        private UserToken _userToken;      
+        private Guid _rolId;
+        private Role _role;
+        private bool _applyToken;
+        private UserInformation _userInformation;
 
-        public Guid Id { get => id; set => id = value; }
-        public string UserName { get => userName; set => userName = value; }
-        public string Password { get => password; set => password = value; }
-        public DateTime DateCreated { get => dateCreated; set => dateCreated = value; }
-        public Guid UserCreated { get => userCreated; set => userCreated = value; }
-        public int LoginSessions { get => loginSessions; set => loginSessions = value; }
-        public bool UserBlocked { get => userBlocked; set => userBlocked = value; }
-        public UserToken UserToken { get => userToken; set => userToken = value; }
-        public UserInformation UserInformation { get => userInformation; 
+
+        public UserInformation UserInformation { get => _userInformation; 
             set {
 
-                if (this.id == Guid.Empty)
+                if (_id == Guid.Empty)
                     throw new ArgumentNullException("The user id is null, not valid.");
 
                 value.IdUser = this.Id;
-                userInformation = value;
+                _userInformation = value;
 
             }
         }
-        public Guid RolId { get => rolId; set => rolId = value; }
-        public Role Role { get => role; set => role = value; }
-        public bool ApplyToken { get => applyToken; set => applyToken = value; }
+        public Guid RolId { get => _rolId; set => _rolId = value; }
+        public Role Role { get => _role; set => _role = value; }
+        public bool ApplyToken { get => _applyToken; set => _applyToken = value; }
+        public Guid Id { get => _id; set => _id = value; }
+        public string UserName { get => _userName; set => _userName = value; }
+        public string Password { get => _password; set => _password = value; }
+        public DateTime DateCreated { get => _dateCreated; set => _dateCreated = value; }
+        public Guid UserCreated { get => _userCreated; set => _userCreated = value; }
+        public int LoginSessions { get => _loginSessions; set => _loginSessions = value; }
+        public bool UserBlocked { get => _userBlocked; set => _userBlocked = value; }
+        public UserToken UserToken { get => _userToken; set => _userToken = value; }
+        public Guid RolId1 { get => _rolId; set => _rolId = value; }
+        public Role Role1 { get => _role; set => _role = value; }
+        public bool ApplyToken1 { get => _applyToken; set => _applyToken = value; }
 
         private UserFkw(Guid id, string userName, string password, 
             DateTime dateCreated, Guid userCreated, int loginSessions,

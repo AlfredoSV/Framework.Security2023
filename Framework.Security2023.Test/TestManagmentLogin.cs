@@ -1,10 +1,7 @@
 ﻿using Framework.Security2023.Entities;
+using Framework.Security2023.IServices;
+using Framework.Security2023.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Security2023.Test
 {
@@ -19,7 +16,7 @@ namespace Framework.Security2023.Test
 	
 			Login userLoginIncorect = Login.Create("Test1Up", "lalalssssal");
 			var responsefailed = serviceLogin.Login(userLoginIncorect);
-			Assert.AreEqual(Login.StatusLogin.UserOrPasswordIncorrect, responsefailed.StatusLog);
+			Assert.AreEqual(StatusLogin.UserOrPasswordIncorrect, responsefailed.StatusLog);
 
 		}
 		
@@ -30,7 +27,7 @@ namespace Framework.Security2023.Test
 			Login userLogin = Login.Create("Test1Up", "test1");
 			IServiceLogin serviceLogin = new ServiceLogin();
 			var response = serviceLogin.Login(userLogin);
-			Assert.AreEqual(Login.StatusLogin.Ok, response.StatusLog);
+			Assert.AreEqual(StatusLogin.Ok, response.StatusLog);
 
 		}
 
@@ -42,7 +39,7 @@ namespace Framework.Security2023.Test
 			Login userLogin = Login.Create("lalla", "lalalal");
 			IServiceLogin serviceLogin = new ServiceLogin();
 			var response = serviceLogin.LoginDummy(userLogin);
-			Assert.AreEqual(Login.StatusLogin.Ok, response.StatusLog);
+			Assert.AreEqual(StatusLogin.Ok, response.StatusLog);
 
 		}
 	}

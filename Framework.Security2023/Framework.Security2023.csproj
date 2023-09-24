@@ -50,19 +50,19 @@
     <Compile Include="Entities\UserFkw.cs" />
     <Compile Include="Entities\UserInformation.cs" />
     <Compile Include="Entities\UserToken.cs" />
-    <Compile Include="IServiceLogin.cs" />
-    <Compile Include="IServiceRole.cs" />
-    <Compile Include="IServiceToken.cs" />
-    <Compile Include="IServiceUser.cs" />
+    <Compile Include="IServices\IServiceLogin.cs" />
+    <Compile Include="IServices\IServiceRole.cs" />
+    <Compile Include="IServices\IServiceToken.cs" />
+    <Compile Include="IServices\IServiceUser.cs" />
     <Compile Include="Repositories\RepositoryPermission.cs" />
     <Compile Include="Repositories\RepositoryRole.cs" />
     <Compile Include="Repositories\RepositoryToken.cs" />
     <Compile Include="Repositories\RespositoryUser.cs" />
-    <Compile Include="ServiceLogin.cs" />
+    <Compile Include="Services\ServiceLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceRole.cs" />
-    <Compile Include="ServiceToken.cs" />
-    <Compile Include="ServiceUser.cs" />
+    <Compile Include="Services\ServiceRole.cs" />
+    <Compile Include="Services\ServiceToken.cs" />
+    <Compile Include="Services\ServiceUser.cs" />
     <Compile Include="SlqConnectionStr.cs" />
   </ItemGroup>
   <ItemGroup>

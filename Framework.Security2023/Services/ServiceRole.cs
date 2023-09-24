@@ -1,10 +1,11 @@
 ﻿using Framework.Security2023.Entities;
+using Framework.Security2023.IServices;
 using Framework.Security2023.Repositories;
 using System;
 using System.Collections.Generic;
 
 
-namespace Framework.Security2023
+namespace Framework.Security2023.Services
 {
     public class ServiceRole : IServiceRole
     {

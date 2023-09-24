@@ -5,17 +5,17 @@ namespace Framework.Security2023.Entities
     public class UserToken
     {
 
-        private Guid id;
-        private Guid userId;
-        private string token;
-        private DateTime dateCreated;
-        private DateTime dateExpiration;
+        private Guid _id;
+        private Guid _userId;
+        private string _token;
+        private DateTime _dateCreated;
+        private DateTime _dateExpiration;
 
-        public Guid Id { get => id; set => id = value; }
-        public Guid UserId { get => userId; set => userId = value; }
-        public string Token { get => token; set => token = value; }
-        public DateTime DateCreated { get => dateCreated; set => dateCreated = value; }
-        public DateTime DateExpiration { get => dateExpiration; set => dateExpiration = value; }
+        public Guid Id { get => _id; set => _id = value; }
+        public Guid UserId { get => _userId; set => _userId = value; }
+        public string Token { get => _token; set => _token = value; }
+        public DateTime DateCreated { get => _dateCreated; set => _dateCreated = value; }
+        public DateTime DateExpiration { get => _dateExpiration; set => _dateExpiration = value; }
 
         private  UserToken( Guid userId)
         {
