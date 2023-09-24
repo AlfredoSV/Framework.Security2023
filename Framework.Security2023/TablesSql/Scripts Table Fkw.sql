@@ -22,6 +22,14 @@ GO
 	UserBlocked bit not null); 
  end
 
+ if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'UserLoginAttempts')
+ begin 
+	CREATE TABLE UserLoginAttempts(
+	IdUser UNIQUEIDENTIFIER not null,
+	Description varchar(50) not null, 
+	DateCreated Datetime not null); 
+ end
+
  if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'UserInformation')
  begin 
 	CREATE TABLE UserInformation(
@@ -34,6 +42,7 @@ GO
 	Email VARCHAR(30) NOT NUll,
 	UserCreated UNIQUEIDENTIFIER not null)
  end
+
 
  if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'UserToken')
  begin 
