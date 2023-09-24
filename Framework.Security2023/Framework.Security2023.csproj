@@ -49,6 +49,7 @@
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\UserFkw.cs" />
     <Compile Include="Entities\UserInformation.cs" />
+    <Compile Include="Entities\UserLoginAttempts.cs" />
     <Compile Include="Entities\UserToken.cs" />
     <Compile Include="IServices\IServiceLogin.cs" />
     <Compile Include="IServices\IServiceRole.cs" />
