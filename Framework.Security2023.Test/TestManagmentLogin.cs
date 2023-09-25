@@ -2,17 +2,19 @@
 using Framework.Security2023.IServices;
 using Framework.Security2023.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Security2023.Test
 {
 	[TestClass]
 	public class TestManagmentLogin
 	{
+
+		public TestManagmentLogin()
+        {
+			SlqConnectionStr.Instance.SqlConnectionString = "Server=Alfredo; Database=Framework_Users;User=sa;Password=1007";
+
+		}
+
 		[TestMethod]
 		[Ignore]
 		public void ValidateLoginPassIncorrect()
@@ -20,7 +22,7 @@ namespace Framework.Security2023.Test
 			IServiceLogin serviceLogin = new ServiceLogin();
 	
 			Login userLoginIncorect = Login.Create("Test1Up", "lalalssssal");
-			var responsefailed = serviceLogin.Login(userLoginIncorect);
+			Login responsefailed = serviceLogin.Login(userLoginIncorect);
 			Assert.AreEqual(StatusLogin.UserOrPasswordIncorrect, responsefailed.StatusLog);
 
 		}
@@ -31,7 +33,7 @@ namespace Framework.Security2023.Test
 		{
 			Login userLogin = Login.Create("Test1Up", "test1");
 			IServiceLogin serviceLogin = new ServiceLogin();
-			var response = serviceLogin.Login(userLogin);
+			Login response = serviceLogin.Login(userLogin);
 			Assert.AreEqual(StatusLogin.Ok, response.StatusLog);
 
 		}
@@ -47,5 +49,16 @@ namespace Framework.Security2023.Test
 			Assert.AreEqual(StatusLogin.Ok, response.StatusLog);
 
 		}
+
+		[TestMethod]
+		public void ValidateSessionExist()
+        {
+			Login userLogin = Login.Create("Test1Up", "test1");
+			IServiceLogin serviceLogin = new ServiceLogin();
+			Login response = serviceLogin.Login(userLogin);
+			Assert.AreEqual(StatusLogin.ExistSession, response.StatusLog);
+
+		}
+
 	}
 }

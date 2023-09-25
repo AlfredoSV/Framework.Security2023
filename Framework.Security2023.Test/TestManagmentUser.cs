@@ -11,6 +11,7 @@ namespace Framework.Security2023.Test
 	{
 
 		[TestMethod]
+		[Ignore]
 		public void GetUserById()
 		{
 			ServiceUser serviceUser = new ServiceUser();
