@@ -11,6 +11,10 @@ namespace Framework.Security2023.IServices
 		bool UpdatePassword(Guid userId, string newPassword);
 		bool UpdateUser(UserFkw user);
 		bool UserExist(string userName);
+		void UpdateLoginSessions(Guid userId);
 		UserFkw GetUserById(Guid userId);
+		void UpdateStatusBlocked(Guid userId);
+		void SaveUserLoginAttempt(Guid userId, string description);
+
 	}
 }

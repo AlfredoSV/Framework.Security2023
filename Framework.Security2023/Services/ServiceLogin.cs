@@ -33,29 +33,45 @@ namespace Framework.Security2023.Services
            
             UserFkw user = (_serviceUser.GetUserByUserName(userLogin.UserName));
             string passDb = string.Empty;
-
-            if(user == null)
+   
+            if (user is null)
             {
                 userLogin.StatusLog = StatusLogin.UserOrPasswordIncorrect;
                 return userLogin;
             }
-
+   
             passDb = _serviceCryptography.Descrypt(user.Password.Trim(), user.Id.ToString());
 
             if (!passDb.Equals(userLogin.Password))
+            {
+                _serviceUser.SaveUserLoginAttempt(user.Id,
+                        "PasswordIncorrect");
                 userLogin.StatusLog = StatusLogin.UserOrPasswordIncorrect;
+                return userLogin;
+            }
+
+            _serviceUser.UpdateStatusBlocked(user.Id);
 
             if (user.UserBlocked)
+            {
                 userLogin.StatusLog = StatusLogin.UserBlocked;
+                return userLogin;
+            }
+                
 
-            if (user.LoginSessions >=1)
+            if (user.LoginSessions >= 1)
+            {
                 userLogin.StatusLog = StatusLogin.ExistSession;
-
+                return userLogin;
+            }
+                
             if (user.ApplyToken)           
                 _serviceToken.CreateToken(user);
 
             user.Role = _serviceRole.GetRole(user.Id);
             userLogin.User = user;
+
+            _serviceUser.UpdateLoginSessions(user.Id);
 
             return userLogin;
         }

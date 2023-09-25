@@ -266,7 +266,59 @@ namespace Framework.Security2023.Repositories
 
             return result;
 
+                    }
+
+        public int UpdateStatusBlocked(Guid userId, bool status)
+        {
+
+            int result;
+            string sqlGetUser = @"
+             UPDATE dbo.UserFkw
+             SET 
+	         UserBlocked = @userBlocked
+             WHERE Id = @Id;";
+            this._sqlCommand = new SqlCommand();
+            using (_sqlConnection = new SqlConnection(this._sqlTextConnection))
+            {
+                _sqlCommand = new SqlCommand();
+                _sqlCommand.Connection = this._sqlConnection;
+                _sqlConnection.Open();
+                _sqlCommand.CommandText = sqlGetUser;
+                _sqlCommand.Parameters.AddWithValue("Id", userId);
+                _sqlCommand.Parameters.AddWithValue("userBlocked", status);
+                result = _sqlCommand.ExecuteNonQuery();
+
+            }
+
+            return result;
+
         }
+
+        public void UpdateLoginSession(Guid userId)
+        {
+
+            int result;
+            string sqlGetUser = @"
+             UPDATE dbo.UserFkw
+             SET 
+	         LoginSessions = 1
+             WHERE Id = @Id;";
+            this._sqlCommand = new SqlCommand();
+            using (_sqlConnection = new SqlConnection(this._sqlTextConnection))
+            {
+                _sqlCommand = new SqlCommand();
+                _sqlCommand.Connection = this._sqlConnection;
+                _sqlConnection.Open();
+                _sqlCommand.CommandText = sqlGetUser;
+                _sqlCommand.Parameters.AddWithValue("Id", userId);
+                result = _sqlCommand.ExecuteNonQuery();
+
+            }
+
+            return result;
+
+        }
+
 
 
     }

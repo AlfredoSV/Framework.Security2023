@@ -3,21 +3,26 @@ using Framework.Security2023.Entities;
 using Framework.Security2023.IServices;
 using Framework.Security2023.Repositories;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Framework.Security2023.Services
 {
     public class ServiceUser : IServiceUser
     {
         private readonly ServiceCryptography _serviceCryptography;
-        
+
         private readonly RespositoryUser _respositoryUser;
-        
-        private readonly IServiceRole _serviceRole; 
- 
+
+        private readonly RepositoryUserLoginAttempts _repositoryUserLoginAttempts;
+
+        private readonly IServiceRole _serviceRole;
+
         public ServiceUser()
         {
             _serviceCryptography = new ServiceCryptography();
             _respositoryUser = new RespositoryUser();
+            _repositoryUserLoginAttempts = new RepositoryUserLoginAttempts();
         }
 
         public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
@@ -35,14 +40,14 @@ namespace Framework.Security2023.Services
                 newUser.Password = _serviceCryptography.Encrypt(newUser.UserName,
                     newUser.Id.ToString());
             else
-				newUser.Password = _serviceCryptography.Encrypt(newUser.Password,
-					newUser.Id.ToString());
+                newUser.Password = _serviceCryptography.Encrypt(newUser.Password,
+                    newUser.Id.ToString());
 
             return _respositoryUser.Save(newUser);
         }
 
-        public bool DeleteUser(Guid userId) =>  _respositoryUser.Delete(userId);
-	
+        public bool DeleteUser(Guid userId) => _respositoryUser.Delete(userId);
+
         public UserFkw GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
 
         public UserFkw GetUserByUserName(string userName)
@@ -70,8 +75,26 @@ namespace Framework.Security2023.Services
             return res > 0;
         }
 
-        public bool UserExist(string userName) =>  (_respositoryUser.GetUser(userName)) != null;
-      
-        
+        public bool UserExist(string userName) => (_respositoryUser.GetUser(userName)) != null;
+
+        public  void UpdateStatusBlocked(Guid userId)
+        {
+            IEnumerable<UserLoginAttempts> userLoginAttempts = _repositoryUserLoginAttempts.GetLoginAttemptsByUserId(userId);
+
+            if (userLoginAttempts.Count() >= 3)
+                _respositoryUser.UpdateStatusBlocked(userId, true);
+
+        }
+
+        public void SaveUserLoginAttempt(Guid userId, string description)
+        {
+            _repositoryUserLoginAttempts.
+                SaveLoginAttempt(UserLoginAttempts.Create(userId, description));
+        }
+
+        public void UpdateLoginSessions(Guid userId)
+        {
+            _respositoryUser.UpdateLoginSession(userId);
+        }
     }
 }

@@ -23,10 +23,7 @@ namespace Framework.Security2023.Entities
             UserId = userId;
             DateCreated = DateTime.Now;
             DateExpiration = DateCreated.AddDays(1);
-            Token = $"{Id}-" +
-                $"{DateCreated.Day}-{DateCreated.Hour}-" +
-                $"{DateExpiration.Day}-{DateExpiration.Hour}";
-            
+            Token = $"{Id}{DateCreated.Day}{DateCreated.Hour}{DateExpiration.Day}{DateExpiration.Hour}";         
         }
 
         public UserToken(Guid id, Guid userId, string token, DateTime dateCreated, DateTime dateExpiration)
