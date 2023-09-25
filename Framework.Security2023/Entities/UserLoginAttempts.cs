@@ -3,7 +3,7 @@
 
 namespace Framework.Security2023.Entities
 {
-    class UserLoginAttempts
+    public class UserLoginAttempts
     {
         private Guid _idUser;
         private string _description;
@@ -13,16 +13,16 @@ namespace Framework.Security2023.Entities
         public string Description { get => _description; set => _description = value; }
         public DateTime DateCreated { get => _dateCreated; set => _dateCreated = value; }
 
-        private UserLoginAttempts(Guid idUser, string description, DateTime dateCreated)
+        private UserLoginAttempts(Guid idUser, string description)
         {
             _idUser = idUser;
             _description = description;
-            _dateCreated = dateCreated;
+            _dateCreated = DateTime.Now;
         }
 
-        public static UserLoginAttempts Create(Guid idUser, string description, DateTime dateCreated)
+        public static UserLoginAttempts Create(Guid idUser, string description)
         {
-            return new UserLoginAttempts( idUser,  description,  dateCreated);
+            return new UserLoginAttempts( idUser,  description);
         }
 
     }

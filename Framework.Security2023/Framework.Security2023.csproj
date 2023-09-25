@@ -58,6 +58,7 @@
     <Compile Include="Repositories\RepositoryPermission.cs" />
     <Compile Include="Repositories\RepositoryRole.cs" />
     <Compile Include="Repositories\RepositoryToken.cs" />
+    <Compile Include="Repositories\RepositoryUserLoginAttempts.cs" />
     <Compile Include="Repositories\RespositoryUser.cs" />
     <Compile Include="Services\ServiceLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
