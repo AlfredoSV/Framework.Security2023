@@ -11,15 +11,13 @@ namespace Framework.Security2023.Services
     public class ServiceUser : IServiceUser
     {
         private readonly ServiceCryptography _serviceCryptography;
-
         private readonly RespositoryUser _respositoryUser;
-
         private readonly RepositoryUserLoginAttempts _repositoryUserLoginAttempts;
-
         private readonly IServiceRole _serviceRole;
 
         public ServiceUser()
         {
+            _serviceRole = new ServiceRole();
             _serviceCryptography = new ServiceCryptography();
             _respositoryUser = new RespositoryUser();
             _repositoryUserLoginAttempts = new RepositoryUserLoginAttempts();

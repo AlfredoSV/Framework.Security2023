@@ -315,8 +315,6 @@ namespace Framework.Security2023.Repositories
 
             }
 
-            return result;
-
         }
 
 
