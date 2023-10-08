@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Framework.Utilities2023">
+      <HintPath>..\..\..\Framework.Utilities2023\Framework.Utilities2023\bin\Debug\Framework.Utilities2023.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Transactions" />

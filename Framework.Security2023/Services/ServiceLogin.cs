@@ -2,6 +2,9 @@
 using Framework.Security2023.Dtos;
 using Framework.Security2023.Entities;
 using Framework.Security2023.IServices;
+using Framework.Utilities2023.Email.IServices;
+using Framework.Utilities2023.Email.Services;
+using System;
 
 namespace Framework.Security2023.Services
 {
@@ -11,6 +14,7 @@ namespace Framework.Security2023.Services
         private readonly IServiceToken _serviceToken;
         private readonly IServiceUser _serviceUser;
         private readonly IServiceRole _serviceRole;
+        private readonly IServiceEmail _serviceEmail;
         
         public ServiceLogin()
         {
@@ -18,7 +22,7 @@ namespace Framework.Security2023.Services
             _serviceToken = new ServiceToken();
             _serviceUser = new ServiceUser();
             _serviceRole = new ServiceRole();
-    
+            _serviceEmail = new ServiceEmail();
         }
 
         public Login LoginDummy(Login userLogin)
@@ -80,7 +84,31 @@ namespace Framework.Security2023.Services
         public void ChangePassword(DtoChangePassword dtoChangePassword)
         {
             bool userExist = _serviceUser.UserExist(dtoChangePassword.UserName);
-                     
+            UserFkw userFkw = null;
+            string actualPassword = string.Empty;
+            bool isUpdate = false;
+
+            if (userExist)
+            {
+                userFkw = _serviceUser.GetUserByUserName(dtoChangePassword.UserName);
+
+                 actualPassword = 
+                    _serviceCryptography.Descrypt(userFkw.Password,userFkw.Id.ToString());
+
+                if (dtoChangePassword.NewPassword.Equals(actualPassword))
+                    throw new Exception("The password was not diferent to actual password");
+
+                dtoChangePassword.NewPassword = _serviceCryptography.Encrypt(actualPassword, userFkw.Id.ToString());
+                isUpdate = _serviceUser.UpdatePassword(userFkw.Id,dtoChangePassword.NewPassword);
+
+                if (!isUpdate)
+                    throw new Exception("The password was not updated, please contact with support");
+                else
+                    _serviceEmail.SendEmail(userFkw.UserInformation.Email, string.Empty,
+                        Guid.NewGuid(), null);
+
+            }
+
 
         }
     }

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Framework.Security2023.Services
 {
-    public class ServiceUser : IServiceUser
+    class ServiceUser : IServiceUser
     {
         private readonly ServiceCryptography _serviceCryptography;
         private readonly RespositoryUser _respositoryUser;
@@ -23,7 +23,7 @@ namespace Framework.Security2023.Services
             _repositoryUserLoginAttempts = new RepositoryUserLoginAttempts();
         }
 
-        public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
+        bool IServiceUser.CreateUser(UserFkw newUser, bool isCreatedByAdmin)
         {
             if (newUser is null)
                 throw new ArgumentNullException("The object newUser is null.");
@@ -44,16 +44,16 @@ namespace Framework.Security2023.Services
             return _respositoryUser.Save(newUser);
         }
 
-        public bool DeleteUser(Guid userId) => _respositoryUser.Delete(userId);
+        bool IServiceUser.DeleteUser(Guid userId) => _respositoryUser.Delete(userId);
 
-        public UserFkw GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
+        UserFkw IServiceUser.GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
 
-        public UserFkw GetUserByUserName(string userName)
+        UserFkw IServiceUser.GetUserByUserName(string userName)
         {
             return _respositoryUser.GetUser(userName);
         }
 
-        public bool UpdatePassword(Guid userId, string newPassword)
+        bool IServiceUser.UpdatePassword(Guid userId,string newPassword)
         {
             newPassword = _serviceCryptography.Encrypt(newPassword,
                 userId.ToString());
@@ -64,7 +64,7 @@ namespace Framework.Security2023.Services
             return (rowUpdated >= 1);
         }
 
-        public bool UpdateUser(UserFkw user)
+        bool IServiceUser.UpdateUser(UserFkw user)
         {
             user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
 
@@ -73,9 +73,9 @@ namespace Framework.Security2023.Services
             return res > 0;
         }
 
-        public bool UserExist(string userName) => (_respositoryUser.GetUser(userName)) != null;
+        bool IServiceUser.UserExist(string userName) => (_respositoryUser.GetUser(userName)) != null;
 
-        public  void UpdateStatusBlocked(Guid userId)
+        void IServiceUser.UpdateStatusBlocked(Guid userId)
         {
             IEnumerable<UserLoginAttempts> userLoginAttempts = _repositoryUserLoginAttempts.GetLoginAttemptsByUserId(userId);
 
@@ -84,13 +84,13 @@ namespace Framework.Security2023.Services
 
         }
 
-        public void SaveUserLoginAttempt(Guid userId, string description)
+        void IServiceUser.SaveUserLoginAttempt(Guid userId, string description)
         {
             _repositoryUserLoginAttempts.
                 SaveLoginAttempt(UserLoginAttempts.Create(userId, description));
         }
 
-        public void UpdateLoginSessions(Guid userId)
+        void IServiceUser.UpdateLoginSessions(Guid userId)
         {
             _respositoryUser.UpdateLoginSession(userId);
         }
