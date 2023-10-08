@@ -1,4 +1,5 @@
 ﻿using Framework.Security2023.Cryptography;
+using Framework.Security2023.Dtos;
 using Framework.Security2023.Entities;
 using Framework.Security2023.IServices;
 
@@ -76,5 +77,11 @@ namespace Framework.Security2023.Services
             return userLogin;
         }
 
+        public void ChangePassword(DtoChangePassword dtoChangePassword)
+        {
+            bool userExist = _serviceUser.UserExist(dtoChangePassword.UserName);
+                     
+
+        }
     }
 }

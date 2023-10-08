@@ -1,4 +1,5 @@
-﻿using Framework.Security2023.Entities;
+﻿using Framework.Security2023.Dtos;
+using Framework.Security2023.Entities;
 
 namespace Framework.Security2023.IServices
 {
@@ -6,5 +7,7 @@ namespace Framework.Security2023.IServices
     {
         Login Login(Login user);
         Login LoginDummy(Login userLogin);
+        void ChangePassword(DtoChangePassword dtoChangePassword);
+
     }
 }
