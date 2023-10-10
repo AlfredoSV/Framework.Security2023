@@ -2,8 +2,6 @@
 using Framework.Security2023.Dtos;
 using Framework.Security2023.Entities;
 using Framework.Security2023.IServices;
-using Framework.Utilities2023.Email.IServices;
-using Framework.Utilities2023.Email.Services;
 using System;
 
 namespace Framework.Security2023.Services
@@ -14,7 +12,7 @@ namespace Framework.Security2023.Services
         private readonly IServiceToken _serviceToken;
         private readonly IServiceUser _serviceUser;
         private readonly IServiceRole _serviceRole;
-        private readonly IServiceEmail _serviceEmail;
+        private readonly IServiceEmailSecurity _serviceEmail;
 
         public ServiceLogin()
         {
@@ -22,7 +20,7 @@ namespace Framework.Security2023.Services
             _serviceToken = new ServiceToken();
             _serviceUser = new ServiceUser();
             _serviceRole = new ServiceRole();
-            _serviceEmail = new ServiceEmail();
+            _serviceEmail = new ServiceEmailSecurity();
         }
 
         public Login LoginDummy(Login userLogin)
@@ -103,9 +101,9 @@ namespace Framework.Security2023.Services
 
                 if (!isUpdate)
                     throw new Exception("The password was not updated, please contact with support");
-                else
-                    _serviceEmail.SendEmail(userFkw.UserInformation.Email, string.Empty,
-                        Guid.NewGuid(), null);
+                //else
+                //    _serviceEmail.(userFkw.UserInformation.Email, string.Empty,
+                //        Guid.NewGuid(), null);
 
             }
 

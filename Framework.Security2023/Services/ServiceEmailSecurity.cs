@@ -50,7 +50,7 @@ namespace Framework.Security2023.Services
                     smtpClient.Send(message);
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
 
 
         }
