@@ -9,13 +9,13 @@ using System;
 namespace Framework.Security2023.Services
 {
     public class ServiceLogin : IServiceLogin
-    {   
+    {
         private readonly ServiceCryptography _serviceCryptography;
         private readonly IServiceToken _serviceToken;
         private readonly IServiceUser _serviceUser;
         private readonly IServiceRole _serviceRole;
         private readonly IServiceEmail _serviceEmail;
-        
+
         public ServiceLogin()
         {
             _serviceCryptography = new ServiceCryptography();
@@ -35,16 +35,16 @@ namespace Framework.Security2023.Services
 
         public Login Login(Login userLogin)
         {
-           
+
             UserFkw user = (_serviceUser.GetUserByUserName(userLogin.UserName));
             string passDb = string.Empty;
-   
+
             if (user is null)
             {
                 userLogin.StatusLog = StatusLogin.UserOrPasswordIncorrect;
                 return userLogin;
             }
-   
+
             passDb = _serviceCryptography.Descrypt(user.Password.Trim(), user.Id.ToString());
 
             if (!passDb.Equals(userLogin.Password))
@@ -62,15 +62,15 @@ namespace Framework.Security2023.Services
                 userLogin.StatusLog = StatusLogin.UserBlocked;
                 return userLogin;
             }
-                
+
 
             if (user.LoginSessions >= 1)
             {
                 userLogin.StatusLog = StatusLogin.ExistSession;
                 return userLogin;
             }
-                
-            if (user.ApplyToken)           
+
+            if (user.ApplyToken)
                 _serviceToken.CreateToken(user);
 
             user.Role = _serviceRole.GetRole(user.Id);
@@ -92,14 +92,14 @@ namespace Framework.Security2023.Services
             {
                 userFkw = _serviceUser.GetUserByUserName(dtoChangePassword.UserName);
 
-                 actualPassword = 
-                    _serviceCryptography.Descrypt(userFkw.Password,userFkw.Id.ToString());
+                actualPassword =
+                   _serviceCryptography.Descrypt(userFkw.Password, userFkw.Id.ToString());
 
                 if (dtoChangePassword.NewPassword.Equals(actualPassword))
                     throw new Exception("The password was not diferent to actual password");
 
                 dtoChangePassword.NewPassword = _serviceCryptography.Encrypt(actualPassword, userFkw.Id.ToString());
-                isUpdate = _serviceUser.UpdatePassword(userFkw.Id,dtoChangePassword.NewPassword);
+                isUpdate = _serviceUser.UpdatePassword(userFkw.Id, dtoChangePassword.NewPassword);
 
                 if (!isUpdate)
                     throw new Exception("The password was not updated, please contact with support");

@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Framework.Utilities2023">
-      <HintPath>..\..\..\Framework.Utilities2023\Framework.Utilities2023\bin\Debug\Framework.Utilities2023.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Transactions" />
@@ -55,6 +52,7 @@
     <Compile Include="Entities\UserInformation.cs" />
     <Compile Include="Entities\UserLoginAttempts.cs" />
     <Compile Include="Entities\UserToken.cs" />
+    <Compile Include="IServices\IServiceEmailSecurity.cs" />
     <Compile Include="IServices\IServiceLogin.cs" />
     <Compile Include="IServices\IServiceRole.cs" />
     <Compile Include="IServices\IServiceToken.cs" />
@@ -64,12 +62,14 @@
     <Compile Include="Repositories\RepositoryToken.cs" />
     <Compile Include="Repositories\RepositoryUserLoginAttempts.cs" />
     <Compile Include="Repositories\RespositoryUser.cs" />
+    <Compile Include="Services\ServiceEmailSecurity.cs" />
     <Compile Include="Services\ServiceLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ServiceRole.cs" />
     <Compile Include="Services\ServiceToken.cs" />
     <Compile Include="Services\ServiceUser.cs" />
     <Compile Include="SlqConnectionStr.cs" />
+    <Compile Include="SmtpConfigurationSecurityFkw.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TablesSql\Scripts Table Fkw.sql" />
