@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Framework.Security2023.Services
 {
-    class ServiceUser : IServiceUser
+    public class ServiceUser : IServiceUser
     {
         private readonly ServiceCryptography _serviceCryptography;
         private readonly RespositoryUser _respositoryUser;
@@ -23,7 +23,7 @@ namespace Framework.Security2023.Services
             _repositoryUserLoginAttempts = new RepositoryUserLoginAttempts();
         }
 
-        bool IServiceUser.CreateUser(UserFkw newUser, bool isCreatedByAdmin)
+        public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
         {
             if (newUser is null)
                 throw new ArgumentNullException("The object newUser is null.");
@@ -44,9 +44,19 @@ namespace Framework.Security2023.Services
             return _respositoryUser.Save(newUser);
         }
 
-        bool IServiceUser.DeleteUser(Guid userId) => _respositoryUser.Delete(userId);
+        public bool DeleteUser(Guid userId) => _respositoryUser.Delete(userId);
 
-        UserFkw IServiceUser.GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
+        public UserFkw GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
+    
+        public bool UpdateUser(UserFkw user)
+        {
+            user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
+
+            int res = _respositoryUser.Update(user);
+
+            return res > 0;
+        }
+
 
         UserFkw IServiceUser.GetUserByUserName(string userName)
         {
@@ -63,16 +73,7 @@ namespace Framework.Security2023.Services
 
             return (rowUpdated >= 1);
         }
-
-        bool IServiceUser.UpdateUser(UserFkw user)
-        {
-            user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
-
-            int res = _respositoryUser.Update(user);
-
-            return res > 0;
-        }
-
+        
         bool IServiceUser.UserExist(string userName) => (_respositoryUser.GetUser(userName)) != null;
 
         void IServiceUser.UpdateStatusBlocked(Guid userId)

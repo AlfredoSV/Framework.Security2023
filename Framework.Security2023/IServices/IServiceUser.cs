@@ -3,7 +3,7 @@ using System;
 
 namespace Framework.Security2023.IServices
 {
-	interface IServiceUser
+	public interface IServiceUser
 	{
 		bool CreateUser(UserFkw newUser, bool isCreatedByAdmin);
 		UserFkw GetUserByUserName(string userName);
