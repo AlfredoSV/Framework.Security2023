@@ -15,7 +15,7 @@ namespace Framework.Security2023.Test
         [Ignore]
         public void Test_EncryptAndDescryptString()
         {
-            ServiceCryptography serviceCryptography = new ServiceCryptography();
+            IServiceCryptography serviceCryptography = new ServiceCryptography();
 
             Guid key = Guid.Parse("147CD742-52BB-4080-AAC4-8B82BB0B2571");
 

@@ -23,60 +23,59 @@ namespace Framework.Security2023.Services
             _serviceEmail = new ServiceEmailSecurity();
         }
 
-        public Login LoginDummy(Login userLogin)
+        public DtoLoginResponse LoginDummy(DtoLogin userLogin)
         {
-            userLogin.StatusLog = StatusLogin.Ok;
-
-            return userLogin;
+            DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
+            dtoLoginResponse.StatusLogin = StatusLogin.Ok;
+            return dtoLoginResponse;
         }
 
 
-        public Login Login(Login userLogin)
+        public DtoLoginResponse Login(DtoLogin userLogin)
         {
+            DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
 
             UserFkw user = (_serviceUser.GetUserByUserName(userLogin.UserName));
             string passDb = string.Empty;
-
             if (user is null)
             {
-                userLogin.StatusLog = StatusLogin.UserOrPasswordIncorrect;
-                return userLogin;
+                dtoLoginResponse.StatusLogin = StatusLogin.UserOrPasswordIncorrect;
+                return dtoLoginResponse;
             }
-
             passDb = _serviceCryptography.Descrypt(user.Password.Trim(), user.Id.ToString());
 
             if (!passDb.Equals(userLogin.Password))
             {
                 _serviceUser.SaveUserLoginAttempt(user.Id,
                         "PasswordIncorrect");
-                userLogin.StatusLog = StatusLogin.UserOrPasswordIncorrect;
-                return userLogin;
+                dtoLoginResponse.StatusLogin = StatusLogin.UserOrPasswordIncorrect;
+                return dtoLoginResponse;
             }
 
             _serviceUser.UpdateStatusBlocked(user.Id);
 
             if (user.UserBlocked)
             {
-                userLogin.StatusLog = StatusLogin.UserBlocked;
-                return userLogin;
+                dtoLoginResponse.StatusLogin = StatusLogin.UserBlocked;
+                return dtoLoginResponse;
             }
 
 
             if (user.LoginSessions >= 1)
             {
-                userLogin.StatusLog = StatusLogin.ExistSession;
-                return userLogin;
+                dtoLoginResponse.StatusLogin = StatusLogin.ExistSession;
+                return dtoLoginResponse;
             }
 
             if (user.ApplyToken)
                 _serviceToken.CreateToken(user);
 
             user.Role = _serviceRole.GetRole(user.Id);
-            userLogin.User = user;
-
+            //Change for DTO
+            //dtoLoginResponse.User = user;
             _serviceUser.UpdateLoginSessions(user.Id);
+            return dtoLoginResponse;
 
-            return userLogin;
         }
 
         public void ChangePassword(DtoChangePassword dtoChangePassword)

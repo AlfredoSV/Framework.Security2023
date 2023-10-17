@@ -45,6 +45,12 @@
     <Compile Include="Cryptography\IServiceCryptography.cs" />
     <Compile Include="Cryptography\ServiceCryptography.cs" />
     <Compile Include="Dtos\DtoChangePassword.cs" />
+    <Compile Include="Dtos\DtoLogin.cs" />
+    <Compile Include="Dtos\DtoLoginResponse.cs" />
+    <Compile Include="Dtos\DtoRole.cs" />
+    <Compile Include="Dtos\DtoUserFkw.cs" />
+    <Compile Include="Dtos\DtoUserToken.cs" />
+    <Compile Include="Dtos\UserInformation.cs" />
     <Compile Include="Entities\Login.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Role.cs" />

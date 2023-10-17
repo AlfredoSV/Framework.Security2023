@@ -10,7 +10,7 @@
 
     }
 
-    public class Login
+    class Login
     {
   
         private string _userName;
@@ -48,7 +48,7 @@
             Password = password;
         }
 
-        public static Login Create(string user, string password, StatusLogin status = StatusLogin.Ok)
+        protected static Login Create(string user, string password, StatusLogin status = StatusLogin.Ok)
         {
             return new Login(user, password, status);
         }

@@ -5,8 +5,8 @@ namespace Framework.Security2023.IServices
 {
     public interface IServiceLogin
     {
-        Login Login(Login user);
-        Login LoginDummy(Login userLogin);
+        DtoLoginResponse Login(DtoLogin login);
+        DtoLoginResponse LoginDummy(DtoLogin userLogin);
         void ChangePassword(DtoChangePassword dtoChangePassword);
 
     }

@@ -1,4 +1,5 @@
-﻿using Framework.Security2023.Entities;
+﻿using Framework.Security2023.Dtos;
+using Framework.Security2023.Entities;
 using System;
 
 namespace Framework.Security2023.IServices
