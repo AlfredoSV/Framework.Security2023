@@ -46,8 +46,7 @@ namespace Framework.Security2023.Services
 
         public bool DeleteUser(Guid userId) => _respositoryUser.Delete(userId);
 
-        public UserFkw GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
-    
+      
         public bool UpdateUser(UserFkw user)
         {
             user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
@@ -57,6 +56,8 @@ namespace Framework.Security2023.Services
             return res > 0;
         }
 
+
+        UserFkw IServiceUser.GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
 
         UserFkw IServiceUser.GetUserByUserName(string userName)
         {

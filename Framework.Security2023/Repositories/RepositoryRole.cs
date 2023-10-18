@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace Framework.Security2023.Repositories
 {
-    public class RepositoryRole
+    internal class RepositoryRole
     {
         private SqlConnection _sqlConnection;
         private SqlDataReader _sqlDataReader;
@@ -15,7 +15,7 @@ namespace Framework.Security2023.Repositories
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        public Role GetRoleByUserId(Guid userId)
+        internal Role GetRoleByUserId(Guid userId)
         {
             string sql = @"SELECT ro.Id, ro.RolName, ro.DateCreated, ro.UserCreated ,ro.Active from Rol ro inner join UserFkw
                         us on ro.Id = us.RolId where us.Id = @userId";
@@ -46,7 +46,7 @@ namespace Framework.Security2023.Repositories
             return role;
         }
 
-        public Role GetRoleById(Guid roleId)
+        internal Role GetRoleById(Guid roleId)
         {
             string sql = @"SELECT ro.Id, ro.RolName, ro.DateCreated, ro.UserCreated ,ro.Active from Rol ro where ro.Id = @roleId";
 

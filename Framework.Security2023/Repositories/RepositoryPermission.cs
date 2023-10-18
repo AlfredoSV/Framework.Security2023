@@ -5,19 +5,19 @@ using System.Data.SqlClient;
 
 namespace Framework.Security2023.Repositories
 {
-    public class RepositoryPermission
+    class RepositoryPermission
     {
         private SqlConnection _sqlConnection;
         private SqlDataReader _sqlDataReader;
         private SqlCommand _sqlCommand;
         private readonly string _sqlTextConnection;
 
-        public RepositoryPermission()
+        internal RepositoryPermission()
         {
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        public IEnumerable<Permission> GetPermission(Guid idRole)
+        internal IEnumerable<Permission> GetPermission(Guid idRole)
         {
 
             string sql = "SELECT PermissionName, Id, RolId, PermissionDescription, Module FROM Permission WHERE RolId = @rolId;";

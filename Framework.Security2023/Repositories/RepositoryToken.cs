@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace Framework.Security2023.Repositories
 {
-    public class RepositoryToken
+    internal class RepositoryToken
     {
         private SqlConnection _sqlConnection;
         private SqlDataReader _sqlDataReader;
@@ -16,7 +16,7 @@ namespace Framework.Security2023.Repositories
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        public int Save(UserToken userToken)
+        internal int Save(UserToken userToken)
         {
             int result;
             string sqlGetUser = "INSERT INTO UserToken " +
@@ -42,8 +42,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-
-        public UserToken GetLastToken(Guid id)
+        internal UserToken GetLastToken(Guid id)
         {
             UserToken result = null;
             string sqlGetUser = @"Select Id,UserId, Token, DateCreated,

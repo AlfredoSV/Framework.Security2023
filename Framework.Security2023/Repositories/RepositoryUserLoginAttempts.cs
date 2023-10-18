@@ -5,19 +5,19 @@ using System.Collections.Generic;
 
 namespace Framework.Security2023.Repositories
 {
-    public class RepositoryUserLoginAttempts
+    internal class RepositoryUserLoginAttempts
     {
         private SqlConnection _sqlConnection;
         private SqlDataReader _sqlDataReader;
         private SqlCommand _sqlCommand;
         private readonly string _sqlTextConnection;
 
-        public RepositoryUserLoginAttempts()
+        internal RepositoryUserLoginAttempts()
         {
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        public IEnumerable<UserLoginAttempts> GetLoginAttemptsByUserId(Guid userId)
+        internal IEnumerable<UserLoginAttempts> GetLoginAttemptsByUserId(Guid userId)
         {
             List<UserLoginAttempts> result = new List<UserLoginAttempts>();
             string sql = "SELECT IdUser, Description, DateCreated FROM UserLoginAttempts where IdUser = @userId;";
@@ -46,7 +46,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        public int SaveLoginAttempt(UserLoginAttempts userLoginAttempt)
+        internal int SaveLoginAttempt(UserLoginAttempts userLoginAttempt)
         {
             int result;
             string sqlGetUser = "INSERT INTO UserLoginAttempts " +

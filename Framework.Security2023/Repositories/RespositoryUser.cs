@@ -4,19 +4,19 @@ using System.Data.SqlClient;
 
 namespace Framework.Security2023.Repositories
 {
-    public class RespositoryUser
+    internal class RespositoryUser
     {
         private SqlConnection _sqlConnection;
         private SqlDataReader _sqlDataReader;
         private SqlCommand _sqlCommand;
         private readonly string _sqlTextConnection;
 
-        public RespositoryUser()
+        internal RespositoryUser()
         {
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        public UserFkw GetUser(string userName)
+        internal UserFkw GetUser(string userName)
         {
             UserFkw userResult = null;
             string sqlGetUser = @"Select Id, UserName, Password, DateCreated, UserCreated, LoginSessions, UserBlocked,
@@ -48,7 +48,7 @@ namespace Framework.Security2023.Repositories
             return userResult;
         }
 
-        public UserFkw GetUser(Guid id)
+        internal UserFkw GetUser(Guid id)
         {
             UserFkw userResult = null;
 
@@ -96,7 +96,7 @@ namespace Framework.Security2023.Repositories
             return userResult;
         }
 
-        public bool Save(UserFkw newUser)
+        internal bool Save(UserFkw newUser)
         {
 
             bool result;
@@ -158,7 +158,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        public bool Delete(Guid userId)
+        internal bool Delete(Guid userId)
         {
 
             bool deleteUserFkw, deleteUserInfo, deleteUserTokens;
@@ -207,7 +207,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        public int UpdatePassword(Guid userId, string newPassword)
+        internal int UpdatePassword(Guid userId, string newPassword)
         {
 
             int result;
@@ -229,7 +229,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        public int Update(UserFkw newUser)
+        internal int Update(UserFkw newUser)
         {
 
             int result;
@@ -268,7 +268,7 @@ namespace Framework.Security2023.Repositories
 
                     }
 
-        public int UpdateStatusBlocked(Guid userId, bool status)
+        internal int UpdateStatusBlocked(Guid userId, bool status)
         {
 
             int result;
@@ -294,7 +294,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        public void UpdateLoginSession(Guid userId)
+        internal void UpdateLoginSession(Guid userId)
         {
 
             int result;
@@ -316,7 +316,6 @@ namespace Framework.Security2023.Repositories
             }
 
         }
-
 
 
     }

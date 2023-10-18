@@ -15,20 +15,17 @@ namespace Framework.Security2023.Services
         private string GenerateBodyPassword(string url, string userName)
         {
 
-
             return string.Empty;
-
         }
 
         private string GenerateUrlForgetPassword(Guid userId)
         {
 
-
             return string.Empty;
-
         }
 
-        void IServiceEmailSecurity.SendEmailForgetPassword(string userName ,string email, string emailTo,Guid userId)
+        void IServiceEmailSecurity.SendEmailForgetPassword(string userName ,string email, 
+            string emailTo,Guid userId)
         {
             try
             {

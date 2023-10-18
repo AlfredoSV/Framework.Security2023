@@ -8,7 +8,8 @@ namespace Framework.Security2023.IServices
 {
     interface IServiceEmailSecurity
     {
-        void SendEmailForgetPassword(string userName, string email, string emailTo, Guid userId);
+        void SendEmailForgetPassword(string userName, string email, 
+            string emailTo, Guid userId);
 
     }
 }
