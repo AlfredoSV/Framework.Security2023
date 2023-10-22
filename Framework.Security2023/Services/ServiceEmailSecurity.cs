@@ -24,13 +24,13 @@ namespace Framework.Security2023.Services
             return string.Empty;
         }
 
-        void IServiceEmailSecurity.SendEmailForgetPassword(string userName ,string email, 
+        void IServiceEmailSecurity.SendEmailForgetPassword(string userName,
             string emailTo,Guid userId)
         {
             try
             {
                 MailMessage message = new MailMessage();
-                message.From = new MailAddress(email);
+                message.From = new MailAddress(SmtpConfigurationSecurityFkw.Instance.UserName);
               
                 message.To.Add(emailTo);
                 string url = GenerateUrlForgetPassword(userId);

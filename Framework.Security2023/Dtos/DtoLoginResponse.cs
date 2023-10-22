@@ -14,7 +14,7 @@ namespace Framework.Security2023.Dtos
         public string Password { get; set; }
 
         public StatusLogin StatusLogin;
-
+        public DtoUserFkw User { get; set; }
 
 
     }

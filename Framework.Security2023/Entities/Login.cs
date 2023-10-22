@@ -6,7 +6,8 @@
         UserOrPasswordIncorrect = -1,
         UserBlocked = -2,
         ExistSession = -3,
-        TokenNotValid = -4
+        TokenNotValid = -4,
+        RoleNotAssigned = -5
 
     }
 

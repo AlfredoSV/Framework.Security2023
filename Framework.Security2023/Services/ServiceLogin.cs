@@ -37,12 +37,14 @@ namespace Framework.Security2023.Services
 
             UserFkw user = (_serviceUser.GetUserByUserName(userLogin.UserName));
             string passDb = string.Empty;
+
             if (user is null)
             {
                 dtoLoginResponse.StatusLogin = StatusLogin.UserOrPasswordIncorrect;
                 return dtoLoginResponse;
             }
-            passDb = _serviceCryptography.Descrypt(user.Password.Trim(), user.Id.ToString());
+
+            passDb = _serviceCryptography.Descrypt(user.Password, user.Id.ToString());
 
             if (!passDb.Equals(userLogin.Password))
             {
@@ -71,8 +73,35 @@ namespace Framework.Security2023.Services
                 _serviceToken.CreateToken(user);
 
             user.Role = _serviceRole.GetRole(user.Id);
-            //Change for DTO
-            //dtoLoginResponse.User = user;
+
+            if (user.Role is null)
+            {
+                dtoLoginResponse.StatusLogin = StatusLogin.RoleNotAssigned;
+                return dtoLoginResponse;
+            }
+            DtoUserFkw dtoUserFkw = new DtoUserFkw();
+            DtoUserToken dtoUserToken = new DtoUserToken();
+            DtoRole dtoRole = new DtoRole();
+            DtoUserInformation dtoUserInformation = new DtoUserInformation();
+
+            dtoUserFkw.Id = user.Id;
+            dtoUserFkw.UserName = user.UserName;
+            dtoUserFkw.Password = user.Password;
+            dtoUserFkw.DateCreated = user.DateCreated;
+            dtoUserFkw.UserCreated = user.UserCreated;
+            dtoUserFkw.LoginSessions = user.LoginSessions;
+            dtoUserFkw.UserBlocked = user.UserBlocked;
+
+            //Toeken
+            dtoUserToken.UserId = user.UserToken.UserId;
+            dtoUserToken.Token = user.UserToken.Token;
+            dtoUserToken.DateExpiration = user.UserToken.DateExpiration;
+            dtoUserFkw.UserToken = dtoUserToken;
+            dtoUserFkw.RolId = user.RolId;
+
+            //Role
+            //dtoUserFkw.Role.
+            dtoLoginResponse.User = dtoUserFkw;
             _serviceUser.UpdateLoginSessions(user.Id);
             return dtoLoginResponse;
 
@@ -100,9 +129,10 @@ namespace Framework.Security2023.Services
 
                 if (!isUpdate)
                     throw new Exception("The password was not updated, please contact with support");
-                //else
-                //    _serviceEmail.(userFkw.UserInformation.Email, string.Empty,
-                //        Guid.NewGuid(), null);
+
+                //Email alert of request
+                _serviceEmail.SendEmailForgetPassword(userFkw.UserName, 
+                    userFkw.UserInformation.Email, userFkw.Id);
 
             }
 

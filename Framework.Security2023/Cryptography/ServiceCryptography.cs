@@ -10,6 +10,9 @@ namespace Framework.Security2023.Cryptography
 
         public string Encrypt(string str, string key)
         {
+            str = str.Trim();
+            key = key.Trim();
+
             byte[] key_byte;
             byte[] array = UTF8Encoding.UTF8.GetBytes(str); 
       
@@ -29,6 +32,9 @@ namespace Framework.Security2023.Cryptography
 
         public string Descrypt(string str, string key)
         {
+            str = str.Trim();
+            key = key.Trim();
+
             byte[] key_byte;
             byte[] array = Convert.FromBase64String(str); 
             
