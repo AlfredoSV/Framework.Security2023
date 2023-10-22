@@ -75,7 +75,7 @@ namespace Framework.Security2023.Services
             return (rowUpdated >= 1);
         }
         
-        bool IServiceUser.UserExist(string userName) => (_respositoryUser.GetUser(userName)) != null;
+        bool IServiceUser.UserExistByUserName(string userName) => (_respositoryUser.GetUser(userName)) != null;
 
         void IServiceUser.UpdateStatusBlocked(Guid userId)
         {
@@ -95,6 +95,16 @@ namespace Framework.Security2023.Services
         void IServiceUser.UpdateLoginSessions(Guid userId)
         {
             _respositoryUser.UpdateLoginSession(userId);
+        }
+
+        public bool UserExistByUserEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UserExistByUserNameAndEmail(string userName, string email)
+        {
+            throw new NotImplementedException();
         }
     }
 }

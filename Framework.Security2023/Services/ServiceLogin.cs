@@ -109,7 +109,7 @@ namespace Framework.Security2023.Services
 
         public void ChangePassword(DtoChangePassword dtoChangePassword)
         {
-            bool userExist = _serviceUser.UserExist(dtoChangePassword.UserName);
+            bool userExist = _serviceUser.UserExistByUserNameAndEmail(dtoChangePassword.UserName,dtoChangePassword.Email);
             UserFkw userFkw = null;
             string actualPassword = string.Empty;
             bool isUpdate = false;
