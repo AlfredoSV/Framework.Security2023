@@ -131,8 +131,7 @@ namespace Framework.Security2023.Services
                     throw new Exception("The password was not updated, please contact with support");
 
                 //Email alert of request
-                _serviceEmail.SendEmailForgetPassword(userFkw.UserName, 
-                    userFkw.UserInformation.Email, userFkw.Id);
+                _serviceEmail.EmailValidForgetPassword(userFkw.Id, dtoChangePassword.IdRequest);
 
             }
 
