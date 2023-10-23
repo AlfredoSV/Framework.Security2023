@@ -61,7 +61,7 @@ namespace Framework.Security2023.Services
 
         UserFkw IServiceUser.GetUserByUserName(string userName)
         {
-            return _respositoryUser.GetUser(userName);
+            return _respositoryUser.GetUserByUserName(userName);
         }
 
         bool IServiceUser.UpdatePassword(Guid userId,string newPassword)
@@ -75,8 +75,6 @@ namespace Framework.Security2023.Services
             return (rowUpdated >= 1);
         }
         
-        bool IServiceUser.UserExistByUserName(string userName) => (_respositoryUser.GetUser(userName)) != null;
-
         void IServiceUser.UpdateStatusBlocked(Guid userId)
         {
             IEnumerable<UserLoginAttempts> userLoginAttempts = _repositoryUserLoginAttempts.GetLoginAttemptsByUserId(userId);
@@ -97,14 +95,7 @@ namespace Framework.Security2023.Services
             _respositoryUser.UpdateLoginSession(userId);
         }
 
-        public bool UserExistByUserEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
+        public bool UserExistByUserNameAndEmail(string userName, string email) => (_respositoryUser.ValidateUser(userName, email));
 
-        public bool UserExistByUserNameAndEmail(string userName, string email)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

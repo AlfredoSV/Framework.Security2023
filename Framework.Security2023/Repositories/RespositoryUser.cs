@@ -16,7 +16,61 @@ namespace Framework.Security2023.Repositories
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        internal UserFkw GetUser(string userName)
+        internal bool ValidateUser(string userName,string email)
+        {
+
+            userName = string.IsNullOrEmpty(userName) ? string.Empty : userName;
+            email = string.IsNullOrEmpty(email) ? string.Empty : email;
+            bool result = false;
+            string procedureName = @"ValidateUser";
+            SqlParameter[] sqlParameters =
+            {
+                new SqlParameter()
+                {
+                    DbType = System.Data.DbType.String,
+                    ParameterName = "userName",
+                    Value = userName,
+                    Direction =System.Data.ParameterDirection.Input
+                },
+                new SqlParameter()
+                {
+                    DbType = System.Data.DbType.String,
+                    ParameterName = "email",
+                    Value = userName,
+                    Direction =System.Data.ParameterDirection.Input
+                },
+                new SqlParameter()
+                {
+                    DbType = System.Data.DbType.Boolean,
+                    ParameterName = "result",
+                    Direction =System.Data.ParameterDirection.Output
+                }
+            };
+            this._sqlCommand = new SqlCommand();
+            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            {
+                this._sqlCommand = new SqlCommand();
+                this._sqlCommand.Connection = this._sqlConnection;
+                this._sqlConnection.Open();
+                this._sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                this._sqlCommand.CommandText = procedureName;
+                this._sqlCommand.Parameters.Add(sqlParameters);
+                this._sqlDataReader = this._sqlCommand.ExecuteReader();
+
+                if (this._sqlDataReader.HasRows)
+                {
+                    this._sqlDataReader.Read();
+
+                    result = Boolean.Parse(sqlParameters[2].Value.ToString());
+
+                }
+
+            }
+
+            return result;
+        }
+
+        internal UserFkw GetUserByUserName(string userName)
         {
             UserFkw userResult = null;
             string sqlGetUser = @"Select Id, UserName, Password, DateCreated, UserCreated, LoginSessions, UserBlocked,

@@ -11,6 +11,10 @@ namespace Framework.Security2023.Services
 {
     class ServiceEmailSecurity : IServiceEmailSecurity
     {
+        public bool EmailValidForgetPassword(Guid userId, Guid idRequest)
+        {
+            throw new NotImplementedException();
+        }
 
         private string GenerateBodyPassword(string url, string userName)
         {
@@ -18,14 +22,8 @@ namespace Framework.Security2023.Services
             return string.Empty;
         }
 
-        private string GenerateUrlForgetPassword(Guid userId)
-        {
-
-            return string.Empty;
-        }
-
         void IServiceEmailSecurity.SendEmailForgetPassword(string userName,
-            string emailTo,Guid userId)
+            string emailTo,string url,Guid userId)
         {
             try
             {
@@ -33,7 +31,6 @@ namespace Framework.Security2023.Services
                 message.From = new MailAddress(SmtpConfigurationSecurityFkw.Instance.UserName);
               
                 message.To.Add(emailTo);
-                string url = GenerateUrlForgetPassword(userId);
                 message.Body = GenerateBodyPassword(url, userName);
 
                 using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com"))

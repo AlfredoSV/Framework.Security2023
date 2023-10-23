@@ -78,6 +78,7 @@
     <Compile Include="SmtpConfigurationSecurityFkw.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TablesSql\Script Procedures.sql" />
     <Content Include="TablesSql\Scripts Table Fkw.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

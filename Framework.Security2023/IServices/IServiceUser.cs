@@ -10,8 +10,6 @@ namespace Framework.Security2023.IServices
 		bool DeleteUser(Guid userId);
 		bool UpdatePassword(Guid userId,string newPassword);
 		bool UpdateUser(UserFkw user);
-		bool UserExistByUserName(string userName);
-		bool UserExistByUserEmail(string email);
 		bool UserExistByUserNameAndEmail(string userName, string email);
 		void UpdateLoginSessions(Guid userId);
 		UserFkw GetUserById(Guid userId);
