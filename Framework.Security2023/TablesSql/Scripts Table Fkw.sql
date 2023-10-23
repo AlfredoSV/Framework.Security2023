@@ -80,3 +80,20 @@ GO
 	); 
  end
 
+if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'EmailTemplate')
+ begin 
+	CREATE TABLE
+	EmailTemplate
+	(Id UNIQUEIDENTIFIER NOT NULL,
+	NameTemplate VARCHAR(30) NOT NULL,
+	BodyTemplate VARCHAR(MAX) NOT NULL,
+	DateCreated DATETIME NOT NULL);
+ end
+
+
+ INSERT INTO EmailTemplate
+ VALUES('4479E1C7-E459-44CB-BB9E-93C158454CC2','ChangePassword',
+ 'Dear, @userName. \nYou request a password change, please enter the following link (@url) to complete the process.\nGreetings.',
+ getdate());
+
+ 

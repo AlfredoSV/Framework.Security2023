@@ -54,6 +54,7 @@
     <Compile Include="Entities\Login.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\TemplateEmail.cs" />
     <Compile Include="Entities\UserFkw.cs" />
     <Compile Include="Entities\UserInformation.cs" />
     <Compile Include="Entities\UserLoginAttempts.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="IServices\IServiceUser.cs" />
     <Compile Include="Repositories\RepositoryPermission.cs" />
     <Compile Include="Repositories\RepositoryRole.cs" />
+    <Compile Include="Repositories\RepositoryTemplatesEmail.cs" />
     <Compile Include="Repositories\RepositoryToken.cs" />
     <Compile Include="Repositories\RepositoryUserLoginAttempts.cs" />
     <Compile Include="Repositories\RespositoryUser.cs" />

@@ -1,16 +1,22 @@
-﻿using Framework.Security2023.IServices;
+﻿using Framework.Security2023.Entities;
+using Framework.Security2023.IServices;
+using Framework.Security2023.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Security2023.Services
 {
     class ServiceEmailSecurity : IServiceEmailSecurity
     {
+        private readonly RepositoryTemplatesEmail _repositoryTemplatesEmail;
+        
+        public ServiceEmailSecurity()
+        {
+            _repositoryTemplatesEmail = new RepositoryTemplatesEmail();
+        }
+
         public bool EmailValidForgetPassword(Guid userId, Guid idRequest)
         {
             throw new NotImplementedException();
@@ -18,8 +24,20 @@ namespace Framework.Security2023.Services
 
         private string GenerateBodyPassword(string url, string userName)
         {
+            Dictionary<string, string> paramsBody = new Dictionary<string, string>
+            {
+                { "@userName", userName },
+                { "@url", url }
+            };
+            Guid idTemplate = Guid.Parse("4479E1C7-E459-44CB-BB9E-93C158454CC2");
+            TemplateEmail template = _repositoryTemplatesEmail.GetByid(idTemplate);
 
-            return string.Empty;
+            foreach (KeyValuePair<string, string> paraBo in paramsBody)
+            {
+                template.BodyTemplate = template.BodyTemplate.Replace(paraBo.Key, paraBo.Value);
+            }
+
+            return template.BodyTemplate;
         }
 
         void IServiceEmailSecurity.SendEmailForgetPassword(string userName,

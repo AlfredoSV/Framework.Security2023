@@ -15,4 +15,3 @@ begin
 		set @result = cast(0 as bit);
 
 end;
-
