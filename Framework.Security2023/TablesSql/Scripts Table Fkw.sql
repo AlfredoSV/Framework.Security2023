@@ -90,10 +90,17 @@ if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Email
 	DateCreated DATETIME NOT NULL);
  end
 
-
+ --delete from EmailTemplate
+ --select newid()
  INSERT INTO EmailTemplate
  VALUES('4479E1C7-E459-44CB-BB9E-93C158454CC2','ChangePassword',
- 'Dear, @userName. \nYou request a password change, please enter the following link (@url) to complete the process.\nGreetings.',
+ 'Dear, @userName. \nYou request a password change, please enter the following link (@url) to complete the process.\n This link was expired in 2 hours. \nGreetings.',
  getdate());
+
+ INSERT INTO EmailTemplate
+ VALUES('81D995AC-8690-4960-8292-80BAF046736A','ChangePasswordAlert',
+ 'Dear, @userName. \nYou request a password change, If you do not recognize this movement, please raise a ticket to support team.\nGreetings.',
+ getdate());
+
 
  

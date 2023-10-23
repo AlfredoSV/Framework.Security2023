@@ -7,9 +7,10 @@ namespace Framework.Security2023.IServices
     interface IServiceEmailSecurity
     {
         void SendEmailForgetPassword(string userName,
-            string emailTo,string url, Guid userId);
+            string emailTo,string url);
 
-        bool EmailValidForgetPassword(Guid userId, Guid idRequest);
+        void EmailValidForgetPassword(string userName,
+            string emailTo);
 
     }
 }
