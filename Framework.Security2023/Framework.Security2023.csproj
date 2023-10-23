@@ -51,6 +51,7 @@
     <Compile Include="Dtos\DtoUserFkw.cs" />
     <Compile Include="Dtos\DtoUserToken.cs" />
     <Compile Include="Dtos\UserInformation.cs" />
+    <Compile Include="Entities\ChangePasswordRequest.cs" />
     <Compile Include="Entities\Login.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Role.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="IServices\IServiceUser.cs" />
     <Compile Include="Repositories\RepositoryPermission.cs" />
     <Compile Include="Repositories\RepositoryRole.cs" />
+    <Compile Include="Repositories\RepositoryChangePasswordRequest.cs" />
     <Compile Include="Repositories\RepositoryTemplatesEmail.cs" />
     <Compile Include="Repositories\RepositoryToken.cs" />
     <Compile Include="Repositories\RepositoryUserLoginAttempts.cs" />
