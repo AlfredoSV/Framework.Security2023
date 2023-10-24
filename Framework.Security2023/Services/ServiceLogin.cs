@@ -2,6 +2,7 @@
 using Framework.Security2023.Dtos;
 using Framework.Security2023.Entities;
 using Framework.Security2023.IServices;
+using Framework.Security2023.Repositories;
 using System;
 
 namespace Framework.Security2023.Services
@@ -13,9 +14,11 @@ namespace Framework.Security2023.Services
         private readonly IServiceUser _serviceUser;
         private readonly IServiceRole _serviceRole;
         private readonly IServiceEmailSecurity _serviceEmail;
+        private readonly RepositoryChangePasswordRequest _changePasswordRequestRepo;
 
         public ServiceLogin()
         {
+            _changePasswordRequestRepo = new RepositoryChangePasswordRequest();
             _serviceCryptography = new ServiceCryptography();
             _serviceToken = new ServiceToken();
             _serviceUser = new ServiceUser();
@@ -107,14 +110,34 @@ namespace Framework.Security2023.Services
 
         }
 
+        public void GenerateChangePasswordRequest(Guid userId)
+        {
+            DateTime dateTime = DateTime.Now;
+            ChangePasswordRequest changePasswordRequest =
+                ChangePasswordRequest.Create(userId, dateTime.AddHours(2), dateTime);
+            _changePasswordRequestRepo.Save(changePasswordRequest);
+        }
+
         public void ChangePassword(DtoChangePassword dtoChangePassword)
         {
             bool userExist = _serviceUser.UserExistByUserNameAndEmail(dtoChangePassword.UserName,dtoChangePassword.Email);
             UserFkw userFkw = null;
             string actualPassword = string.Empty;
             bool isUpdate = false;
+            bool isValidRequest = false;
 
-            if (userExist)
+            ChangePasswordRequest changePasswordRequest = 
+                _changePasswordRequestRepo.SelectByIdRequest(dtoChangePassword.IdRequest);
+
+            isValidRequest = changePasswordRequest != null 
+                && DateTime.Now < changePasswordRequest.DateExpired;
+
+            if (!isValidRequest)
+            {
+                throw new Exception("The request of password was expired.");
+            }
+
+            if (userExist & isValidRequest)
             {
                 userFkw = _serviceUser.GetUserByUserName(dtoChangePassword.UserName);
 

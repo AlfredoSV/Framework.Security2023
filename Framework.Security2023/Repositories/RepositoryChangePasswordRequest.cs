@@ -12,12 +12,12 @@ namespace Framework.Security2023.Repositories
     {
         private readonly string _sqlStr;
 
-        RepositoryChangePasswordRequest()
+        internal RepositoryChangePasswordRequest()
         {
             _sqlStr = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        void Save(ChangePasswordRequest changePasswordRequest)
+        internal void Save(ChangePasswordRequest changePasswordRequest)
         {
             string insertStr = @"INSERT INTO ChangePasswordRequest VALUES(newId(),
             @userId,@dateExpired,@dateCreated)";
@@ -39,7 +39,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        ChangePasswordRequest SelectByIdRequest(Guid idRequest)
+        internal ChangePasswordRequest SelectByIdRequest(Guid idRequest)
         {
             string insertStr = @"Select * from ChangePasswordRequest where IdRequest = @idRequest";
             ChangePasswordRequest changePasswordRequest = null;
