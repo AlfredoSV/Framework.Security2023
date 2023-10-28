@@ -110,14 +110,15 @@ namespace Framework.Security2023.Services
 
         }
 
-        public void GenerateChangePasswordRequest(Guid userId,string username, string emailTo,
+        public void GenerateChangePasswordRequest(Guid userId,
             string url)
         {
+            UserFkw userFkw = _serviceUser.GetUserById(userId);
             DateTime dateTime = DateTime.Now;
             ChangePasswordRequest changePasswordRequest =
                 ChangePasswordRequest.Create(userId, dateTime.AddHours(2), dateTime);
             _changePasswordRequestRepo.Save(changePasswordRequest);
-            _serviceEmail.SendEmailForgetPassword(username, emailTo, url);
+            _serviceEmail.SendEmailForgetPassword(userFkw.UserName, userFkw.UserInformation.Email, url);
         }
 
         public void ChangePassword(DtoChangePassword dtoChangePassword)
