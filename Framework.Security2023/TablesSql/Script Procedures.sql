@@ -2,7 +2,7 @@
 
 GO
 
-CREATE OR ALTER PROCEDURE ValidateUser @username varchar(50), @email varchar(50), @result bit
+CREATE OR ALTER PROCEDURE ValidateUser @username varchar(50), @email varchar(50), @result bit output
 as
 begin
 

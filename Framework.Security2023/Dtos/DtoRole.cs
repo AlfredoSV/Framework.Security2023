@@ -10,7 +10,7 @@ namespace Framework.Security2023.Dtos
     public class DtoRole
     {
         public Guid Id { get; set; }
-        //public IEnumerable<Permission> Permissions { get; set; }
+        public List<DtoPermission> Permissions { get; set; }
         public string RolName;
         public DateTime DateCreated;
         public Guid UserCreated;

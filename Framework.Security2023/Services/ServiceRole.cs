@@ -25,7 +25,7 @@ namespace Framework.Security2023.Services
             if (role is null)
                 return null;
 
-            IEnumerable<Permission> permissions = _repositoryPermission.GetPermission(role.Id);
+            List<Permission> permissions = _repositoryPermission.GetPermission(role.Id);
 
             role.Permissions = permissions;
 

@@ -95,7 +95,7 @@ namespace Framework.Security2023.Services
             dtoUserFkw.LoginSessions = user.LoginSessions;
             dtoUserFkw.UserBlocked = user.UserBlocked;
 
-            //Toeken
+            //Token
             dtoUserToken.UserId = user.UserToken.UserId;
             dtoUserToken.Token = user.UserToken.Token;
             dtoUserToken.DateExpiration = user.UserToken.DateExpiration;
@@ -103,22 +103,59 @@ namespace Framework.Security2023.Services
             dtoUserFkw.RolId = user.RolId;
 
             //Role
-            //dtoUserFkw.Role.
+            dtoUserFkw.Role = new DtoRole();
+            dtoUserFkw.Role.Id = user.Role.Id;
+            dtoUserFkw.Role.RolName = user.Role.RolName;
+            dtoUserFkw.Role.DateCreated = user.Role.DateCreated;
+
+            foreach (Permission permission in user.Role.Permissions)
+            {
+                dtoUserFkw.Role.Permissions.Add(new DtoPermission()
+                {
+                    Permision = permission.Permision
+                    ,Id = permission.Id
+                    ,Description = permission.Description
+                    ,Module = permission.Module,
+                    RolId = permission.RolId
+                });
+
+            }
+
+            dtoUserFkw.Role.UserCreated = user.Role.UserCreated;
+            dtoUserFkw.Role.Status = user.Role.Status;
+
+            //DtoUserInformation
+            dtoUserFkw.UserInformation = new DtoUserInformation();
+            dtoUserFkw.UserInformation.IdUser = user.UserInformation.IdUser;
+            dtoUserFkw.UserInformation.Name = user.UserInformation.Name;
+            dtoUserFkw.UserInformation.LastName = user.UserInformation.LastName;    
+            dtoUserFkw.UserInformation.Age = user.UserInformation.Age;
+            dtoUserFkw.UserInformation.DateCreated = user.UserInformation.DateCreated;
+            dtoUserFkw.UserInformation.Address = user.UserInformation.Address;
+            dtoUserFkw.UserInformation.Email = user.UserInformation.Email;
+            dtoUserFkw.UserInformation.UserCreated = user.UserInformation.UserCreated;
+
+            dtoUserFkw.ApplyToken = user.ApplyToken;
             dtoLoginResponse.User = dtoUserFkw;
             _serviceUser.UpdateLoginSessions(user.Id);
             return dtoLoginResponse;
 
         }
 
-        public void GenerateChangePasswordRequest(Guid userId,
-            string url)
+        public void GenerateChangePasswordRequest(string userName,
+            string urlBase)
         {
-            UserFkw userFkw = _serviceUser.GetUserById(userId);
-            DateTime dateTime = DateTime.Now;
+            UserFkw userFkw = _serviceUser.GetUserByUserName(userName);
+            DateTime dateTime = DateTime.Now;         
             ChangePasswordRequest changePasswordRequest =
-                ChangePasswordRequest.Create(userId, dateTime.AddHours(2), dateTime);
+                ChangePasswordRequest.Create(userFkw.Id, dateTime.AddHours(2), dateTime);
+
+            if (string.IsNullOrEmpty(urlBase))
+                throw new ArgumentNullException("urlBase");
+
             _changePasswordRequestRepo.Save(changePasswordRequest);
-            _serviceEmail.SendEmailForgetPassword(userFkw.UserName, userFkw.UserInformation.Email, url);
+            urlBase += $"/{userFkw.Id}/{changePasswordRequest.IdRequest}";
+            _serviceEmail.SendEmailForgetPassword(userFkw.UserName, userFkw.UserInformation.Email, urlBase);
         }
 
         public void ChangePassword(DtoChangePassword dtoChangePassword)

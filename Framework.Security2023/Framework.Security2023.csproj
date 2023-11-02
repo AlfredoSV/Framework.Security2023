@@ -47,6 +47,7 @@
     <Compile Include="Dtos\DtoChangePassword.cs" />
     <Compile Include="Dtos\DtoLogin.cs" />
     <Compile Include="Dtos\DtoLoginResponse.cs" />
+    <Compile Include="Dtos\DtoPermission.cs" />
     <Compile Include="Dtos\DtoRole.cs" />
     <Compile Include="Dtos\DtoUserFkw.cs" />
     <Compile Include="Dtos\DtoUserToken.cs" />

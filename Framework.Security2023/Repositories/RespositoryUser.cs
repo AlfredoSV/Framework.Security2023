@@ -1,5 +1,6 @@
 ﻿using Framework.Security2023.Entities;
 using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace Framework.Security2023.Repositories
@@ -16,36 +17,14 @@ namespace Framework.Security2023.Repositories
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        internal bool ValidateUser(string userName,string email)
+        internal bool ValidateUser(string userName, string email)
         {
 
             userName = string.IsNullOrEmpty(userName) ? string.Empty : userName;
             email = string.IsNullOrEmpty(email) ? string.Empty : email;
             bool result = false;
             string procedureName = @"ValidateUser";
-            SqlParameter[] sqlParameters =
-            {
-                new SqlParameter()
-                {
-                    DbType = System.Data.DbType.String,
-                    ParameterName = "userName",
-                    Value = userName,
-                    Direction =System.Data.ParameterDirection.Input
-                },
-                new SqlParameter()
-                {
-                    DbType = System.Data.DbType.String,
-                    ParameterName = "email",
-                    Value = userName,
-                    Direction =System.Data.ParameterDirection.Input
-                },
-                new SqlParameter()
-                {
-                    DbType = System.Data.DbType.Boolean,
-                    ParameterName = "result",
-                    Direction =System.Data.ParameterDirection.Output
-                }
-            };
+
             this._sqlCommand = new SqlCommand();
             using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
             {
@@ -54,16 +33,13 @@ namespace Framework.Security2023.Repositories
                 this._sqlConnection.Open();
                 this._sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 this._sqlCommand.CommandText = procedureName;
-                this._sqlCommand.Parameters.Add(sqlParameters);
-                this._sqlDataReader = this._sqlCommand.ExecuteReader();
+                this._sqlCommand.Parameters.AddWithValue("@username", userName);
+                this._sqlCommand.Parameters.AddWithValue("@email", email);
+                this._sqlCommand.Parameters.AddWithValue("@result", SqlDbType.Binary);
+                this._sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
+                this._sqlCommand.ExecuteNonQuery();
+                result = this._sqlCommand.Parameters["@result"].Value.ToString() == "1";
 
-                if (this._sqlDataReader.HasRows)
-                {
-                    this._sqlDataReader.Read();
-
-                    result = Boolean.Parse(sqlParameters[2].Value.ToString());
-
-                }
 
             }
 
@@ -320,7 +296,7 @@ namespace Framework.Security2023.Repositories
 
             return result;
 
-                    }
+        }
 
         internal int UpdateStatusBlocked(Guid userId, bool status)
         {

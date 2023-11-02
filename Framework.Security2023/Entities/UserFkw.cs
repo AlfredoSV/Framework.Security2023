@@ -40,9 +40,6 @@ namespace Framework.Security2023.Entities
         public int LoginSessions { get => _loginSessions; set => _loginSessions = value; }
         public bool UserBlocked { get => _userBlocked; set => _userBlocked = value; }
         public UserToken UserToken { get => _userToken; set => _userToken = value; }
-        public Guid RolId1 { get => _rolId; set => _rolId = value; }
-        public Role Role1 { get => _role; set => _role = value; }
-        public bool ApplyToken1 { get => _applyToken; set => _applyToken = value; }
 
         private UserFkw(Guid id, string userName, string password, 
             DateTime dateCreated, Guid userCreated, int loginSessions,

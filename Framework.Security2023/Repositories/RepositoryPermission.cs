@@ -17,7 +17,7 @@ namespace Framework.Security2023.Repositories
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        internal IEnumerable<Permission> GetPermission(Guid idRole)
+        internal List<Permission> GetPermission(Guid idRole)
         {
 
             string sql = "SELECT PermissionName, Id, RolId, PermissionDescription, Module FROM Permission WHERE RolId = @rolId;";

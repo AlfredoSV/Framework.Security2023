@@ -9,8 +9,8 @@ namespace Framework.Security2023.IServices
         DtoLoginResponse Login(DtoLogin login);
         DtoLoginResponse LoginDummy(DtoLogin userLogin);
         void ChangePassword(DtoChangePassword dtoChangePassword);
-        void GenerateChangePasswordRequest(Guid userId,
-            string url);
+        void GenerateChangePasswordRequest(string userName,
+            string urlBase);
 
     }
 }
