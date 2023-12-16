@@ -20,15 +20,15 @@ namespace Framework.Security2023.Services
 
         public Role GetRole(Guid userId)
         {
+            List<Permission> permissions = new List<Permission>();
             Role role = _repositoryRole.GetRoleByUserId(userId);
 
             if (role is null)
                 return null;
 
-            List<Permission> permissions = _repositoryPermission.GetPermission(role.Id);
+             permissions = _repositoryPermission.GetPermission(role.Id);
 
             role.Permissions = permissions;
-
             return role;
         }
 

@@ -156,6 +156,7 @@ namespace Framework.Security2023.Services
             _changePasswordRequestRepo.Save(changePasswordRequest);
             urlBase += $"/{userFkw.Id}/{changePasswordRequest.IdRequest}";
             _serviceEmail.SendEmailForgetPassword(userFkw.UserName, userFkw.UserInformation.Email, urlBase);
+
         }
 
         public void ChangePassword(DtoChangePassword dtoChangePassword)
