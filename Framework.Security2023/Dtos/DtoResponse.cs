@@ -3,7 +3,7 @@
 
 namespace Framework.Security2023.Dtos
 {
-    public class DtoResponse<T> where T : class
+    public class DtoResponse<T>
     {
         private T _data;
         public T Data
@@ -15,12 +15,15 @@ namespace Framework.Security2023.Dtos
             }
             set
             {
-                if (value == null)              
-                    throw new NullReferenceException($"What you are trying to assign to {Data.GetType().Name} is null.");
                 _data = value;
             }
         }
         public bool HasData => this._data != null;
+
+        public static DtoResponse<T> Create(T data)
+        {
+            return new DtoResponse<T>() { Data = data};
+        }
     }
 
 }

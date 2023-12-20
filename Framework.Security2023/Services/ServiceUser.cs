@@ -61,7 +61,7 @@ namespace Framework.Security2023.Services
 
         UserFkw IServiceUser.GetUserByUserName(string userName)
         {
-            return _respositoryUser.GetUserByUserName(userName);
+            return _respositoryUser.GetUserByUserName(userName).Data;
         }
 
         bool IServiceUser.UpdatePassword(Guid userId,string newPassword)
@@ -95,7 +95,7 @@ namespace Framework.Security2023.Services
             _respositoryUser.UpdateLoginSession(userId);
         }
 
-        public bool UserExistByUserNameAndEmail(string userName, string email) => (_respositoryUser.ValidateUser(userName, email));
+        public bool UserExistByUserNameAndEmail(string userName, string email) => (_respositoryUser.ValidateUser(userName, email).Data);
 
     }
 }

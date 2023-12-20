@@ -1,4 +1,5 @@
-﻿using Framework.Security2023.Entities;
+﻿using Framework.Security2023.Dtos;
+using Framework.Security2023.Entities;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -17,7 +18,7 @@ namespace Framework.Security2023.Repositories
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        internal bool ValidateUser(string userName, string email)
+        internal DtoResponse<bool> ValidateUser(string userName, string email)
         {
 
             userName = string.IsNullOrEmpty(userName) ? string.Empty : userName;
@@ -43,10 +44,10 @@ namespace Framework.Security2023.Repositories
 
             }
 
-            return result;
+            return DtoResponse<bool>.Create(result);
         }
 
-        internal UserFkw GetUserByUserName(string userName)
+        internal DtoResponse<UserFkw> GetUserByUserName(string userName)
         {
             UserFkw userResult = null;
 
@@ -91,7 +92,7 @@ namespace Framework.Security2023.Repositories
 
             }
 
-            return userResult;
+            return DtoResponse<UserFkw>.Create(userResult);
         }
 
         internal UserFkw GetUser(Guid id)
