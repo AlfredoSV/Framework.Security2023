@@ -33,7 +33,6 @@ namespace Framework.Security2023.Services
             return dtoLoginResponse;
         }
 
-
         public DtoLoginResponse Login(DtoLogin userLogin)
         {
             DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
@@ -41,7 +40,7 @@ namespace Framework.Security2023.Services
             UserFkw user = (_serviceUser.GetUserByUserName(userLogin.UserName));
             string passDb = string.Empty;
 
-            if (user is null)
+            if (user == null)
             {
                 dtoLoginResponse.StatusLogin = StatusLogin.UserOrPasswordIncorrect;
                 return dtoLoginResponse;
@@ -161,11 +160,14 @@ namespace Framework.Security2023.Services
 
         public void ChangePassword(DtoChangePassword dtoChangePassword)
         {
-            bool userExist = _serviceUser.UserExistByUserNameAndEmail(dtoChangePassword.UserName,dtoChangePassword.Email);
+      
             UserFkw userFkw = null;
             string actualPassword = string.Empty;
             bool isUpdate = false;
             bool isValidRequest = false;
+
+            bool userExist = _serviceUser.UserExistByUserName(dtoChangePassword.UserName)
+            && _serviceUser.UserExistByEmail(dtoChangePassword.Email);
 
             ChangePasswordRequest changePasswordRequest = 
                 _changePasswordRequestRepo.SelectByIdRequest(dtoChangePassword.IdRequest);
@@ -173,10 +175,9 @@ namespace Framework.Security2023.Services
             isValidRequest = changePasswordRequest != null 
                 && DateTime.Now < changePasswordRequest.DateExpired;
 
-            if (!isValidRequest)
-            {
+            if (!isValidRequest)           
                 throw new Exception("The request of password was expired.");
-            }
+            
 
             if (userExist & isValidRequest)
             {

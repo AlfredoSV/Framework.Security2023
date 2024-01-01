@@ -25,28 +25,25 @@ namespace Framework.Security2023.Services
 
         public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
         {
-            if (newUser is null)
+            if (newUser == null)
                 throw new ArgumentNullException("The object newUser is null.");
 
-            if (newUser.UserInformation is null)
+            if (newUser.UserInformation == null)
                 throw new ArgumentNullException("The object UserInformation is null.");
 
             if (!_serviceRole.RoleExist(newUser.RolId))
                 throw new ApplicationException("The role was not exist");
 
             if (isCreatedByAdmin)
-                newUser.Password = _serviceCryptography.Encrypt(newUser.UserName,
-                    newUser.Id.ToString());
-            else
-                newUser.Password = _serviceCryptography.Encrypt(newUser.Password,
+                newUser.Password = isCreatedByAdmin ? _serviceCryptography.Encrypt(newUser.UserName,
+                    newUser.Id.ToString()) : _serviceCryptography.Encrypt(newUser.Password,
                     newUser.Id.ToString());
 
             return _respositoryUser.Save(newUser);
         }
 
         public bool DeleteUser(Guid userId) => _respositoryUser.Delete(userId);
-
-      
+     
         public bool UpdateUser(UserFkw user)
         {
             user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
@@ -55,7 +52,6 @@ namespace Framework.Security2023.Services
 
             return res > 0;
         }
-
 
         UserFkw IServiceUser.GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
 
@@ -95,7 +91,9 @@ namespace Framework.Security2023.Services
             _respositoryUser.UpdateLoginSession(userId);
         }
 
-        public bool UserExistByUserNameAndEmail(string userName, string email) => (_respositoryUser.ValidateUser(userName, email).Data);
+        public bool UserExistByEmail(string email) => (_respositoryUser.ValidateUserByEmail(email).Data);
+
+        public bool UserExistByUserName(string userName) => (_respositoryUser.ValidateUserByUserName(userName).Data);
 
     }
 }

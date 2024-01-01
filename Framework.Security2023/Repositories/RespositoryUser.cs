@@ -18,10 +18,9 @@ namespace Framework.Security2023.Repositories
             this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        internal DtoResponse<bool> ValidateUser(string userName, string email)
+        internal DtoResponse<bool> ValidateUserByEmail(string email)
         {
 
-            userName = string.IsNullOrEmpty(userName) ? string.Empty : userName;
             email = string.IsNullOrEmpty(email) ? string.Empty : email;
             bool result = false;
             string procedureName = @"ValidateUser";
@@ -34,8 +33,8 @@ namespace Framework.Security2023.Repositories
                 this._sqlConnection.Open();
                 this._sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 this._sqlCommand.CommandText = procedureName;
-                this._sqlCommand.Parameters.AddWithValue("@username", userName);
-                this._sqlCommand.Parameters.AddWithValue("@email", email);
+                this._sqlCommand.Parameters.AddWithValue("@type", 0);
+                this._sqlCommand.Parameters.AddWithValue("@value", email);
                 this._sqlCommand.Parameters.AddWithValue("@result", SqlDbType.Binary);
                 this._sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
                 this._sqlCommand.ExecuteNonQuery();
@@ -47,6 +46,33 @@ namespace Framework.Security2023.Repositories
             return DtoResponse<bool>.Create(result);
         }
 
+        internal DtoResponse<bool> ValidateUserByUserName(string userName)
+        {
+
+            userName = string.IsNullOrEmpty(userName) ? string.Empty : userName;
+            bool result = false;
+            string procedureName = @"ValidateUser";
+
+            this._sqlCommand = new SqlCommand();
+            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            {
+                this._sqlCommand = new SqlCommand();
+                this._sqlCommand.Connection = this._sqlConnection;
+                this._sqlConnection.Open();
+                this._sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                this._sqlCommand.CommandText = procedureName;
+                this._sqlCommand.Parameters.AddWithValue("@value", userName);
+                this._sqlCommand.Parameters.AddWithValue("@type", 1);
+                this._sqlCommand.Parameters.AddWithValue("@result", SqlDbType.Binary);
+                this._sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
+                this._sqlCommand.ExecuteNonQuery();
+                result = this._sqlCommand.Parameters["@result"].Value.ToString() == "1";
+
+
+            }
+
+            return DtoResponse<bool>.Create(result);
+        }
         internal DtoResponse<UserFkw> GetUserByUserName(string userName)
         {
             UserFkw userResult = null;
