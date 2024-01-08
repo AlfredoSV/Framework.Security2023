@@ -28,12 +28,9 @@ namespace Framework.Security2023.Services
         {
             UserToken userToken = _repositoryToken.GetLastToken(userId);
 
-            if (!token.Equals(userToken.Token))           
-                return false;
-            if (DateTime.Now > userToken.DateExpiration)
-                return false;
-
-            return true;
+            return token.Equals(userToken.Token) &&
+                !(DateTime.Now > userToken.DateExpiration);        
+           
         }
 
     

@@ -35,10 +35,14 @@ namespace Framework.Security2023.Services
 
         public DtoLoginResponse Login(DtoLogin userLogin)
         {
+            DtoUserFkw dtoUserFkw = new DtoUserFkw();
+            DtoUserToken dtoUserToken = new DtoUserToken();
+            DtoRole dtoRole = new DtoRole();
+            DtoUserInformation dtoUserInformation = new DtoUserInformation();
             DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
 
             UserFkw user = (_serviceUser.GetUserByUserName(userLogin.UserName));
-            string passDb = string.Empty;
+            string passRequest = string.Empty;
 
             if (user == null)
             {
@@ -46,9 +50,9 @@ namespace Framework.Security2023.Services
                 return dtoLoginResponse;
             }
 
-            passDb = _serviceCryptography.Descrypt(user.Password, user.Id.ToString());
+            passRequest = _serviceCryptography.Encrypt(userLogin.Password, user.Id.ToString());
 
-            if (!passDb.Equals(userLogin.Password))
+            if (!passRequest.Equals(user.Password))
             {
                 _serviceUser.SaveUserLoginAttempt(user.Id,
                         "PasswordIncorrect");
@@ -63,7 +67,6 @@ namespace Framework.Security2023.Services
                 dtoLoginResponse.StatusLogin = StatusLogin.UserBlocked;
                 return dtoLoginResponse;
             }
-
 
             if (user.LoginSessions >= 1)
             {
@@ -81,10 +84,7 @@ namespace Framework.Security2023.Services
                 dtoLoginResponse.StatusLogin = StatusLogin.RoleNotAssigned;
                 return dtoLoginResponse;
             }
-            DtoUserFkw dtoUserFkw = new DtoUserFkw();
-            DtoUserToken dtoUserToken = new DtoUserToken();
-            DtoRole dtoRole = new DtoRole();
-            DtoUserInformation dtoUserInformation = new DtoUserInformation();
+
 
             dtoUserFkw.Id = user.Id;
             dtoUserFkw.UserName = user.UserName;
@@ -160,11 +160,11 @@ namespace Framework.Security2023.Services
 
         public void ChangePassword(DtoChangePassword dtoChangePassword)
         {
-      
-            UserFkw userFkw = null;
-            string actualPassword = string.Empty;
-            bool isUpdate = false;
-            bool isValidRequest = false;
+
+            UserFkw userFkw;
+            string actualPassword;
+            bool isUpdate;
+            bool isValidRequest;
 
             bool userExist = _serviceUser.UserExistByUserName(dtoChangePassword.UserName)
             && _serviceUser.UserExistByEmail(dtoChangePassword.Email);

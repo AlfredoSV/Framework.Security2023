@@ -90,7 +90,16 @@ if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Email
 	DateCreated DATETIME NOT NULL);
  end
 
-  --delete from EmailTemplate
+ if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'ChangePasswordRequest')
+ begin 
+	CREATE TABLE ChangePasswordRequest
+	(IdRequest UNIQUEIDENTIFIER NOT NULL,
+	UserId UNIQUEIDENTIFIER NOT NULL,
+	DateExpired DATETIME NOT NULL,
+	DateCreated DATETIME NOT NULL);
+ end
+
+   --delete from EmailTemplate
  --select newid()
  INSERT INTO EmailTemplate
  VALUES('4479E1C7-E459-44CB-BB9E-93C158454CC2','ChangePassword',
@@ -101,17 +110,6 @@ if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Email
  VALUES('81D995AC-8690-4960-8292-80BAF046736A','ChangePasswordAlert',
  'Dear, @userName. \nYou request a password change, If you do not recognize this movement, please raise a ticket to support team.\nGreetings.',
  getdate());
-
-
- if not exists (Select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'ChangePasswordRequest')
- begin 
-	CREATE TABLE ChangePasswordRequest
-	(IdRequest UNIQUEIDENTIFIER NOT NULL,
-	UserId UNIQUEIDENTIFIER NOT NULL,
-	DateExpired DATETIME NOT NULL,
-	DateCreated DATETIME NOT NULL);
- end
-
 
 
  
