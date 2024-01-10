@@ -4,6 +4,7 @@ using Framework.Security2023.Entities;
 using Framework.Security2023.IServices;
 using Framework.Security2023.Repositories;
 using System;
+using System.Linq;
 
 namespace Framework.Security2023.Services
 {
@@ -26,23 +27,22 @@ namespace Framework.Security2023.Services
             _serviceEmail = new ServiceEmailSecurity();
         }
 
-        public DtoLoginResponse LoginDummy(DtoLogin userLogin)
-        {
-            DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
-            dtoLoginResponse.StatusLogin = StatusLogin.Ok;
-            return dtoLoginResponse;
-        }
+        //public DtoLoginResponse LoginDummy(DtoLogin userLogin)
+        //{
+        //    DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
+        //    dtoLoginResponse.StatusLogin = StatusLogin.Ok;
+        //    return dtoLoginResponse;
+        //}
 
         public DtoLoginResponse Login(DtoLogin userLogin)
         {
+            string passRequest = string.Empty;
             DtoUserFkw dtoUserFkw = new DtoUserFkw();
             DtoUserToken dtoUserToken = new DtoUserToken();
             DtoRole dtoRole = new DtoRole();
             DtoUserInformation dtoUserInformation = new DtoUserInformation();
             DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
-
             UserFkw user = (_serviceUser.GetUserByUserName(userLogin.UserName));
-            string passRequest = string.Empty;
 
             if (user == null)
             {
@@ -99,26 +99,25 @@ namespace Framework.Security2023.Services
             dtoUserToken.Token = user.UserToken.Token;
             dtoUserToken.DateExpiration = user.UserToken.DateExpiration;
             dtoUserFkw.UserToken = dtoUserToken;
-            dtoUserFkw.RolId = user.RolId;
 
             //Role
+            dtoUserFkw.RolId = user.RolId;
             dtoUserFkw.Role = new DtoRole();
             dtoUserFkw.Role.Id = user.Role.Id;
             dtoUserFkw.Role.RolName = user.Role.RolName;
             dtoUserFkw.Role.DateCreated = user.Role.DateCreated;
 
-            foreach (Permission permission in user.Role.Permissions)
+            user.Role.Permissions.ForEach((permission) =>
             {
                 dtoUserFkw.Role.Permissions.Add(new DtoPermission()
                 {
-                    Permision = permission.Permision
-                    ,Id = permission.Id
-                    ,Description = permission.Description
-                    ,Module = permission.Module,
+                    Permision = permission.Permision,
+                    Id = permission.Id,
+                    Description = permission.Description,
+                    Module = permission.Module,
                     RolId = permission.RolId
                 });
-
-            }
+            });
 
             dtoUserFkw.Role.UserCreated = user.Role.UserCreated;
             dtoUserFkw.Role.Status = user.Role.Status;
@@ -127,7 +126,7 @@ namespace Framework.Security2023.Services
             dtoUserFkw.UserInformation = new DtoUserInformation();
             dtoUserFkw.UserInformation.IdUser = user.UserInformation.IdUser;
             dtoUserFkw.UserInformation.Name = user.UserInformation.Name;
-            dtoUserFkw.UserInformation.LastName = user.UserInformation.LastName;    
+            dtoUserFkw.UserInformation.LastName = user.UserInformation.LastName;
             dtoUserFkw.UserInformation.Age = user.UserInformation.Age;
             dtoUserFkw.UserInformation.DateCreated = user.UserInformation.DateCreated;
             dtoUserFkw.UserInformation.Address = user.UserInformation.Address;
@@ -145,7 +144,7 @@ namespace Framework.Security2023.Services
             string urlBase)
         {
             UserFkw userFkw = _serviceUser.GetUserByUserName(userName);
-            DateTime dateTime = DateTime.Now;         
+            DateTime dateTime = DateTime.Now;
             ChangePasswordRequest changePasswordRequest =
                 ChangePasswordRequest.Create(userFkw.Id, dateTime.AddHours(2), dateTime);
 
@@ -160,24 +159,26 @@ namespace Framework.Security2023.Services
 
         public void ChangePassword(DtoChangePassword dtoChangePassword)
         {
-
-            UserFkw userFkw;
             string actualPassword;
             bool isUpdate;
             bool isValidRequest;
+            ChangePasswordRequest changePasswordRequest;
+            UserFkw userFkw;
 
-            bool userExist = _serviceUser.UserExistByUserName(dtoChangePassword.UserName)
-            && _serviceUser.UserExistByEmail(dtoChangePassword.Email);
+            bool userExist =
+            _serviceUser.UserExistByUserName(dtoChangePassword.UserName) &&  _serviceUser.UserExistByEmail(dtoChangePassword.Email);
 
-            ChangePasswordRequest changePasswordRequest = 
+            if (!userExist)
+                throw new Exception("The user was not exist.");
+
+            changePasswordRequest =
                 _changePasswordRequestRepo.SelectByIdRequest(dtoChangePassword.IdRequest);
 
-            isValidRequest = changePasswordRequest != null 
+            isValidRequest = changePasswordRequest != null
                 && DateTime.Now < changePasswordRequest.DateExpired;
 
-            if (!isValidRequest)           
+            if (!isValidRequest)
                 throw new Exception("The request of password was expired.");
-            
 
             if (userExist & isValidRequest)
             {
@@ -196,7 +197,7 @@ namespace Framework.Security2023.Services
                     throw new Exception("The password was not updated, please contact with support");
 
                 //Email alert of request
-                _serviceEmail.EmailValidForgetPassword(userFkw.UserName,userFkw.UserInformation.Email);
+                _serviceEmail.EmailValidForgetPassword(userFkw.UserName, userFkw.UserInformation.Email);
 
             }
 

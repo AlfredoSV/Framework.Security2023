@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
-using System.Security.Policy;
 
 namespace Framework.Security2023.Services
 {
@@ -23,19 +22,16 @@ namespace Framework.Security2023.Services
         {
             try
             {
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress(SmtpConfigurationSecurityFkw.Instance.UserName);
-
-                message.To.Add(emailTo);
+                Guid idTemplate = SmtpConfigurationSecurityFkw.Instance.idTemplateEmailValidForgetPassword;//Guid.Parse("81D995AC-8690-4960-8292-80BAF046736A");
                 Dictionary<string, string> paramsBody = new Dictionary<string, string>
                 {
                     { "@userName", userName }
                 };
-                Guid idTemplate = Guid.Parse("81D995AC-8690-4960-8292-80BAF046736A");
-
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress(SmtpConfigurationSecurityFkw.Instance.UserName);
+                message.To.Add(emailTo);
                 message.Body = GenerateBody(paramsBody, idTemplate);
-
-                using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com"))
+                using (SmtpClient smtpClient = new SmtpClient(SmtpConfigurationSecurityFkw.Instance.Host))
                 {
                     smtpClient.Port = SmtpConfigurationSecurityFkw.Instance.Port;
                     smtpClient.EnableSsl = SmtpConfigurationSecurityFkw.Instance.EnableSsl;
@@ -44,11 +40,11 @@ namespace Framework.Security2023.Services
                     networkCredential.Password = SmtpConfigurationSecurityFkw.Instance.Password;
                     smtpClient.Credentials = networkCredential;
                     smtpClient.Send(message);
-
                 }
             }
             catch (Exception)
             {
+                throw;
             }
         }
         void IServiceEmailSecurity.SendEmailForgetPassword(string userName,
@@ -56,20 +52,17 @@ namespace Framework.Security2023.Services
         {
             try
             {
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress(SmtpConfigurationSecurityFkw.Instance.UserName);
-
-                message.To.Add(emailTo);
+                Guid idTemplate = SmtpConfigurationSecurityFkw.Instance.idTemplateSendEmailForgetPassword; //Guid.Parse("4479E1C7-E459-44CB-BB9E-93C158454CC2");
                 Dictionary<string, string> paramsBody = new Dictionary<string, string>
                 {
                     { "@userName", userName },
                     { "@url", url }
                 };
-                Guid idTemplate = Guid.Parse("4479E1C7-E459-44CB-BB9E-93C158454CC2");
-
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress(SmtpConfigurationSecurityFkw.Instance.UserName);
+                message.To.Add(emailTo);                
                 message.Body = GenerateBody( paramsBody, idTemplate);
-
-                using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com"))
+                using (SmtpClient smtpClient = new SmtpClient(SmtpConfigurationSecurityFkw.Instance.Host))
                 {
                     smtpClient.Port = SmtpConfigurationSecurityFkw.Instance.Port;
                     smtpClient.EnableSsl = SmtpConfigurationSecurityFkw.Instance.EnableSsl;
@@ -80,7 +73,10 @@ namespace Framework.Security2023.Services
                     smtpClient.Send(message);
                 }
             }
-            catch (Exception) { }
+            catch (Exception) 
+            {
+                throw;
+            }
 
 
         }

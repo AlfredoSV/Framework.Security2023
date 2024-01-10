@@ -35,9 +35,8 @@ namespace Framework.Security2023.Services
                 throw new ApplicationException("The role was not exist");
 
             if (isCreatedByAdmin)
-                newUser.Password = isCreatedByAdmin ? _serviceCryptography.Encrypt(newUser.UserName,
-                    newUser.Id.ToString()) : _serviceCryptography.Encrypt(newUser.Password,
-                    newUser.Id.ToString());
+                newUser.Password = isCreatedByAdmin ? _serviceCryptography.Encrypt(newUser.UserName,newUser.Id.ToString()) 
+                                                    : _serviceCryptography.Encrypt(newUser.Password,newUser.Id.ToString());
 
             return _respositoryUser.Save(newUser);
         }
@@ -48,9 +47,8 @@ namespace Framework.Security2023.Services
         {
             user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
 
-            int res = _respositoryUser.Update(user);
-
-            return res > 0;
+            int result = _respositoryUser.Update(user);
+            return result > 0;
         }
 
         UserFkw IServiceUser.GetUserById(Guid userId) => _respositoryUser.GetUser(userId);

@@ -19,23 +19,28 @@ namespace Framework.Security2023.Repositories
 
         internal void Save(ChangePasswordRequest changePasswordRequest)
         {
-            string insertStr = @"INSERT INTO ChangePasswordRequest VALUES(newId(),
-            @userId,@dateExpired,@dateCreated)";
-
-            using (SqlConnection sqlConnection = new SqlConnection(_sqlStr))
+            try
             {
-                sqlConnection.Open();
-                SqlCommand cmd = sqlConnection.CreateCommand();
-                cmd.CommandText = insertStr;
-                cmd.Parameters.AddWithValue("userId", changePasswordRequest.UserId);
-                cmd.Parameters.AddWithValue("dateExpired", changePasswordRequest.DateExpired);
-                cmd.Parameters.AddWithValue("dateCreated", changePasswordRequest.DateCreated);
+                string insertStr = @"INSERT INTO ChangePasswordRequest VALUES(newId(),
+                 @userId,@dateExpired,@dateCreated)";
 
-                cmd.ExecuteNonQuery();
+                using (SqlConnection sqlConnection = new SqlConnection(_sqlStr))
+                {
+                    sqlConnection.Open();
+                    SqlCommand cmd = sqlConnection.CreateCommand();
+                    cmd.CommandText = insertStr;
+                    cmd.Parameters.AddWithValue("userId", changePasswordRequest.UserId);
+                    cmd.Parameters.AddWithValue("dateExpired", changePasswordRequest.DateExpired);
+                    cmd.Parameters.AddWithValue("dateCreated", changePasswordRequest.DateCreated);
 
-
+                    cmd.ExecuteNonQuery();
+                }
             }
+            catch (Exception e)
+            {
 
+                throw;
+            }
 
         }
 
