@@ -7,5 +7,7 @@ namespace Framework.Security2023.IServices
     {
         bool RoleExist(Guid rolId);
         Role GetRole(Guid userId);
+        bool Create(Role role);
+
     }
 }

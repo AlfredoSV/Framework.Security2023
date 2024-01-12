@@ -107,7 +107,7 @@ namespace Framework.Security2023.Services
             dtoUserFkw.Role.RolName = user.Role.RolName;
             dtoUserFkw.Role.DateCreated = user.Role.DateCreated;
 
-            user.Role.Permissions.ForEach((permission) =>
+            user.Role.Permissions.ToList().ForEach((permission) =>
             {
                 dtoUserFkw.Role.Permissions.Add(new DtoPermission()
                 {
@@ -120,7 +120,7 @@ namespace Framework.Security2023.Services
             });
 
             dtoUserFkw.Role.UserCreated = user.Role.UserCreated;
-            dtoUserFkw.Role.Status = user.Role.Status;
+            dtoUserFkw.Role.Status = user.Role.Active;
 
             //DtoUserInformation
             dtoUserFkw.UserInformation = new DtoUserInformation();

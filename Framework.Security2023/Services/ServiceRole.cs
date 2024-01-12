@@ -10,31 +10,36 @@ namespace Framework.Security2023.Services
     public class ServiceRole : IServiceRole
     {
         private readonly RepositoryRole _repositoryRole;
-        private readonly RepositoryPermission _repositoryPermission;
+        private readonly IServicePermissions _servicePermissions;
 
         public ServiceRole()
         {
-            _repositoryPermission = new RepositoryPermission();
+            _servicePermissions = new ServicePermissions();
             _repositoryRole = new RepositoryRole(); 
         }
 
         public Role GetRole(Guid userId)
         {
-            List<Permission> permissions = new List<Permission>();
+            IEnumerable<Permission> permissions = new List<Permission>();
             Role role = _repositoryRole.GetRoleByUserId(userId);
 
             if (role is null)
                 return null;
 
-             permissions = _repositoryPermission.GetPermission(role.Id);
+             permissions = _servicePermissions.GetPermission(role.Id);
 
-            role.Permissions = permissions;
+            role.SetPermissions(permissions);
             return role;
         }
 
         public bool RoleExist(Guid roleId)
         {
             return _repositoryRole.GetRoleById(roleId) != null;
+        }
+
+        public bool Create(Role role)
+        {
+            return _repositoryRole.InsertRole(role)  &&  _servicePermissions.SavePermissions(role.Permissions) ;
         }
     }
 }

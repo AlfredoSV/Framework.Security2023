@@ -64,6 +64,7 @@
     <Compile Include="Entities\UserToken.cs" />
     <Compile Include="IServices\IServiceEmailSecurity.cs" />
     <Compile Include="IServices\IServiceLogin.cs" />
+    <Compile Include="IServices\IServicePermissions.cs" />
     <Compile Include="IServices\IServiceRole.cs" />
     <Compile Include="IServices\IServiceToken.cs" />
     <Compile Include="IServices\IServiceUser.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Services\ServiceEmailSecurity.cs" />
     <Compile Include="Services\ServiceLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ServicePermissions.cs" />
     <Compile Include="Services\ServiceRole.cs" />
     <Compile Include="Services\ServiceToken.cs" />
     <Compile Include="Services\ServiceUser.cs" />

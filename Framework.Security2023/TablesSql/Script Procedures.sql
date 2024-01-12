@@ -27,3 +27,26 @@ begin
 	end
 
 end;
+
+CREATE TYPE [dbo].[tableOf_Permissions] AS TABLE(
+    Id UNIQUEIDENTIFIER not null,
+	RolId UNIQUEIDENTIFIER not null, 
+	PermissionName VARCHAR(20) not null,
+	PermissionDescription VARCHAR(100) not null,
+	Module VARCHAR(30) not null,
+	DateCreated Datetime not null,
+	UserCreated UNIQUEIDENTIFIER not null,
+	Active bit
+)
+GO
+
+
+CREATE OR ALTER PROCEDURE [dbo].[SavePermissions](@Params tableOf_Permissions READONLY)
+AS
+BEGIN
+
+	INSERT INTO Permission  
+	SELECT *
+	FROM @Params;
+
+END

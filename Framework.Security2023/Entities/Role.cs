@@ -6,18 +6,18 @@ namespace Framework.Security2023.Entities
     public class Role
     {
         private Guid _id;
-        private List<Permission> _permissions;
+        private IEnumerable<Permission> _permissions;
         private string _rolName;
         private DateTime _dateCreated;
         private Guid _userCreated;
-        private bool _status;
+        private bool _active;
 
         public Guid Id { get => _id; set => _id = value; }
-        public List<Permission> Permissions { get => _permissions; set => _permissions = value; }
+        public IEnumerable<Permission> Permissions { get => _permissions; }
         public string RolName { get => _rolName; set => _rolName = value; }
         public DateTime DateCreated { get => _dateCreated; set => _dateCreated = value; }
         public Guid UserCreated { get => _userCreated; set => _userCreated = value; }
-        public bool Status { get => _status; set => _status = value; }
+        public bool Active { get => _active; set => _active = value; }
 
 
         private Role(Guid idP, string nameRolP, DateTime dateCreatedP, Guid userCreatedP, bool statusP)
@@ -26,13 +26,17 @@ namespace Framework.Security2023.Entities
             RolName = nameRolP;
             DateCreated = dateCreatedP;
             UserCreated = userCreatedP;
-            Status = statusP;
+            Active = statusP;
         }
-
 
         public static Role Create(Guid id, string rolNAame, DateTime dateCreated, Guid userCreated, bool status)
         {
             return new Role(id, rolNAame,  dateCreated,  userCreated,  status);
+        }
+
+        public void SetPermissions(IEnumerable<Permission> permissions)
+        {
+            _permissions = permissions;
         }
        
     }

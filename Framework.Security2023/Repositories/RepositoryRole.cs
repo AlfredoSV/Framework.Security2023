@@ -76,6 +76,25 @@ namespace Framework.Security2023.Repositories
             return role;
         }
 
+        internal bool InsertRole(Role rol)
+        {
+            string sql = @"INSERT INTO Rol Values(@Id,@RolName,@DateCreated,@UserCreated,@Active);";
+
+            this._sqlCommand = new SqlCommand();
+
+            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            {
+                this._sqlConnection.Open();
+                this._sqlCommand = new SqlCommand(sql, this._sqlConnection);
+                this._sqlCommand.Parameters.AddWithValue("@Id" , rol.Id);
+                this._sqlCommand.Parameters.AddWithValue("@RolName", rol.RolName);
+                this._sqlCommand.Parameters.AddWithValue("@DateCreated", rol.DateCreated);
+                this._sqlCommand.Parameters.AddWithValue("@UserCreated", rol.UserCreated);
+                this._sqlCommand.Parameters.AddWithValue("@Active", rol.Active);               
+                return this._sqlCommand.ExecuteNonQuery() == 1;
+            }
+        }
+
 
     }
 }
