@@ -79,36 +79,7 @@ namespace Framework.Security2023.Repositories
             }
         }
 
-        //private DataTable ConvertToDataTable(List<Permission> permission)
-        //{
-        //    DataTable dataTable = new DataTable();
-
-        //    DataColumn[] dataColumns = new DataColumn[]
-        //    {
-        //        new DataColumn("Id"),
-        //        new DataColumn("RolId"),
-        //        new DataColumn("PermissionName"),
-        //        new DataColumn("PermissionDescription"),
-        //        new DataColumn("Module"),
-        //        new DataColumn("DateCreated"),
-        //        new DataColumn("UserCreated"),
-        //        new DataColumn("Active")
-        //    };
-        //    dataTable.Columns.AddRange(dataColumns);
-
-
-        //    for (int i = 0; i < permission.Count; i++)
-        //    {
-        //        DataRow dataRow = dataTable.NewRow();
-        //        dataRow[i] = new object[]{ permission[i].Id,permission[i].RolId,permission[i].Permision,
-        //            permission[i].Description, permission[i].Module, permission[i].DateCreated, permission[i].UserCreated,permission[i].Active};
-        //        dataTable.Rows.Add(dataRow);
-        //    }
-
-        //    return dataTable;
-        //}
-
-        static DataTable ConvertToDataTable<T>(IEnumerable<T> collection)
+        private static DataTable ConvertToDataTable<T>(IEnumerable<T> collection)
         {
             DataTable dataTable = new DataTable();
             var properties = typeof(T).GetProperties();

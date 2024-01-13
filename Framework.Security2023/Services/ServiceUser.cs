@@ -34,15 +34,15 @@ namespace Framework.Security2023.Services
             if (!_serviceRole.RoleExist(newUser.RolId))
                 throw new ApplicationException("The role was not exist");
 
-            if (isCreatedByAdmin)
-                newUser.Password = isCreatedByAdmin ? _serviceCryptography.Encrypt(newUser.UserName,newUser.Id.ToString()) 
-                                                    : _serviceCryptography.Encrypt(newUser.Password,newUser.Id.ToString());
+
+            newUser.Password = isCreatedByAdmin ? _serviceCryptography.Encrypt(newUser.UserName, newUser.Id.ToString())
+                                                : _serviceCryptography.Encrypt(newUser.Password, newUser.Id.ToString());
 
             return _respositoryUser.Save(newUser);
         }
 
         public bool DeleteUser(Guid userId) => _respositoryUser.Delete(userId);
-     
+
         public bool UpdateUser(UserFkw user)
         {
             user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
@@ -58,7 +58,7 @@ namespace Framework.Security2023.Services
             return _respositoryUser.GetUserByUserName(userName).Data;
         }
 
-        bool IServiceUser.UpdatePassword(Guid userId,string newPassword)
+        bool IServiceUser.UpdatePassword(Guid userId, string newPassword)
         {
             newPassword = _serviceCryptography.Encrypt(newPassword,
                 userId.ToString());
@@ -68,7 +68,7 @@ namespace Framework.Security2023.Services
 
             return (rowUpdated >= 1);
         }
-        
+
         void IServiceUser.UpdateStatusBlocked(Guid userId)
         {
             IEnumerable<UserLoginAttempts> userLoginAttempts = _repositoryUserLoginAttempts.GetLoginAttemptsByUserId(userId);

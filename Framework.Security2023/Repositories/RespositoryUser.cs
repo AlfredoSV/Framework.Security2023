@@ -174,21 +174,21 @@ namespace Framework.Security2023.Repositories
 
             bool result;
             string sqlInsertUser = "INSERT INTO UserFkw VALUES(@id, @userName, @password, @dateCreated, @userCreated, @loginSessions,@rolId, @applyToken, @userBlocked);";
-            string sqlInsertUserInformation = "INSERT INTO UserInformation VALUES(@id, @name, @lastName, @age, @dateCreated, @address,@email, @userCreated);";
+            string sqlInsertUserInformation = "INSERT INTO UserInformation VALUES(@IdUser, @name, @lastName, @age, @dateCreated, @address,@email, @userCreated);";
 
             SqlTransaction sqlTransaction = null;
 
             this._sqlCommand = new SqlCommand();
             try
             {
+                
 
                 this._sqlConnection = new SqlConnection(this._sqlTextConnection);
-
+                this._sqlConnection.Open();
                 sqlTransaction = this._sqlConnection.BeginTransaction();
                 this._sqlCommand = new SqlCommand();
                 this._sqlCommand.Connection = this._sqlConnection;
                 this._sqlCommand.Transaction = sqlTransaction;
-                this._sqlConnection.Open();
 
                 this._sqlCommand.CommandText = sqlInsertUser;
                 this._sqlCommand.Parameters.AddWithValue("Id", newUser.Id);
@@ -202,9 +202,10 @@ namespace Framework.Security2023.Repositories
                 this._sqlCommand.Parameters.AddWithValue("applyToken", newUser.ApplyToken);
                 result = this._sqlCommand.ExecuteNonQuery() > 0;
 
+                this._sqlCommand.Parameters.Clear();
 
                 this._sqlCommand.CommandText = sqlInsertUserInformation;
-                this._sqlCommand.Parameters.AddWithValue("Id", newUser.UserInformation.IdUser);
+                this._sqlCommand.Parameters.AddWithValue("IdUser", newUser.UserInformation.IdUser);
                 this._sqlCommand.Parameters.AddWithValue("name", newUser.UserInformation.Name);
                 this._sqlCommand.Parameters.AddWithValue("lastName", newUser.UserInformation.LastName);
                 this._sqlCommand.Parameters.AddWithValue("dateCreated", newUser.UserInformation.DateCreated);

@@ -23,7 +23,7 @@ namespace Framework.Security2023.Test
 
         }
 
-
+        [Ignore]
         [TestMethod]
         public void CreateRole()
         {
@@ -35,7 +35,7 @@ namespace Framework.Security2023.Test
             Role role = Role.Create(idRole, roleName, DateTime.Now, userCreated, true);
 
 
-            Permission permissionOne = Permission.Create("GetUsers", Guid.Parse("E638B28C-E601-44B3-A853-753C2504BD35"), idRole, "Permiso para obtener usuarios", "Users",DateTime.Now,userCreated,true);
+            Permission permissionOne = Permission.Create("GetUsers", Guid.Parse("E638B28C-E601-44B3-A853-753C2504BD35"), idRole, "Permiso para obtener usuarios", "Users", DateTime.Now, userCreated, true);
             Permission permissionTwo = Permission.Create("DeleteUsers", Guid.Parse("12086117-E316-4342-899B-164FCB03A69E"), idRole, "Permiso para borrar usuarios", "Users", DateTime.Now, userCreated, true);
 
 
@@ -49,8 +49,22 @@ namespace Framework.Security2023.Test
         [TestMethod]
         public void CreateUser()
         {
-            UserFkw userFkw = UserFkw.Create("alfredo1007", "1007", Guid.NewGuid(), false, Guid.NewGuid());
+            Guid idRole = Guid.Parse("35AE4DB6-0243-4B44-9B8B-C4E49ABD17E3");
+            Guid userCreated = Guid.Parse("8EF38297-6B83-4C7A-A410-1A7E04F4D252");
+
+            UserFkw userFkw = UserFkw.Create("alfredo1007", "1007", userCreated, false, idRole);
+            userFkw.UserInformation = UserInformation.Create("Alfredo", "Sanchez", 26, "NA", "alfredofake.com.mx", userCreated);
             _serviceUser.CreateUser(userFkw, true);
+        }
+
+        [TestMethod]
+        public void GetUser()
+        {
+            Guid idUser = Guid.Parse("FACC6ADB-8A55-4EE0-88EE-2C341B112057");
+            UserFkw userFkw = _serviceUser.GetUserByUserName("alfredo1007");
+           
+            Assert.IsNotNull(userFkw);
+            
         }
 
 

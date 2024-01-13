@@ -13,7 +13,7 @@ GO
 	CREATE TABLE UserFkw(
 	Id UNIQUEIDENTIFIER not null, 
 	UserName VARCHAR(30) not null,
-	Password VARCHAR(20) not null,
+	Password VARCHAR(200) not null,
 	DateCreated Datetime not null,
 	UserCreated UNIQUEIDENTIFIER not null,
 	LoginSessions INTEGER not null,
