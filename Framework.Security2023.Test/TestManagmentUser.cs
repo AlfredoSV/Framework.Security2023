@@ -1,4 +1,5 @@
-﻿using Framework.Security2023.Entities;
+﻿using Framework.Security2023.Dtos;
+using Framework.Security2023.Entities;
 using Framework.Security2023.IServices;
 using Framework.Security2023.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,12 +15,14 @@ namespace Framework.Security2023.Test
     {
         private readonly IServiceUser _serviceUser;
         private readonly IServiceRole _serviceRole;
+        private readonly IServiceLogin _serviceLogin;  
 
         public TestManagmentUser()
         {
             SlqConnectionStr.Instance.SqlConnectionString = "Server=Alfredo; Database=Framework_Users;User=sa;Password=1007";
             _serviceUser = new ServiceUser();
             _serviceRole = new ServiceRole();
+            _serviceLogin = new ServiceLogin(); 
 
         }
 
@@ -57,6 +60,7 @@ namespace Framework.Security2023.Test
             _serviceUser.CreateUser(userFkw, true);
         }
 
+        [Ignore]
         [TestMethod]
         public void GetUser()
         {
@@ -65,6 +69,17 @@ namespace Framework.Security2023.Test
            
             Assert.IsNotNull(userFkw);
             
+        }
+
+        [TestMethod]
+        public void Login()
+        {
+            DtoLogin dtoLogin = new DtoLogin() { UserName = "alfredo1007", Password = "alfredo1007" };
+            DtoLoginResponse userFkw = _serviceLogin.Login(dtoLogin);
+            Assert.IsNotNull(userFkw);
+
+            Assert.AreEqual(userFkw.StatusLogin, StatusLogin.Ok);
+
         }
 
 

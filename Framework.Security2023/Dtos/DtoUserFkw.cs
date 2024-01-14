@@ -6,16 +6,15 @@ namespace Framework.Security2023.Dtos
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
         public DateTime DateCreated { get; set; }
         public Guid UserCreated { get; set; }
         public int LoginSessions { get; set; }
         public bool UserBlocked { get; set; }
-        public DtoUserToken UserToken { get; set; }
-        public Guid RolId { get; set; }
-        public DtoRole Role { get; set; }
+        public Guid RolId { get; set; }    
         public bool ApplyToken { get; set; }
+        public DtoUserToken UserToken { get; set; }
         public DtoUserInformation UserInformation { get; set; }
+        public DtoRole Role { get; set; }
 
     }
 }

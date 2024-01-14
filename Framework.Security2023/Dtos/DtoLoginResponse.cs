@@ -9,13 +9,7 @@ namespace Framework.Security2023.Dtos
 {
     public class DtoLoginResponse
     {
- 
-        public string UserName{ get; set;}
-        public string Password { get; set; }
-
         public StatusLogin StatusLogin;
         public DtoUserFkw User { get; set; }
-
-
     }
 }

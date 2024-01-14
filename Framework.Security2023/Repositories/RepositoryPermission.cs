@@ -39,7 +39,7 @@ namespace Framework.Security2023.Repositories
                 {
                     while (this._sqlDataReader.Read())
                     {
-                        this._sqlDataReader.Read();
+                        
                         permissions.Add(Permission.Create(
                             this._sqlDataReader.GetString(0),
                             this._sqlDataReader.GetGuid(1),

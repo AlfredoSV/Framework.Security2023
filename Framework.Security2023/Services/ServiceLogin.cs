@@ -4,6 +4,7 @@ using Framework.Security2023.Entities;
 using Framework.Security2023.IServices;
 using Framework.Security2023.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Framework.Security2023.Services
@@ -43,6 +44,8 @@ namespace Framework.Security2023.Services
             DtoUserInformation dtoUserInformation = new DtoUserInformation();
             DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
             UserFkw user = (_serviceUser.GetUserByUserName(userLogin.UserName));
+
+            dtoLoginResponse.StatusLogin = StatusLogin.Ok;
 
             if (user == null)
             {
@@ -88,25 +91,27 @@ namespace Framework.Security2023.Services
 
             dtoUserFkw.Id = user.Id;
             dtoUserFkw.UserName = user.UserName;
-            dtoUserFkw.Password = user.Password;
             dtoUserFkw.DateCreated = user.DateCreated;
             dtoUserFkw.UserCreated = user.UserCreated;
             dtoUserFkw.LoginSessions = user.LoginSessions;
             dtoUserFkw.UserBlocked = user.UserBlocked;
 
             //Token
-            dtoUserToken.UserId = user.UserToken.UserId;
-            dtoUserToken.Token = user.UserToken.Token;
-            dtoUserToken.DateExpiration = user.UserToken.DateExpiration;
-            dtoUserFkw.UserToken = dtoUserToken;
-
+            if(user.UserToken != null)
+            {
+                dtoUserToken.UserId = user.UserToken.UserId;
+                dtoUserToken.Token = user.UserToken.Token;
+                dtoUserToken.DateExpiration = user.UserToken.DateExpiration;
+                dtoUserFkw.UserToken = dtoUserToken;
+            }
+           
             //Role
             dtoUserFkw.RolId = user.RolId;
             dtoUserFkw.Role = new DtoRole();
             dtoUserFkw.Role.Id = user.Role.Id;
             dtoUserFkw.Role.RolName = user.Role.RolName;
             dtoUserFkw.Role.DateCreated = user.Role.DateCreated;
-
+            dtoUserFkw.Role.Permissions = new List<DtoPermission>();
             user.Role.Permissions.ToList().ForEach((permission) =>
             {
                 dtoUserFkw.Role.Permissions.Add(new DtoPermission()
