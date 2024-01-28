@@ -140,7 +140,7 @@ namespace Framework.Security2023.Services
 
             dtoUserFkw.ApplyToken = user.ApplyToken;
             dtoLoginResponse.User = dtoUserFkw;
-            _serviceUser.UpdateLoginSessions(user.Id);
+            _serviceUser.UpdateLoginSessions(user.Id,1);
             return dtoLoginResponse;
 
         }
@@ -207,6 +207,11 @@ namespace Framework.Security2023.Services
             }
 
 
+        }
+
+        public void SignOut(Guid userId)
+        {
+            _serviceUser.UpdateLoginSessions(userId, 0);
         }
     }
 }

@@ -84,9 +84,9 @@ namespace Framework.Security2023.Services
                 SaveLoginAttempt(UserLoginAttempts.Create(userId, description));
         }
 
-        void IServiceUser.UpdateLoginSessions(Guid userId)
+        void IServiceUser.UpdateLoginSessions(Guid userId, int sessions)
         {
-            _respositoryUser.UpdateLoginSession(userId);
+            _respositoryUser.UpdateLoginSession(userId,sessions);
         }
 
         public bool UserExistByEmail(string email) => (_respositoryUser.ValidateUserByEmail(email).Data);

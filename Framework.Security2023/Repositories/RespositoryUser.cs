@@ -368,14 +368,14 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        internal void UpdateLoginSession(Guid userId)
+        internal void UpdateLoginSession(Guid userId, int session)
         {
 
             int result;
             string sqlGetUser = @"
              UPDATE dbo.UserFkw
              SET 
-	         LoginSessions = 1
+	         LoginSessions = @session
              WHERE Id = @Id;";
             this._sqlCommand = new SqlCommand();
             using (_sqlConnection = new SqlConnection(this._sqlTextConnection))
@@ -385,6 +385,7 @@ namespace Framework.Security2023.Repositories
                 _sqlConnection.Open();
                 _sqlCommand.CommandText = sqlGetUser;
                 _sqlCommand.Parameters.AddWithValue("Id", userId);
+                _sqlCommand.Parameters.AddWithValue("session", session);
                 result = _sqlCommand.ExecuteNonQuery();
 
             }

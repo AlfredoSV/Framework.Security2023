@@ -12,7 +12,7 @@ namespace Framework.Security2023.IServices
         bool UpdateUser(UserFkw user);
         bool UserExistByEmail(string email);
         bool UserExistByUserName(string userName);
-        void UpdateLoginSessions(Guid userId);
+        void UpdateLoginSessions(Guid userId, int sessions);
         UserFkw GetUserById(Guid userId);
         void UpdateStatusBlocked(Guid userId);
         void SaveUserLoginAttempt(Guid userId, string description);
