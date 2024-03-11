@@ -24,7 +24,7 @@ namespace Framework.Security2023.Services
             Role role = _repositoryRole.GetRoleByUserId(userId);
 
             if (role is null)
-                return null;
+                throw new NullReferenceException(role.ToString());
 
              permissions = _servicePermissions.GetPermission(role.Id);
 

@@ -81,7 +81,7 @@ namespace Framework.Security2023.Services
 
         }
 
-        private string GenerateBody(Dictionary<string, string> paramsBody,
+        private string GenerateBody(IDictionary<string, string> paramsBody,
           Guid idTemplate)
         {
             TemplateEmail template = _repositoryTemplatesEmail.GetByid(idTemplate);

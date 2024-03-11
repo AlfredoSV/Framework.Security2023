@@ -25,10 +25,10 @@ namespace Framework.Security2023.Services
 
         public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
         {
-            if (newUser == null)
+            if (newUser is null)
                 throw new ArgumentNullException("The object newUser is null.");
 
-            if (newUser.UserInformation == null)
+            if (newUser.UserInformation is null)
                 throw new ArgumentNullException("The object UserInformation is null.");
 
             if (!_serviceRole.RoleExist(newUser.RolId))

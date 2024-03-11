@@ -47,7 +47,7 @@ namespace Framework.Security2023.Services
 
             dtoLoginResponse.StatusLogin = StatusLogin.Ok;
 
-            if (user == null)
+            if (user is null)
             {
                 dtoLoginResponse.StatusLogin = StatusLogin.UserOrPasswordIncorrect;
                 return dtoLoginResponse;
@@ -97,7 +97,7 @@ namespace Framework.Security2023.Services
             dtoUserFkw.UserBlocked = user.UserBlocked;
 
             //Token
-            if(user.UserToken != null)
+            if(!(user.UserToken is null))
             {
                 dtoUserToken.UserId = user.UserToken.UserId;
                 dtoUserToken.Token = user.UserToken.Token;

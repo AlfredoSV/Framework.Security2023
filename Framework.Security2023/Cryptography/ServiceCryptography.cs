@@ -8,8 +8,14 @@ namespace Framework.Security2023.Cryptography
     public class ServiceCryptography: IServiceCryptography
     {
 
+        public ServiceCryptography() { 
+            
+        }
+
         public string Encrypt(string str, string key)
         {
+            ValidateParameters(str, key);
+
             str = str.Trim();
             key = key.Trim();
 
@@ -32,6 +38,8 @@ namespace Framework.Security2023.Cryptography
 
         public string Descrypt(string str, string key)
         {
+            ValidateParameters(str, key);
+
             str = str.Trim();
             key = key.Trim();
 
@@ -51,6 +59,16 @@ namespace Framework.Security2023.Cryptography
             tripledes.Clear();
             string str_des = UTF8Encoding.UTF8.GetString(result); 
             return str_des; 
+        }
+
+
+        public void ValidateParameters(string value, string key)
+        {
+            if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+                throw new ArgumentNullException(nameof(value));
+
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+                throw new ArgumentNullException(nameof(key));
         }
 
     }
