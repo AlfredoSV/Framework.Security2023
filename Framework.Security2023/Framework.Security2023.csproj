@@ -75,6 +75,11 @@
     <Compile Include="Repositories\RepositoryToken.cs" />
     <Compile Include="Repositories\RepositoryUserLoginAttempts.cs" />
     <Compile Include="Repositories\RespositoryUser.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\ServiceEmailSecurity.cs" />
     <Compile Include="Services\ServiceLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +93,12 @@
   <ItemGroup>
     <Content Include="TablesSql\Script Procedures.sql" />
     <Content Include="TablesSql\Scripts Table Fkw.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

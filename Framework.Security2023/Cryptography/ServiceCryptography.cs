@@ -8,10 +8,6 @@ namespace Framework.Security2023.Cryptography
     public class ServiceCryptography: IServiceCryptography
     {
 
-        public ServiceCryptography() { 
-            
-        }
-
         public string Encrypt(string str, string key)
         {
             ValidateParameters(str, key);

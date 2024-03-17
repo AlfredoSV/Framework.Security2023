@@ -26,13 +26,13 @@ namespace Framework.Security2023.Services
         public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
         {
             if (newUser is null)
-                throw new ArgumentNullException("The object newUser is null.");
+                throw new ArgumentNullException( string.Format(Resources.ObjectIsNullMessage,nameof(newUser)));
 
             if (newUser.UserInformation is null)
-                throw new ArgumentNullException("The object UserInformation is null.");
+                throw new ArgumentNullException(string.Format(Resources.ObjectIsNullMessage,nameof(newUser.UserInformation)));
 
             if (!_serviceRole.RoleExist(newUser.RolId))
-                throw new ApplicationException("The role was not exist");
+                throw new ApplicationException(string.Format(Resources.ValueNotExistsMessage,"Role"));
 
 
             newUser.Password = isCreatedByAdmin ? _serviceCryptography.Encrypt(newUser.UserName, newUser.Id.ToString())
