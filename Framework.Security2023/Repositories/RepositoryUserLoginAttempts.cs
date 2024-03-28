@@ -14,7 +14,7 @@ namespace Framework.Security2023.Repositories
 
         internal RepositoryUserLoginAttempts()
         {
-            this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
+            _sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
         internal IEnumerable<UserLoginAttempts> GetLoginAttemptsByUserId(Guid userId)
@@ -22,10 +22,10 @@ namespace Framework.Security2023.Repositories
             List<UserLoginAttempts> result = new List<UserLoginAttempts>();
             string sql = "SELECT IdUser, Description, DateCreated FROM UserLoginAttempts where IdUser = @userId;";
             _sqlCommand = new SqlCommand();
-            using (_sqlConnection = new SqlConnection(this._sqlTextConnection))
+            using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
                 _sqlCommand = new SqlCommand();
-                _sqlCommand.Connection = this._sqlConnection;
+                _sqlCommand.Connection = _sqlConnection;
                 _sqlConnection.Open();
                 _sqlCommand.CommandText = sql;
                 _sqlCommand.Parameters.AddWithValue("userId", userId);
@@ -51,17 +51,17 @@ namespace Framework.Security2023.Repositories
             int result;
             string sqlGetUser = "INSERT INTO UserLoginAttempts " +
                 "VALUES(@userId, @description, @dateCreated);";
-            this._sqlCommand = new SqlCommand();
-            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            _sqlCommand = new SqlCommand();
+            using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
-                this._sqlCommand = new SqlCommand();
-                this._sqlCommand.Connection = this._sqlConnection;
-                this._sqlConnection.Open();
-                this._sqlCommand.CommandText = sqlGetUser;
-                this._sqlCommand.Parameters.AddWithValue("userId", userLoginAttempt.IdUser);
-                this._sqlCommand.Parameters.AddWithValue("description", userLoginAttempt.Description);
-                this._sqlCommand.Parameters.AddWithValue("dateCreated", userLoginAttempt.DateCreated);
-                result = this._sqlCommand.ExecuteNonQuery();
+                _sqlCommand = new SqlCommand();
+                _sqlCommand.Connection = _sqlConnection;
+                _sqlConnection.Open();
+                _sqlCommand.CommandText = sqlGetUser;
+                _sqlCommand.Parameters.AddWithValue("userId", userLoginAttempt.IdUser);
+                _sqlCommand.Parameters.AddWithValue("description", userLoginAttempt.Description);
+                _sqlCommand.Parameters.AddWithValue("dateCreated", userLoginAttempt.DateCreated);
+                result = _sqlCommand.ExecuteNonQuery();
 
             }
 

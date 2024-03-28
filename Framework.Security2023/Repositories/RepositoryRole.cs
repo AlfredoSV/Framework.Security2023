@@ -12,7 +12,7 @@ namespace Framework.Security2023.Repositories
         private readonly string _sqlTextConnection;
 
         public RepositoryRole(){
-            this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
+            _sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
         internal Role GetRoleByUserId(Guid userId)
@@ -21,23 +21,23 @@ namespace Framework.Security2023.Repositories
                         us on ro.Id = us.RolId where us.Id = @userId";
 
             Role role = null;
-            this._sqlCommand = new SqlCommand();
-            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            _sqlCommand = new SqlCommand();
+            using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
-                this._sqlCommand = new SqlCommand(sql,this._sqlConnection);
-                this._sqlConnection.Open();
-                this._sqlCommand.Parameters.AddWithValue("userId", userId);
-                this._sqlDataReader = this._sqlCommand.ExecuteReader();
+                _sqlCommand = new SqlCommand(sql,_sqlConnection);
+                _sqlConnection.Open();
+                _sqlCommand.Parameters.AddWithValue("userId", userId);
+                _sqlDataReader = _sqlCommand.ExecuteReader();
 
-                if (this._sqlDataReader.HasRows)
+                if (_sqlDataReader.HasRows)
                 {
-                    this._sqlDataReader.Read();
+                    _sqlDataReader.Read();
                     role = Role.Create(
-                        this._sqlDataReader.GetGuid(0),
-                        this._sqlDataReader.GetString(1),
-                        this._sqlDataReader.GetDateTime(2),
-                        this._sqlDataReader.GetGuid(3),
-                        this._sqlDataReader.GetBoolean(4)
+                        _sqlDataReader.GetGuid(0),
+                        _sqlDataReader.GetString(1),
+                        _sqlDataReader.GetDateTime(2),
+                        _sqlDataReader.GetGuid(3),
+                        _sqlDataReader.GetBoolean(4)
                         );
                 }
 
@@ -51,23 +51,23 @@ namespace Framework.Security2023.Repositories
             string sql = @"SELECT ro.Id, ro.RolName, ro.DateCreated, ro.UserCreated ,ro.Active from Rol ro where ro.Id = @roleId";
 
             Role role = null;
-            this._sqlCommand = new SqlCommand();
-            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            _sqlCommand = new SqlCommand();
+            using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
-                this._sqlCommand = new SqlCommand(sql, this._sqlConnection);
-                this._sqlConnection.Open();
-                this._sqlCommand.Parameters.AddWithValue("roleId", roleId);
-                this._sqlDataReader = this._sqlCommand.ExecuteReader();
+                _sqlCommand = new SqlCommand(sql, _sqlConnection);
+                _sqlConnection.Open();
+                _sqlCommand.Parameters.AddWithValue("roleId", roleId);
+                _sqlDataReader = _sqlCommand.ExecuteReader();
 
-                if (this._sqlDataReader.HasRows)
+                if (_sqlDataReader.HasRows)
                 {
-                    this._sqlDataReader.Read();
+                    _sqlDataReader.Read();
                     role = Role.Create(
-                        this._sqlDataReader.GetGuid(0),
-                        this._sqlDataReader.GetString(1),
-                        this._sqlDataReader.GetDateTime(2),
-                        this._sqlDataReader.GetGuid(3),
-                        this._sqlDataReader.GetBoolean(4)
+                        _sqlDataReader.GetGuid(0),
+                        _sqlDataReader.GetString(1),
+                        _sqlDataReader.GetDateTime(2),
+                        _sqlDataReader.GetGuid(3),
+                        _sqlDataReader.GetBoolean(4)
                         );
                 }
 
@@ -80,18 +80,18 @@ namespace Framework.Security2023.Repositories
         {
             string sql = @"INSERT INTO Rol Values(@Id,@RolName,@DateCreated,@UserCreated,@Active);";
 
-            this._sqlCommand = new SqlCommand();
+            _sqlCommand = new SqlCommand();
 
-            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
-                this._sqlConnection.Open();
-                this._sqlCommand = new SqlCommand(sql, this._sqlConnection);
-                this._sqlCommand.Parameters.AddWithValue("@Id" , rol.Id);
-                this._sqlCommand.Parameters.AddWithValue("@RolName", rol.RolName);
-                this._sqlCommand.Parameters.AddWithValue("@DateCreated", rol.DateCreated);
-                this._sqlCommand.Parameters.AddWithValue("@UserCreated", rol.UserCreated);
-                this._sqlCommand.Parameters.AddWithValue("@Active", rol.Active);               
-                return this._sqlCommand.ExecuteNonQuery() == 1;
+                _sqlConnection.Open();
+                _sqlCommand = new SqlCommand(sql, _sqlConnection);
+                _sqlCommand.Parameters.AddWithValue("@Id" , rol.Id);
+                _sqlCommand.Parameters.AddWithValue("@RolName", rol.RolName);
+                _sqlCommand.Parameters.AddWithValue("@DateCreated", rol.DateCreated);
+                _sqlCommand.Parameters.AddWithValue("@UserCreated", rol.UserCreated);
+                _sqlCommand.Parameters.AddWithValue("@Active", rol.Active);               
+                return _sqlCommand.ExecuteNonQuery() == 1;
             }
         }
 

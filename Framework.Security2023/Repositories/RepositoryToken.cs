@@ -13,7 +13,7 @@ namespace Framework.Security2023.Repositories
 
         public RepositoryToken()
         {
-            this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
+            _sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
         internal int Save(UserToken userToken)
@@ -21,19 +21,19 @@ namespace Framework.Security2023.Repositories
             int result;
             string sqlGetUser = "INSERT INTO UserToken " +
                 "VALUES(@id, @userId, @token, @dateCreated, @dateExpiration);";
-            this._sqlCommand = new SqlCommand();
-            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            _sqlCommand = new SqlCommand();
+            using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
-                this._sqlCommand = new SqlCommand();
-                this._sqlCommand.Connection = this._sqlConnection;
-                this._sqlConnection.Open();
-                this._sqlCommand.CommandText = sqlGetUser;
-                this._sqlCommand.Parameters.AddWithValue("id", userToken.Id);
-                this._sqlCommand.Parameters.AddWithValue("userId", userToken.UserId);
-                this._sqlCommand.Parameters.AddWithValue("token", userToken.Token);
-                this._sqlCommand.Parameters.AddWithValue("dateCreated", userToken.DateCreated);
-                this._sqlCommand.Parameters.AddWithValue("dateExpiration", userToken.DateExpiration);
-                result = this._sqlCommand.ExecuteNonQuery();
+                _sqlCommand = new SqlCommand();
+                _sqlCommand.Connection = _sqlConnection;
+                _sqlConnection.Open();
+                _sqlCommand.CommandText = sqlGetUser;
+                _sqlCommand.Parameters.AddWithValue("id", userToken.Id);
+                _sqlCommand.Parameters.AddWithValue("userId", userToken.UserId);
+                _sqlCommand.Parameters.AddWithValue("token", userToken.Token);
+                _sqlCommand.Parameters.AddWithValue("dateCreated", userToken.DateCreated);
+                _sqlCommand.Parameters.AddWithValue("dateExpiration", userToken.DateExpiration);
+                result = _sqlCommand.ExecuteNonQuery();
 
             }
 
@@ -51,26 +51,26 @@ namespace Framework.Security2023.Repositories
             from UserToken
             where userid = @userId)
             and userid = @userId;";
-            this._sqlCommand = new SqlCommand();
-            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            _sqlCommand = new SqlCommand();
+            using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
-                this._sqlCommand = new SqlCommand();
-                this._sqlCommand.Connection = this._sqlConnection;
-                this._sqlConnection.Open();
-                this._sqlCommand.CommandText = sqlGetUser;
-                this._sqlCommand.Parameters.AddWithValue("userId", id);
-                this._sqlDataReader = this._sqlCommand.ExecuteReader();
+                _sqlCommand = new SqlCommand();
+                _sqlCommand.Connection = _sqlConnection;
+                _sqlConnection.Open();
+                _sqlCommand.CommandText = sqlGetUser;
+                _sqlCommand.Parameters.AddWithValue("userId", id);
+                _sqlDataReader = _sqlCommand.ExecuteReader();
 
 
-                if (this._sqlDataReader.HasRows)
+                if (_sqlDataReader.HasRows)
                 {
-                    this._sqlDataReader.Read();
+                    _sqlDataReader.Read();
                     result = UserToken.Create(
-                        this._sqlDataReader.GetGuid(0),
-                        this._sqlDataReader.GetGuid(1),
-                        this._sqlDataReader.GetString(2),
-                        this._sqlDataReader.GetDateTime(3),
-                        this._sqlDataReader.GetDateTime(4));
+                        _sqlDataReader.GetGuid(0),
+                        _sqlDataReader.GetGuid(1),
+                        _sqlDataReader.GetString(2),
+                        _sqlDataReader.GetDateTime(3),
+                        _sqlDataReader.GetDateTime(4));
                 }
 
             }

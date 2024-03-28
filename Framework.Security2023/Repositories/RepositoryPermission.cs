@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Security;
 
 namespace Framework.Security2023.Repositories
 {
