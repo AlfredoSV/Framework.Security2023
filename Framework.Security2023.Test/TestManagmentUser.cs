@@ -75,7 +75,7 @@ namespace Framework.Security2023.Test
         public void Login()
         {
             DtoLogin dtoLogin = new DtoLogin() { UserName = "alfredo1007", Password = "alfredo1007" };
-            DtoLoginResponse userFkw = _serviceLogin.Login(dtoLogin);
+            DtoLoginResponse userFkw = _serviceLogin.Login(dtoLogin).GetAwaiter().GetResult();
             Assert.IsNotNull(userFkw);
 
             Assert.AreEqual(userFkw.StatusLogin, StatusLogin.Ok);

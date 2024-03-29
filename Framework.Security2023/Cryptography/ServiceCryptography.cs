@@ -58,7 +58,7 @@ namespace Framework.Security2023.Cryptography
         }
 
 
-        public void ValidateParameters(string value, string key)
+        private void ValidateParameters(string value, string key)
         {
             if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
                 throw new ArgumentNullException(nameof(value));

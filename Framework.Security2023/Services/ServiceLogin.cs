@@ -6,11 +6,15 @@ using Framework.Security2023.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Framework.Security2023.Services
 {
     public class ServiceLogin : IServiceLogin
     {
+
+        private const string SECRET_KEY = "kKf:94:q,X}fptZz%d1R402R[TgN0%D6E@px";
+
         private readonly ServiceCryptography _serviceCryptography;
         private readonly IServiceToken _serviceToken;
         private readonly IServiceUser _serviceUser;
@@ -35,7 +39,7 @@ namespace Framework.Security2023.Services
         //    return dtoLoginResponse;
         //}
 
-        public DtoLoginResponse Login(DtoLogin userLogin)
+        public async Task<DtoLoginResponse> Login(DtoLogin userLogin)
         {
             string passRequest = string.Empty;
             DtoUserFkw dtoUserFkw = new DtoUserFkw();
@@ -80,7 +84,7 @@ namespace Framework.Security2023.Services
             if (user.ApplyToken)
                 _serviceToken.CreateToken(user);
 
-            user.Role = _serviceRole.GetRole(user.Id);
+            user.Role = await _serviceRole.GetRole(user.Id);
 
             if (user.Role is null)
             {
@@ -148,16 +152,17 @@ namespace Framework.Security2023.Services
         public void GenerateChangePasswordRequest(string userName,
             string urlBase)
         {
+           
             UserFkw userFkw = _serviceUser.GetUserByUserName(userName);
-            DateTime dateTime = DateTime.Now;
+
             ChangePasswordRequest changePasswordRequest =
-                ChangePasswordRequest.Create(userFkw.Id, dateTime.AddHours(2), dateTime);
+                ChangePasswordRequest.Create(userFkw.Id);
 
             if (string.IsNullOrEmpty(urlBase))
                 throw new ArgumentNullException("urlBase");
 
             _changePasswordRequestRepo.Save(changePasswordRequest);
-            urlBase += $"/{userFkw.Id}/{changePasswordRequest.IdRequest}";
+            urlBase += $"/{_serviceCryptography.Encrypt(userFkw.UserName .ToString() + changePasswordRequest.IdRequest.ToString(), SECRET_KEY)}";
             _serviceEmail.SendEmailForgetPassword(userFkw.UserName, userFkw.UserInformation.Email, urlBase);
 
         }
@@ -170,14 +175,17 @@ namespace Framework.Security2023.Services
             ChangePasswordRequest changePasswordRequest;
             UserFkw userFkw;
 
+            string blockDesecr = _serviceCryptography.Descrypt(dtoChangePassword.URL_Change.Split('/')[dtoChangePassword.URL_Change.Split('/').Length - 1], SECRET_KEY);
+            string userName = blockDesecr.Split('-')[0];
+            string idRequest = blockDesecr.Split('-')[1];
             bool userExist =
-            _serviceUser.UserExistByUserName(dtoChangePassword.UserName) &&  _serviceUser.UserExistByEmail(dtoChangePassword.Email);
+            _serviceUser.UserExistByUserName(userName);
 
             if (!userExist)
                 throw new Exception("The user was not exist.");
 
             changePasswordRequest =
-                _changePasswordRequestRepo.SelectByIdRequest(dtoChangePassword.IdRequest);
+                _changePasswordRequestRepo.SelectByIdRequest(Guid.Parse(idRequest));
 
             isValidRequest = changePasswordRequest != null
                 && DateTime.Now < changePasswordRequest.DateExpired;
@@ -187,7 +195,7 @@ namespace Framework.Security2023.Services
 
             if (userExist & isValidRequest)
             {
-                userFkw = _serviceUser.GetUserByUserName(dtoChangePassword.UserName);
+                userFkw = _serviceUser.GetUserByUserName(userName);
 
                 actualPassword =
                    _serviceCryptography.Descrypt(userFkw.Password, userFkw.Id.ToString());

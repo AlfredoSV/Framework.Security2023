@@ -21,12 +21,12 @@ namespace Framework.Security2023.Entities
             DateCreated = dateCreated;
         }
 
-        private ChangePasswordRequest(Guid userId, DateTime dateExpired, DateTime dateCreated)
+        private ChangePasswordRequest(Guid userId)
         {
             IdRequest = Guid.NewGuid();
             UserId = userId;
-            DateExpired = dateExpired;
-            DateCreated = dateCreated;
+            DateExpired = DateTime.Now.AddHours(2);
+            DateCreated = DateTime.Now;
         }
 
         public static ChangePasswordRequest Create(Guid idRequest, Guid userId, DateTime dateExpired, DateTime dateCreated)
@@ -34,9 +34,9 @@ namespace Framework.Security2023.Entities
             return new ChangePasswordRequest(idRequest, userId, dateExpired, dateCreated);
         }
 
-        public static ChangePasswordRequest Create(Guid userId, DateTime dateExpired, DateTime dateCreated)
+        public static ChangePasswordRequest Create(Guid userId)
         {
-            return new ChangePasswordRequest( userId, dateExpired, dateCreated);
+            return new ChangePasswordRequest( userId);
         }
 
 

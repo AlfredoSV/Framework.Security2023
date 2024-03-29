@@ -23,6 +23,7 @@ namespace Framework.Security2023.Services
             try
             {
                 Guid idTemplate = SmtpConfigurationSecurityFkw.Instance.idTemplateEmailValidForgetPassword;//Guid.Parse("81D995AC-8690-4960-8292-80BAF046736A");
+
                 Dictionary<string, string> paramsBody = new Dictionary<string, string>
                 {
                     { "@userName", userName }

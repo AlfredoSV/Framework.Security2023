@@ -10,7 +10,7 @@ namespace Framework.Security2023.IServices
 {
     internal interface IServicePermissions
     {
-        bool SavePermissions(IEnumerable<Permission> permission);
-        IEnumerable<Permission> GetPermission(Guid idRole);
+        Task<bool> SavePermissions(IEnumerable<Permission> permission);
+        Task<IEnumerable<Permission>> GetPermission(Guid idRole);
     }
 }

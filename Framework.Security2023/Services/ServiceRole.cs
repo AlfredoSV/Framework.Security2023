@@ -3,6 +3,7 @@ using Framework.Security2023.IServices;
 using Framework.Security2023.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 namespace Framework.Security2023.Services
@@ -18,15 +19,15 @@ namespace Framework.Security2023.Services
             _repositoryRole = new RepositoryRole(); 
         }
 
-        public Role GetRole(Guid userId)
+        public async Task<Role> GetRole(Guid userId)
         {
             IEnumerable<Permission> permissions = new List<Permission>();
             Role role = _repositoryRole.GetRoleByUserId(userId);
 
             if (role is null)
-                throw new NullReferenceException(role.ToString());
+                throw new NullReferenceException(nameof(role));
 
-             permissions = _servicePermissions.GetPermission(role.Id);
+             permissions = await _servicePermissions.GetPermission(role.Id);
 
             role.SetPermissions(permissions);
             return role;
@@ -37,9 +38,9 @@ namespace Framework.Security2023.Services
             return _repositoryRole.GetRoleById(roleId) != null;
         }
 
-        public bool Create(Role role)
+        public async Task<bool> Create(Role role)
         {
-            return _repositoryRole.InsertRole(role)  &&  _servicePermissions.SavePermissions(role.Permissions) ;
+            return _repositoryRole.InsertRole(role)  &&  await _servicePermissions.SavePermissions(role.Permissions) ;
         }
     }
 }

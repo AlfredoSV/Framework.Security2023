@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace Framework.Security2023.Repositories
 {
@@ -15,35 +16,35 @@ namespace Framework.Security2023.Repositories
 
         internal RepositoryPermission()
         {
-            this._sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
+            _sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        internal IEnumerable<Permission> GetPermission(Guid idRole)
+        internal async Task<IEnumerable<Permission>> GetPermission(Guid idRole)
         {
 
             string sql = "SELECT PermissionName, Id, RolId, PermissionDescription, Module, DateCreated, UserCreated,Active FROM Permission WHERE RolId = @rolId;";
 
             List<Permission> permissions = new List<Permission>();
-            this._sqlCommand = new SqlCommand();
-            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            _sqlCommand = new SqlCommand();
+            using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
-                this._sqlCommand = new SqlCommand(sql, this._sqlConnection);
-                this._sqlConnection.Open();
-                this._sqlCommand.Parameters.AddWithValue("rolId", idRole);
-                this._sqlDataReader = this._sqlCommand.ExecuteReader();
+                _sqlCommand = new SqlCommand(sql, _sqlConnection);
+                _sqlConnection.Open();
+                _sqlCommand.Parameters.AddWithValue("rolId", idRole);
+                _sqlDataReader = await _sqlCommand.ExecuteReaderAsync();
 
-                if (this._sqlDataReader.HasRows)
+                if (_sqlDataReader.HasRows)
                 {
-                    while (this._sqlDataReader.Read())
+                    while (_sqlDataReader.Read())
                     {
                         
                         permissions.Add(Permission.Create(
-                            this._sqlDataReader.GetString(0),
-                            this._sqlDataReader.GetGuid(1),
-                            this._sqlDataReader.GetGuid(2),
-                            this._sqlDataReader.GetString(3),
-                            this._sqlDataReader.GetString(4), this._sqlDataReader.GetDateTime(5),
-                            this._sqlDataReader.GetGuid(6), this._sqlDataReader.GetBoolean(7))
+                            _sqlDataReader.GetString(0),
+                            _sqlDataReader.GetGuid(1),
+                            _sqlDataReader.GetGuid(2),
+                            _sqlDataReader.GetString(3),
+                            _sqlDataReader.GetString(4), _sqlDataReader.GetDateTime(5),
+                            _sqlDataReader.GetGuid(6), _sqlDataReader.GetBoolean(7))
                             );
 
                     }
@@ -55,24 +56,24 @@ namespace Framework.Security2023.Repositories
             return permissions;
         }
 
-        internal bool InsertPermissions(List<Permission> permission)
+        internal async Task<bool> InsertPermissions(IEnumerable<Permission> permission)
         {
-            DataTable dataTable = ConvertToDataTable<Permission>(permission);
+            DataTable dataTable = ConvertToDataTable(permission);
 
             string procedure = @"SavePermissions";
 
-            this._sqlCommand = new SqlCommand();
+            _sqlCommand = new SqlCommand();
 
-            using (this._sqlConnection = new SqlConnection(this._sqlTextConnection))
+            using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
-                this._sqlConnection.Open();
-                this._sqlCommand = new SqlCommand(procedure, this._sqlConnection);
-                this._sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                _sqlConnection.Open();
+                _sqlCommand = new SqlCommand(procedure, _sqlConnection);
+                _sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                var param = this._sqlCommand.Parameters.AddWithValue("@Params", dataTable);
+                var param = _sqlCommand.Parameters.AddWithValue("@Params", dataTable);
                 param.SqlDbType = SqlDbType.Structured;
                 param.TypeName = "tableOf_Permissions";
-                return this._sqlCommand.ExecuteNonQuery() > 0;
+                return await _sqlCommand.ExecuteNonQueryAsync() > 0;
             }
         }
 

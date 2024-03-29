@@ -31,7 +31,7 @@ namespace Framework.Security2023.Repositories
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
                 _sqlConnection.Open();
-                _sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                _sqlCommand.CommandType = CommandType.StoredProcedure;
                 _sqlCommand.CommandText = procedureName;
                 _sqlCommand.Parameters.AddWithValue("@type", 0);
                 _sqlCommand.Parameters.AddWithValue("@value", email);
@@ -59,7 +59,7 @@ namespace Framework.Security2023.Repositories
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
                 _sqlConnection.Open();
-                _sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                _sqlCommand.CommandType = CommandType.StoredProcedure;
                 _sqlCommand.CommandText = procedureName;
                 _sqlCommand.Parameters.AddWithValue("@value", userName);
                 _sqlCommand.Parameters.AddWithValue("@type", 1);
