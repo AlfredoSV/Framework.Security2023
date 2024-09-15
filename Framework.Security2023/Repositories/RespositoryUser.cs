@@ -3,6 +3,7 @@ using Framework.Security2023.Entities;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace Framework.Security2023.Repositories
 {
@@ -18,7 +19,7 @@ namespace Framework.Security2023.Repositories
             _sqlTextConnection = SlqConnectionStr.Instance.SqlConnectionString;
         }
 
-        internal DtoResponse<bool> ValidateUserByEmail(string email)
+        internal async Task<DtoResponse<bool>> ValidateUserByEmail(string email)
         {
 
             email = string.IsNullOrEmpty(email) ? string.Empty : email;
@@ -30,23 +31,21 @@ namespace Framework.Security2023.Repositories
             {
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 _sqlCommand.CommandType = CommandType.StoredProcedure;
                 _sqlCommand.CommandText = procedureName;
                 _sqlCommand.Parameters.AddWithValue("@type", 0);
                 _sqlCommand.Parameters.AddWithValue("@value", email);
                 _sqlCommand.Parameters.AddWithValue("@result", SqlDbType.Binary);
                 _sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
-                _sqlCommand.ExecuteNonQuery();
-                result = _sqlCommand.Parameters["@result"].Value.ToString() == "1";
-
-
+                await _sqlCommand.ExecuteNonQueryAsync();
+                result = _sqlCommand.Parameters["@result"].Value.ToString().Equals("1");
             }
 
             return DtoResponse<bool>.Create(result);
         }
 
-        internal DtoResponse<bool> ValidateUserByUserName(string userName)
+        internal async Task<DtoResponse<bool>> ValidateUserByUserName(string userName)
         {
 
             userName = string.IsNullOrEmpty(userName) ? string.Empty : userName;
@@ -58,22 +57,21 @@ namespace Framework.Security2023.Repositories
             {
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 _sqlCommand.CommandType = CommandType.StoredProcedure;
                 _sqlCommand.CommandText = procedureName;
                 _sqlCommand.Parameters.AddWithValue("@value", userName);
                 _sqlCommand.Parameters.AddWithValue("@type", 1);
                 _sqlCommand.Parameters.AddWithValue("@result", SqlDbType.Binary);
                 _sqlCommand.Parameters["@result"].Direction = ParameterDirection.Output;
-                _sqlCommand.ExecuteNonQuery();
-                result = _sqlCommand.Parameters["@result"].Value.ToString() == "1";
-
+                await _sqlCommand.ExecuteNonQueryAsync();
+                result = _sqlCommand.Parameters["@result"].Value.ToString().Equals("1");
 
             }
 
             return DtoResponse<bool>.Create(result);
         }
-        internal DtoResponse<UserFkw> GetUserByUserName(string userName)
+        internal async Task<DtoResponse<UserFkw>> GetUserByUserName(string userName)
         {
             UserFkw userResult = null;
 
@@ -91,37 +89,32 @@ namespace Framework.Security2023.Repositories
             {
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 _sqlCommand.CommandText = sqlGetUser;
                 _sqlCommand.Parameters.AddWithValue("userName", userName);
-                _sqlDataReader = _sqlCommand.ExecuteReader();
+                _sqlDataReader = await _sqlCommand.ExecuteReaderAsync();
 
                 if (_sqlDataReader.HasRows)
                 {
-                    _sqlDataReader.Read();
+                    await _sqlDataReader.ReadAsync();
 
                     userResult = UserFkw.Create(_sqlDataReader.GetGuid(0),
                         _sqlDataReader.GetString(1), _sqlDataReader.GetString(2),
                         _sqlDataReader.GetDateTime(3), _sqlDataReader.GetGuid(4),
                         _sqlDataReader.GetInt32(5), _sqlDataReader.GetBoolean(6),
                         _sqlDataReader.GetBoolean(7), _sqlDataReader.GetGuid(8));
-
                     userInformation = UserInformation.Create(_sqlDataReader.GetGuid(0),
                         _sqlDataReader.GetString(9), _sqlDataReader.GetString(10),
                         _sqlDataReader.GetInt32(11), _sqlDataReader.GetDateTime(3),
                         _sqlDataReader.GetString(12), _sqlDataReader.GetString(13),
                         _sqlDataReader.GetGuid(4));
-
                     userResult.UserInformation = userInformation;
-
                 }
-
             }
-
             return DtoResponse<UserFkw>.Create(userResult);
         }
 
-        internal UserFkw GetUser(Guid id)
+        internal async Task<UserFkw> GetUser(Guid id)
         {
             UserFkw userResult = null;
 
@@ -139,14 +132,14 @@ namespace Framework.Security2023.Repositories
             {
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 _sqlCommand.CommandText = sqlGetUser;
                 _sqlCommand.Parameters.AddWithValue("id", id);
-                _sqlDataReader = _sqlCommand.ExecuteReader();
+                _sqlDataReader = await _sqlCommand.ExecuteReaderAsync();
 
                 if (_sqlDataReader.HasRows)
                 {
-                    _sqlDataReader.Read();
+                    await _sqlDataReader.ReadAsync();
 
                     userResult = UserFkw.Create(_sqlDataReader.GetGuid(0),
                         _sqlDataReader.GetString(1), _sqlDataReader.GetString(2),
@@ -169,7 +162,7 @@ namespace Framework.Security2023.Repositories
             return userResult;
         }
 
-        internal bool Save(UserFkw newUser)
+        internal async Task<bool> Save(UserFkw newUser)
         {
 
             bool result;
@@ -184,7 +177,7 @@ namespace Framework.Security2023.Repositories
                 
 
                 _sqlConnection = new SqlConnection(_sqlTextConnection);
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 sqlTransaction = _sqlConnection.BeginTransaction();
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
@@ -200,7 +193,7 @@ namespace Framework.Security2023.Repositories
                 _sqlCommand.Parameters.AddWithValue("userBlocked", newUser.UserBlocked);
                 _sqlCommand.Parameters.AddWithValue("rolId", newUser.RolId);
                 _sqlCommand.Parameters.AddWithValue("applyToken", newUser.ApplyToken);
-                result = _sqlCommand.ExecuteNonQuery() > 0;
+                result = await _sqlCommand.ExecuteNonQueryAsync() > 0;
 
                 _sqlCommand.Parameters.Clear();
 
@@ -213,7 +206,7 @@ namespace Framework.Security2023.Repositories
                 _sqlCommand.Parameters.AddWithValue("userCreated", newUser.UserInformation.UserCreated);
                 _sqlCommand.Parameters.AddWithValue("address", newUser.UserInformation.Address);
                 _sqlCommand.Parameters.AddWithValue("email", newUser.UserInformation.Email);
-                result = result && _sqlCommand.ExecuteNonQuery() > 0;
+                result = result && await _sqlCommand.ExecuteNonQueryAsync() > 0;
 
                 sqlTransaction.Commit();
 
@@ -221,7 +214,7 @@ namespace Framework.Security2023.Repositories
             catch (Exception e)
             {
                 sqlTransaction.Rollback();
-                throw e;
+                throw;
             }
             finally
             {
@@ -232,7 +225,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        internal bool Delete(Guid userId)
+        internal async Task<bool> Delete(Guid userId)
         {
 
             bool deleteUserFkw, deleteUserInfo, deleteUserTokens;
@@ -244,7 +237,7 @@ namespace Framework.Security2023.Repositories
                 _sqlConnection = new SqlConnection(_sqlTextConnection);
 
 
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 sqlTransaction = _sqlConnection.BeginTransaction();
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
@@ -252,15 +245,15 @@ namespace Framework.Security2023.Repositories
 
                 _sqlCommand.CommandText = "DELETE FROM UserFkw WHERE Id = @Id";
                 _sqlCommand.Parameters.AddWithValue("Id", userId);
-                deleteUserFkw = _sqlCommand.ExecuteNonQuery() > 0;
+                deleteUserFkw = await _sqlCommand.ExecuteNonQueryAsync() > 0;
 
 
                 _sqlCommand.CommandText = "DELETE FROM UserInformation WHERE idUser = @Id";
-                deleteUserInfo = _sqlCommand.ExecuteNonQuery() > 0;
+                deleteUserInfo = await _sqlCommand.ExecuteNonQueryAsync() > 0;
 
 
                 _sqlCommand.CommandText = "DELETE FROM UserToken WHERE id = @Id";
-                deleteUserTokens = _sqlCommand.ExecuteNonQuery() > 0;
+                deleteUserTokens = await _sqlCommand.ExecuteNonQueryAsync() > 0;
 
                 sqlTransaction.Commit();
 
@@ -270,18 +263,17 @@ namespace Framework.Security2023.Repositories
             {
                 sqlTransaction.Rollback();
 
-                throw e;
+                throw;
             }
             finally
             {
                 _sqlConnection.Close();
             }
 
-            return deleteUserFkw || deleteUserInfo || deleteUserTokens;
-
+            return deleteUserFkw && deleteUserInfo && deleteUserTokens;
         }
 
-        internal int UpdatePassword(Guid userId, string newPassword)
+        internal async Task<int> UpdatePassword(Guid userId, string newPassword)
         {
 
             int result;
@@ -291,19 +283,18 @@ namespace Framework.Security2023.Repositories
             {
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 _sqlCommand.CommandText = sqlGetUser;
                 _sqlCommand.Parameters.AddWithValue("id", userId);
                 _sqlCommand.Parameters.AddWithValue("password", newPassword);
-                result = _sqlCommand.ExecuteNonQuery();
+                result = await _sqlCommand.ExecuteNonQueryAsync();
 
             }
 
             return result;
-
         }
 
-        internal int Update(UserFkw newUser)
+        internal async Task<int> Update(UserFkw newUser)
         {
 
             int result;
@@ -316,15 +307,14 @@ namespace Framework.Security2023.Repositories
               ,UserCreated = @userCreated
               ,LoginSessions = @loginSessions
               ,UserBlocked = @userBlocked
-             WHERE Id = @Id;
-            ";
+             WHERE Id = @Id; ";
             _sqlCommand = new SqlCommand();
             using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
                 _sqlCommand.CommandType = CommandType.Text;
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 _sqlCommand.CommandText = sqlGetUser;
                 _sqlCommand.Parameters.AddWithValue("Id", newUser.Id);
                 _sqlCommand.Parameters.AddWithValue("userName", newUser.UserName);
@@ -335,7 +325,7 @@ namespace Framework.Security2023.Repositories
                 _sqlCommand.Parameters.AddWithValue("userBlocked", newUser.UserBlocked);
                 _sqlCommand.Parameters.AddWithValue("rolId", newUser.RolId);
                 _sqlCommand.Parameters.AddWithValue("applyToken", newUser.ApplyToken);
-                result = _sqlCommand.ExecuteNonQuery();
+                result = await _sqlCommand.ExecuteNonQueryAsync();
 
             }
 
@@ -343,7 +333,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        internal int UpdateStatusBlocked(Guid userId, bool status)
+        internal async Task<int> UpdateStatusBlocked(Guid userId, bool status)
         {
 
             int result;
@@ -357,11 +347,11 @@ namespace Framework.Security2023.Repositories
             {
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 _sqlCommand.CommandText = sqlGetUser;
                 _sqlCommand.Parameters.AddWithValue("Id", userId);
                 _sqlCommand.Parameters.AddWithValue("userBlocked", status);
-                result = _sqlCommand.ExecuteNonQuery();
+                result = await _sqlCommand.ExecuteNonQueryAsync();
 
             }
 
@@ -369,7 +359,7 @@ namespace Framework.Security2023.Repositories
 
         }
 
-        internal void UpdateLoginSession(Guid userId, int session)
+        internal async Task UpdateLoginSession(Guid userId, int session)
         {
 
             int result;
@@ -383,11 +373,11 @@ namespace Framework.Security2023.Repositories
             {
                 _sqlCommand = new SqlCommand();
                 _sqlCommand.Connection = _sqlConnection;
-                _sqlConnection.Open();
+                await _sqlConnection.OpenAsync();
                 _sqlCommand.CommandText = sqlGetUser;
                 _sqlCommand.Parameters.AddWithValue("Id", userId);
                 _sqlCommand.Parameters.AddWithValue("session", session);
-                result = _sqlCommand.ExecuteNonQuery();
+                result = await _sqlCommand.ExecuteNonQueryAsync();
 
             }
 

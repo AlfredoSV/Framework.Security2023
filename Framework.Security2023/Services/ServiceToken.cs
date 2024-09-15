@@ -18,19 +18,15 @@ namespace Framework.Security2023.Services
         UserToken IServiceToken.CreateToken(UserFkw userFkw)
         {
             UserToken userToken = UserToken.Create(userFkw.Id);
-
             _repositoryToken.Save(userToken);         
-
             return userToken;
         }
 
         public bool IsValidToken(Guid userId, string token)
         {
             UserToken userToken = _repositoryToken.GetLastToken(userId);
-
             return token.Equals(userToken.Token) &&
-                !(DateTime.Now > userToken.DateExpiration);               
-        
+                !(DateTime.Now > userToken.DateExpiration);     
         }
 
     
