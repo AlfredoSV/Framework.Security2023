@@ -1,108 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4B13DA09-4CBE-4DEC-A8F1-6947F2ED2A8E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Framework.Security2023</RootNamespace>
-    <AssemblyName>Framework.Security2023</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <SignAssembly>False</SignAssembly>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
+    <PackageReference Include="System.Data.SqlClient" version="4.8.6" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cryptography\IServiceCryptography.cs" />
-    <Compile Include="Cryptography\ServiceCryptography.cs" />
-    <Compile Include="Dtos\DtoChangePassword.cs" />
-    <Compile Include="Dtos\DtoLogin.cs" />
-    <Compile Include="Dtos\DtoLoginResponse.cs" />
-    <Compile Include="Dtos\DtoPermission.cs" />
-    <Compile Include="Dtos\DtoResponse.cs" />
-    <Compile Include="Dtos\DtoRole.cs" />
-    <Compile Include="Dtos\DtoUserFkw.cs" />
-    <Compile Include="Dtos\DtoUserToken.cs" />
-    <Compile Include="Dtos\UserInformation.cs" />
-    <Compile Include="Entities\ChangePasswordRequest.cs" />
-    <Compile Include="Entities\Login.cs" />
-    <Compile Include="Entities\Permission.cs" />
-    <Compile Include="Entities\Role.cs" />
-    <Compile Include="Entities\TemplateEmail.cs" />
-    <Compile Include="Entities\UserFkw.cs" />
-    <Compile Include="Entities\UserInformation.cs" />
-    <Compile Include="Entities\UserLoginAttempts.cs" />
-    <Compile Include="Entities\UserToken.cs" />
-    <Compile Include="IServices\IServiceEmailSecurity.cs" />
-    <Compile Include="IServices\IServiceLogin.cs" />
-    <Compile Include="IServices\IServicePermissions.cs" />
-    <Compile Include="IServices\IServiceRole.cs" />
-    <Compile Include="IServices\IServiceToken.cs" />
-    <Compile Include="IServices\IServiceUser.cs" />
-    <Compile Include="Repositories\RepositoryPermission.cs" />
-    <Compile Include="Repositories\RepositoryRole.cs" />
-    <Compile Include="Repositories\RepositoryChangePasswordRequest.cs" />
-    <Compile Include="Repositories\RepositoryTemplatesEmail.cs" />
-    <Compile Include="Repositories\RepositoryToken.cs" />
-    <Compile Include="Repositories\RepositoryUserLoginAttempts.cs" />
-    <Compile Include="Repositories\RespositoryUser.cs" />
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Services\ServiceEmailSecurity.cs" />
-    <Compile Include="Services\ServiceLogin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ServicePermissions.cs" />
-    <Compile Include="Services\ServiceRole.cs" />
-    <Compile Include="Services\ServiceToken.cs" />
-    <Compile Include="Services\ServiceUser.cs" />
-    <Compile Include="SlqConnectionStr.cs" />
-    <Compile Include="SmtpConfigurationSecurityFkw.cs" />
+    <Folder Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="TablesSql\Script Procedures.sql" />
-    <Content Include="TablesSql\Scripts Table Fkw.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
 </Project>

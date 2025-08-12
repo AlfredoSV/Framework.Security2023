@@ -26,7 +26,7 @@ namespace Framework.Security2023.Services
         {
             _changePasswordRequestRepo = new RepositoryChangePasswordRequest();
             _serviceCryptography = new ServiceCryptography();
-            _serviceToken = new ServiceToken();
+            _serviceToken = new ServiceToken(new RepositoryToken());
             _serviceUser = new ServiceUser();
             _serviceRole = new ServiceRole();
             _serviceEmail = new ServiceEmailSecurity();
@@ -41,185 +41,207 @@ namespace Framework.Security2023.Services
 
         public async Task<DtoLoginResponse> Login(DtoLogin userLogin)
         {
-            string passRequest = string.Empty;
-            DtoUserFkw dtoUserFkw = new DtoUserFkw();
-            DtoUserToken dtoUserToken = new DtoUserToken();
-            DtoRole dtoRole = new DtoRole();
-            DtoUserInformation dtoUserInformation = new DtoUserInformation();
-            DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
-            UserFkw user = (_serviceUser.GetUserByUserName(userLogin.UserName));
-
-            dtoLoginResponse.StatusLogin = StatusLogin.Ok;
-
-            if (user is null)
+            try
             {
-                dtoLoginResponse.StatusLogin = StatusLogin.UserOrPasswordIncorrect;
-                return dtoLoginResponse;
-            }
+                DtoLoginResponse dtoLoginResponse = new DtoLoginResponse();
+                string passRequest = string.Empty;
+                DtoUserFkw dtoUserFkw = new DtoUserFkw();
+                DtoUserToken dtoUserToken = new DtoUserToken();
+                DtoRole dtoRole = new DtoRole();
+                DtoUserInformation dtoUserInformation = new DtoUserInformation();          
+                UserFkw user = (await _serviceUser.GetUserByUserName(userLogin.UserName));
 
-            passRequest = _serviceCryptography.Encrypt(userLogin.Password, user.Id.ToString());
+                dtoLoginResponse.StatusLogin = StatusLogin.Ok;
 
-            if (!passRequest.Equals(user.Password))
-            {
-                _serviceUser.SaveUserLoginAttempt(user.Id,
-                        "PasswordIncorrect");
-                dtoLoginResponse.StatusLogin = StatusLogin.UserOrPasswordIncorrect;
-                return dtoLoginResponse;
-            }
-
-            _serviceUser.UpdateStatusBlocked(user.Id);
-
-            if (user.UserBlocked)
-            {
-                dtoLoginResponse.StatusLogin = StatusLogin.UserBlocked;
-                return dtoLoginResponse;
-            }
-
-            if (user.LoginSessions >= 1)
-            {
-                dtoLoginResponse.StatusLogin = StatusLogin.ExistSession;
-                return dtoLoginResponse;
-            }
-
-            if (user.ApplyToken)
-                _serviceToken.CreateToken(user);
-
-            user.Role = await _serviceRole.GetRole(user.Id);
-
-            if (user.Role is null)
-            {
-                dtoLoginResponse.StatusLogin = StatusLogin.RoleNotAssigned;
-                return dtoLoginResponse;
-            }
-
-
-            dtoUserFkw.Id = user.Id;
-            dtoUserFkw.UserName = user.UserName;
-            dtoUserFkw.DateCreated = user.DateCreated;
-            dtoUserFkw.UserCreated = user.UserCreated;
-            dtoUserFkw.LoginSessions = user.LoginSessions;
-            dtoUserFkw.UserBlocked = user.UserBlocked;
-
-            //Token
-            if(!(user.UserToken is null))
-            {
-                dtoUserToken.UserId = user.UserToken.UserId;
-                dtoUserToken.Token = user.UserToken.Token;
-                dtoUserToken.DateExpiration = user.UserToken.DateExpiration;
-                dtoUserFkw.UserToken = dtoUserToken;
-            }
-           
-            //Role
-            dtoUserFkw.RolId = user.RolId;
-            dtoUserFkw.Role = new DtoRole();
-            dtoUserFkw.Role.Id = user.Role.Id;
-            dtoUserFkw.Role.RolName = user.Role.RolName;
-            dtoUserFkw.Role.DateCreated = user.Role.DateCreated;
-            dtoUserFkw.Role.Permissions = new List<DtoPermission>();
-            user.Role.Permissions.ToList().ForEach((permission) =>
-            {
-                dtoUserFkw.Role.Permissions.Add(new DtoPermission()
+                if (user is null)
                 {
-                    Permision = permission.Permision,
-                    Id = permission.Id,
-                    Description = permission.Description,
-                    Module = permission.Module,
-                    RolId = permission.RolId
+                    dtoLoginResponse.StatusLogin = StatusLogin.UserOrPasswordIncorrect;
+                    return dtoLoginResponse;
+                }
+
+                passRequest = _serviceCryptography.Encrypt(userLogin.Password, user.Id.ToString());
+
+                if (!passRequest.Equals(user.Password))
+                {
+                    _serviceUser.SaveUserLoginAttempt(user.Id, "PasswordIncorrect");
+                    dtoLoginResponse.StatusLogin = StatusLogin.UserOrPasswordIncorrect;
+                    return dtoLoginResponse;
+                }
+
+                await _serviceUser.UpdateStatusBlocked(user.Id);
+
+                if (user.UserBlocked)
+                {
+                    dtoLoginResponse.StatusLogin = StatusLogin.UserBlocked;
+                    return dtoLoginResponse;
+                }
+
+                if (user.LoginSessions >= 1)
+                {
+                    dtoLoginResponse.StatusLogin = StatusLogin.ExistSession;
+                    return dtoLoginResponse;
+                }
+
+                if (user.ApplyToken)
+                {
+                    _serviceToken.CreateToken(user);
+                }
+                user.Role = await _serviceRole.GetRole(user.Id);
+
+                if (user.Role is null)
+                {
+                    dtoLoginResponse.StatusLogin = StatusLogin.RoleNotAssigned;
+                    return dtoLoginResponse;
+                }
+
+                dtoUserFkw.Id = user.Id;
+                dtoUserFkw.UserName = user.UserName;
+                dtoUserFkw.DateCreated = user.DateCreated;
+                dtoUserFkw.UserCreated = user.UserCreated;
+                dtoUserFkw.LoginSessions = user.LoginSessions;
+                dtoUserFkw.UserBlocked = user.UserBlocked;
+
+                //Token
+                if (!(user.UserToken is null))
+                {
+                    dtoUserToken.UserId = user.UserToken.UserId;
+                    dtoUserToken.Token = user.UserToken.Token;
+                    dtoUserToken.DateExpiration = user.UserToken.DateExpiration;
+                    dtoUserFkw.UserToken = dtoUserToken;
+                }
+
+                //Role
+                dtoUserFkw.RolId = user.RolId;
+                dtoUserFkw.Role = new DtoRole();
+                dtoUserFkw.Role.Id = user.Role.Id;
+                dtoUserFkw.Role.RolName = user.Role.RolName;
+                dtoUserFkw.Role.DateCreated = user.Role.DateCreated;
+                dtoUserFkw.Role.Permissions = new List<DtoPermission>();
+                user.Role.Permissions.ToList().ForEach((permission) =>
+                {
+                    dtoUserFkw.Role.Permissions.Add(new DtoPermission()
+                    {
+                        Permision = permission.Permision,
+                        Id = permission.Id,
+                        Description = permission.Description,
+                        Module = permission.Module,
+                        RolId = permission.RolId
+                    });
                 });
-            });
 
-            dtoUserFkw.Role.UserCreated = user.Role.UserCreated;
-            dtoUserFkw.Role.Status = user.Role.Active;
+                dtoUserFkw.Role.UserCreated = user.Role.UserCreated;
+                dtoUserFkw.Role.Status = user.Role.Active;
 
-            //DtoUserInformation
-            dtoUserFkw.UserInformation = new DtoUserInformation();
-            dtoUserFkw.UserInformation.IdUser = user.UserInformation.IdUser;
-            dtoUserFkw.UserInformation.Name = user.UserInformation.Name;
-            dtoUserFkw.UserInformation.LastName = user.UserInformation.LastName;
-            dtoUserFkw.UserInformation.Age = user.UserInformation.Age;
-            dtoUserFkw.UserInformation.DateCreated = user.UserInformation.DateCreated;
-            dtoUserFkw.UserInformation.Address = user.UserInformation.Address;
-            dtoUserFkw.UserInformation.Email = user.UserInformation.Email;
-            dtoUserFkw.UserInformation.UserCreated = user.UserInformation.UserCreated;
+                //DtoUserInformation
+                dtoUserFkw.UserInformation = new DtoUserInformation();
+                dtoUserFkw.UserInformation.IdUser = user.UserInformation.IdUser;
+                dtoUserFkw.UserInformation.Name = user.UserInformation.Name;
+                dtoUserFkw.UserInformation.LastName = user.UserInformation.LastName;
+                dtoUserFkw.UserInformation.Age = user.UserInformation.Age;
+                dtoUserFkw.UserInformation.DateCreated = user.UserInformation.DateCreated;
+                dtoUserFkw.UserInformation.Address = user.UserInformation.Address;
+                dtoUserFkw.UserInformation.Email = user.UserInformation.Email;
+                dtoUserFkw.UserInformation.UserCreated = user.UserInformation.UserCreated;
 
-            dtoUserFkw.ApplyToken = user.ApplyToken;
-            dtoLoginResponse.User = dtoUserFkw;
-            _serviceUser.UpdateLoginSessions(user.Id,1);
-            return dtoLoginResponse;
-
+                dtoUserFkw.ApplyToken = user.ApplyToken;
+                dtoLoginResponse.User = dtoUserFkw;
+                await _serviceUser.UpdateLoginSessions(user.Id, 1);
+                return dtoLoginResponse;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public void GenerateChangePasswordRequest(string userName,
+        public async Task GenerateChangePasswordRequest(string userName,
             string urlBase)
         {
-           
-            UserFkw userFkw = _serviceUser.GetUserByUserName(userName);
+            try
+            {
+                UserFkw userFkw = await _serviceUser.GetUserByUserName(userName);
 
-            ChangePasswordRequest changePasswordRequest =
-                ChangePasswordRequest.Create(userFkw.Id);
+                ChangePasswordRequest changePasswordRequest =
+                    ChangePasswordRequest.Create(userFkw.Id);
 
-            if (string.IsNullOrEmpty(urlBase))
-                throw new ArgumentNullException("urlBase");
+                if (string.IsNullOrEmpty(urlBase))
+                    throw new ArgumentNullException("urlBase");
 
-            _changePasswordRequestRepo.Save(changePasswordRequest);
-            urlBase += $"/{_serviceCryptography.Encrypt(userFkw.UserName .ToString() + changePasswordRequest.IdRequest.ToString(), SECRET_KEY)}";
-            _serviceEmail.SendEmailForgetPassword(userFkw.UserName, userFkw.UserInformation.Email, urlBase);
-
+                _changePasswordRequestRepo.Save(changePasswordRequest);
+                urlBase += $"/{_serviceCryptography.Encrypt(userFkw.UserName.ToString() + changePasswordRequest.IdRequest.ToString(), SECRET_KEY)}";
+                _serviceEmail.SendEmailForgetPassword(userFkw.UserName, userFkw.UserInformation.Email, urlBase);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public void ChangePassword(DtoChangePassword dtoChangePassword)
+        public async Task ChangePassword(DtoChangePassword dtoChangePassword)
         {
-            string actualPassword;
-            bool isUpdate;
-            bool isValidRequest;
-            ChangePasswordRequest changePasswordRequest;
-            UserFkw userFkw;
-
-            string blockDesecr = _serviceCryptography.Descrypt(dtoChangePassword.URL_Change.Split('/')[dtoChangePassword.URL_Change.Split('/').Length - 1], SECRET_KEY);
-            string userName = blockDesecr.Split('-')[0];
-            string idRequest = blockDesecr.Split('-')[1];
-            bool userExist =
-            _serviceUser.UserExistByUserName(userName);
-
-            if (!userExist)
-                throw new Exception("The user was not exist.");
-
-            changePasswordRequest =
-                _changePasswordRequestRepo.SelectByIdRequest(Guid.Parse(idRequest));
-
-            isValidRequest = changePasswordRequest != null
-                && DateTime.Now < changePasswordRequest.DateExpired;
-
-            if (!isValidRequest)
-                throw new Exception("The request of password was expired.");
-
-            if (userExist & isValidRequest)
+            try
             {
-                userFkw = _serviceUser.GetUserByUserName(userName);
+                string actualPassword;
+                bool isUpdate;
+                bool isValidRequest;
+                ChangePasswordRequest changePasswordRequest;
+                UserFkw userFkw;
 
-                actualPassword =
-                   _serviceCryptography.Descrypt(userFkw.Password, userFkw.Id.ToString());
+                string blockDesecr = _serviceCryptography.Descrypt(dtoChangePassword.URL_Change.Split('/')[dtoChangePassword.URL_Change.Split('/').Length - 1], SECRET_KEY);
+                string userName = blockDesecr.Split('-')[0];
+                string idRequest = blockDesecr.Split('-')[1];
+                bool userExist = await _serviceUser.UserExist(userName);
 
-                if (dtoChangePassword.NewPassword.Equals(actualPassword))
-                    throw new Exception("The password was not diferent to actual password");
+                if (!userExist)
+                    throw new Exception("The user was not exist.");
 
-                dtoChangePassword.NewPassword = _serviceCryptography.Encrypt(actualPassword, userFkw.Id.ToString());
-                isUpdate = _serviceUser.UpdatePassword(userFkw.Id, dtoChangePassword.NewPassword);
+                changePasswordRequest =
+                    _changePasswordRequestRepo.SelectByIdRequest(Guid.Parse(idRequest));
 
-                if (!isUpdate)
-                    throw new Exception("The password was not updated, please contact with support");
+                isValidRequest = changePasswordRequest != null
+                    && DateTime.Now < changePasswordRequest.DateExpired;
 
-                //Email alert of request
-                _serviceEmail.EmailValidForgetPassword(userFkw.UserName, userFkw.UserInformation.Email);
+                if (!isValidRequest)
+                    throw new Exception("The request of password was expired.");
 
+                if (userExist & isValidRequest)
+                {
+                    userFkw = await _serviceUser.GetUserByUserName(userName);
+
+                    actualPassword = _serviceCryptography.Descrypt(userFkw.Password, userFkw.Id.ToString());
+
+                    if (dtoChangePassword.NewPassword.Equals(actualPassword))
+                        throw new Exception("The password was not diferent to actual password");
+
+                    dtoChangePassword.NewPassword = _serviceCryptography.Encrypt(actualPassword, userFkw.Id.ToString());
+                    isUpdate = await _serviceUser.UpdatePassword(null);
+
+                    if (!isUpdate)
+                    {
+                        throw new InvalidOperationException("The password was not updated, please contact with support");
+                    }
+
+                    //Email alert of request
+                    _serviceEmail.EmailValidForgetPassword(userFkw.UserName, userFkw.UserInformation.Email);
+
+                }
             }
-
-
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public void SignOut(Guid userId)
         {
-            _serviceUser.UpdateLoginSessions(userId, 0);
+            try
+            {
+                _serviceUser.UpdateLoginSessions(userId, 0);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

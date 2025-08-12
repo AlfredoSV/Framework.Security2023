@@ -6,13 +6,13 @@ using System;
 
 namespace Framework.Security2023.Services
 {
-    public class ServiceToken : IServiceToken
+    internal class ServiceToken : IServiceToken
     {
         private readonly RepositoryToken _repositoryToken;
 
-        public ServiceToken()
+        public ServiceToken(RepositoryToken repositoryToken)
         {
-            _repositoryToken = new RepositoryToken();
+            _repositoryToken = repositoryToken;
         }
 
         UserToken IServiceToken.CreateToken(UserFkw userFkw)

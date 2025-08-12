@@ -33,8 +33,8 @@ namespace Framework.Security2023.Entities
 				&& userCreated == Guid.Empty && string.IsNullOrEmpty(address) && string.IsNullOrEmpty(email))
 				throw new ArgumentNullException("You cannot initialize the object with \"null\" or \"empty\" values.");
 
-			if (age > 100 & age < 18)
-				throw new ArgumentException("The prop \"age\" is not valid.");
+			if (age > 100 && age < 18)
+				throw new ArgumentException("The \"age\" is not valid.");
 
 			return new UserInformation( name, lastName, age, address, email, userCreated);
 		}
@@ -61,7 +61,5 @@ namespace Framework.Security2023.Entities
 			Email = email;
 			UserCreated = userCreated;
 		}
-
-
 	}
 }

@@ -8,9 +8,8 @@ namespace Framework.Security2023.IServices
     {
         Task<DtoLoginResponse> Login(DtoLogin login);
         void SignOut(Guid userId);
-        //DtoLoginResponse LoginDummy(DtoLogin userLogin);
-        void ChangePassword(DtoChangePassword dtoChangePassword);
-        void GenerateChangePasswordRequest(string userName,
+        Task ChangePassword(DtoChangePassword dtoChangePassword);
+        Task GenerateChangePasswordRequest(string userName,
             string urlBase);
 
     }

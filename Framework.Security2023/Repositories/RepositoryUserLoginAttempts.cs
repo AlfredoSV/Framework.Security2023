@@ -20,7 +20,7 @@ namespace Framework.Security2023.Repositories
         internal IEnumerable<UserLoginAttempts> GetLoginAttemptsByUserId(Guid userId)
         {
             List<UserLoginAttempts> result = new List<UserLoginAttempts>();
-            string sql = "SELECT IdUser, Description, DateCreated FROM UserLoginAttempts where IdUser = @userId;";
+            string sql = "SELECT IdUser, Description, DateCreated FROM UserLoginAttempts where IdUser = @userId and FORMAT(DateCreated,'dd/mm/yyyy') = FORMAT(GETDATE(),'dd/mm/yyyy') ;";
             _sqlCommand = new SqlCommand();
             using (_sqlConnection = new SqlConnection(_sqlTextConnection))
             {

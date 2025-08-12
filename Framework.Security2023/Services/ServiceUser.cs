@@ -5,6 +5,7 @@ using Framework.Security2023.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Framework.Security2023.Services
 {
@@ -23,7 +24,7 @@ namespace Framework.Security2023.Services
             _repositoryUserLoginAttempts = new RepositoryUserLoginAttempts();
         }
 
-        public bool CreateUser(UserFkw newUser, bool isCreatedByAdmin)
+        public async Task<bool> CreateUser(UserFkw newUser, bool isCreatedByAdmin)
         {
             if (newUser is null)
                 throw new ArgumentNullException( string.Format(Resources.ObjectIsNullMessage,nameof(newUser)));
@@ -38,60 +39,54 @@ namespace Framework.Security2023.Services
             newUser.Password = isCreatedByAdmin ? _serviceCryptography.Encrypt(newUser.UserName, newUser.Id.ToString())
                                                 : _serviceCryptography.Encrypt(newUser.Password, newUser.Id.ToString());
 
-            return _respositoryUser.Save(newUser);
+            return await _respositoryUser.Save(newUser);
         }
 
-        public bool DeleteUser(Guid userId) => _respositoryUser.Delete(userId);
+        public async Task<bool> DeleteUser(Guid userId) => await _respositoryUser.Delete(userId);
 
-        public bool UpdateUser(UserFkw user)
+        public async Task<bool> UpdateUser(UserFkw user)
         {
-            user.Password = _serviceCryptography.Encrypt(user.Password, user.Id.ToString());
-
-            int result = _respositoryUser.Update(user);
+            int result = await _respositoryUser.Update(user);
             return result > 0;
         }
 
-        UserFkw IServiceUser.GetUserById(Guid userId) => _respositoryUser.GetUser(userId);
+        async Task<UserFkw> IServiceUser.GetUserById(Guid userId) => await _respositoryUser.GetUser(userId);
 
-        UserFkw IServiceUser.GetUserByUserName(string userName)
+        async Task<UserFkw> IServiceUser.GetUserByUserName(string userName)
         {
-            return _respositoryUser.GetUserByUserName(userName).Data;
+            return (await _respositoryUser.GetUserByUserName(userName)).Data;
         }
 
-        bool IServiceUser.UpdatePassword(Guid userId, string newPassword)
+        async Task<bool> IServiceUser.UpdatePassword(UserInformation userInformation)
         {
-            newPassword = _serviceCryptography.Encrypt(newPassword,
-                userId.ToString());
-
-            int rowUpdated = _respositoryUser.UpdatePassword(userId,
-                newPassword);
-
-            return (rowUpdated >= 1);
+            return await _respositoryUser.UpdatePassword(userInformation);
         }
 
-        void IServiceUser.UpdateStatusBlocked(Guid userId)
+        async Task IServiceUser.UpdateStatusBlocked(Guid userId)
         {
             IEnumerable<UserLoginAttempts> userLoginAttempts = _repositoryUserLoginAttempts.GetLoginAttemptsByUserId(userId);
 
             if (userLoginAttempts.Count() >= 3)
-                _respositoryUser.UpdateStatusBlocked(userId, true);
-
+                await _respositoryUser.UpdateStatusBlocked(userId, true);
         }
 
         void IServiceUser.SaveUserLoginAttempt(Guid userId, string description)
         {
-            _repositoryUserLoginAttempts.
-                SaveLoginAttempt(UserLoginAttempts.Create(userId, description));
+            _repositoryUserLoginAttempts.SaveLoginAttempt(UserLoginAttempts.Create(userId, description));
         }
 
-        void IServiceUser.UpdateLoginSessions(Guid userId, int sessions)
+        async Task IServiceUser.UpdateLoginSessions(Guid userId, int sessions)
         {
-            _respositoryUser.UpdateLoginSession(userId,sessions);
+            await _respositoryUser.UpdateLoginSession(userId,sessions);
         }
 
-        public bool UserExistByEmail(string email) => (_respositoryUser.ValidateUserByEmail(email).Data);
+        public async Task<bool> UserExist(string email = "DEFAULT", string userName = "DEFAULT")
+        {
+            bool existAnUser = (await _respositoryUser.ValidateUser(email)).Data;
+            //bool existByUserName = (await _respositoryUser.ValidateUserByUserName(userName)).Data;
 
-        public bool UserExistByUserName(string userName) => (_respositoryUser.ValidateUserByUserName(userName).Data);
+            return existAnUser;
+        }
 
     }
 }
